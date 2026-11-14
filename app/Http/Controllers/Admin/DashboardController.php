@@ -240,6 +240,52 @@ class DashboardController extends Controller
     }
 
     /**
+     * Delete a participant permanently.
+     */
+    public function destroy(Participant $participant)
+    {
+        $name = $participant->student_name;
+        $regCode = $participant->reg_code;
+        $session = $participant->session;
+        $wasUtama = ($participant->status === 'UTAMA');
+        $wasCadangan = ($participant->status === 'CADANGAN');
+
+        DB::transaction(function () use ($participant, $session, $wasCadangan) {
+            $participant->delete();
+
+            // If a waitlist participant was deleted, re-sequence the remaining waitlist for this session
+            if ($wasCadangan) {
+                $cadanganList = Participant::session($session)->cadangan()->get();
+                $order = 1;
+                foreach ($cadanganList as $item) {
+                    if ($item->waitlist_order !== $order) {
+                        $item->update(['waitlist_order' => $order]);
+                    }
+                    $order++;
+                }
+            }
+        });
+
+        $message = "Data pendaftaran {$name} ({$regCode}) telah berhasil dihapus secara permanen dari sistem.";
+
+        // If an UTAMA participant was deleted and there's a CADANGAN candidate available, suggest promotion
+        if ($wasUtama) {
+            $nextWaitlist = Participant::session($session)->cadangan()->first();
+            if ($nextWaitlist) {
+                return back()->with([
+                    'success' => $message,
+                    'suggest_promote_id' => $nextWaitlist->id,
+                    'suggest_promote_name' => $nextWaitlist->student_name,
+                    'suggest_promote_code' => $nextWaitlist->reg_code,
+                    'suggest_promote_session' => $nextWaitlist->session_label,
+                ]);
+            }
+        }
+
+        return back()->with('success', $message);
+    }
+
+    /**
      * Toggle Check-in status.
      */
     public function toggleCheckIn(Participant $participant)
@@ -422,10 +468,19 @@ class DashboardController extends Controller
     /**
      * Show event & dual-session settings.
      */
-    public function settings()
+    public function settings(Request $request)
     {
         $settings = Setting::all()->keyBy('key');
-        return view('admin.settings', compact('settings'));
+        $activeTab = $request->query('tab', 'event');
+        $activeSession = (int) $request->query('session', 1);
+        if (!in_array($activeSession, [1, 2])) {
+            $activeSession = 1;
+        }
+
+        $session1Rundown = Setting::getRundown(1);
+        $session2Rundown = Setting::getRundown(2);
+
+        return view('admin.settings', compact('settings', 'activeTab', 'activeSession', 'session1Rundown', 'session2Rundown'));
     }
 
     /**
@@ -481,7 +536,61 @@ class DashboardController extends Controller
             Setting::set($key, $value);
         }
 
-        return back()->with('success', 'Pengaturan sesi kegiatan & kuota pendaftaran berhasil diperbarui.');
+        $tab = $request->input('redirect_tab', 'event');
+
+        return redirect()->route('admin.settings', ['tab' => $tab])
+            ->with('success', 'Pengaturan sesi kegiatan & kuota pendaftaran berhasil diperbarui.');
+    }
+
+    /**
+     * Update or reset stack materi / rundown for a session.
+     */
+    public function updateRundown(Request $request)
+    {
+        $session = (int) $request->input('session', 1);
+        if (!in_array($session, [1, 2])) {
+            $session = 1;
+        }
+
+        // Reset to default 5 stacks if requested
+        if ($request->has('reset_default')) {
+            $default = Setting::defaultRundown($session);
+            Setting::set("session_{$session}_rundown", json_encode($default, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT), 'rundown', "Stack Materi Sesi {$session}");
+            return redirect()->route('admin.settings', ['tab' => 'rundown', 'session' => $session])
+                ->with('success', "Stack materi Sesi {$session} berhasil direset ke format default 5 stack.");
+        }
+
+        $items = $request->input('items', []);
+        $cleaned = [];
+
+        if (is_array($items)) {
+            foreach ($items as $item) {
+                $time = trim($item['time'] ?? '');
+                $title = trim($item['title'] ?? '');
+                $description = trim($item['description'] ?? '');
+                $duration = trim($item['duration'] ?? '');
+                $type = trim($item['type'] ?? 'default');
+
+                if (!empty($time) || !empty($title)) {
+                    $cleaned[] = [
+                        'time' => $time,
+                        'title' => $title,
+                        'description' => $description,
+                        'duration' => $duration,
+                        'type' => in_array($type, ['default', 'blue', 'amber', 'purple', 'emerald']) ? $type : 'default',
+                    ];
+                }
+            }
+        }
+
+        if (empty($cleaned)) {
+            return back()->with('error', 'Minimal harus ada 1 stack materi yang disimpan.');
+        }
+
+        Setting::set("session_{$session}_rundown", json_encode($cleaned, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT), 'rundown', "Stack Materi Sesi {$session}");
+
+        return redirect()->route('admin.settings', ['tab' => 'rundown', 'session' => $session])
+            ->with('success', "Stack materi rundown Sesi {$session} berhasil diperbarui (" . count($cleaned) . " stack materi).");
     }
 
     /**

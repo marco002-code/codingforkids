@@ -227,18 +227,23 @@
 
                                     <!-- Cancel Participant -->
                                     @if($p->status !== 'DIBATALKAN')
-                                        <button type="button" onclick="openCancelModal({{ $p->id }}, '{{ addslashes($p->student_name) }}', '{{ $p->reg_code }}', '{{ $p->session }}')" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg text-xs font-bold transition-colors">
+                                        <button type="button" onclick="openCancelModal({{ $p->id }}, '{{ addslashes($p->student_name) }}', '{{ $p->reg_code }}', '{{ $p->session }}')" class="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-lg text-xs font-bold transition-colors" title="Batalkan Pendaftaran">
                                             Batalkan
                                         </button>
                                     @else
                                         <!-- Restore Participant -->
                                         <form action="{{ route('admin.participants.restore', $p->id) }}" method="POST">
                                             @csrf
-                                            <button type="submit" onclick="return confirm('Pulihkan kembali {{ $p->student_name }} ke Sesi {{ $p->session }}?')" class="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-bold transition-colors">
+                                            <button type="submit" onclick="return confirm('Pulihkan kembali {{ $p->student_name }} ke Sesi {{ $p->session }}?')" class="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-bold transition-colors" title="Pulihkan Pendaftaran">
                                                 Pulihkan
                                             </button>
                                         </form>
                                     @endif
+
+                                    <!-- Delete Participant Permanently -->
+                                    <button type="button" onclick="openDeleteModal({{ $p->id }}, '{{ addslashes($p->student_name) }}', '{{ $p->reg_code }}', '{{ $p->session }}', '{{ $p->status }}')" class="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors" title="Hapus Permanen Peserta">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    </button>
 
                                 </div>
                             </td>
@@ -274,15 +279,48 @@
             @csrf
             <div class="mb-4">
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">Alasan Pembatalan (Opsional)</label>
-                <textarea name="reason" rows="2" placeholder="Contoh: Konfirmasi orang tua berhalangan hadir..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-rose-500 outline-none"></textarea>
+                <textarea name="reason" rows="2" placeholder="Contoh: Konfirmasi orang tua berhalangan hadir..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none"></textarea>
             </div>
 
             <div class="flex items-center justify-end gap-2">
                 <button type="button" onclick="closeCancelModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
                     Kembali
                 </button>
-                <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-xs transition-colors">
+                <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-xl shadow-xs transition-colors">
                     Ya, Batalkan Pendaftaran
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Permanent Delete Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-rose-100">
+        <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+        </div>
+
+        <h3 class="text-base font-extrabold text-slate-900 mb-1.5">Hapus Data Peserta Secara Permanen?</h3>
+        <p class="text-xs text-slate-600 mb-2 leading-relaxed" id="deleteParticipantText">
+            Data peserta akan dihapus selamanya dari database dan tiket tidak dapat diakses kembali.
+        </p>
+
+        <div class="p-3 rounded-xl bg-rose-50/70 border border-rose-200/80 text-[11px] text-rose-800 mb-5">
+            ⚠️ <strong>Perhatian:</strong> Tindakan ini tidak dapat dibatalkan. Jika peserta yang dihapus berstatus <strong>Peserta Utama</strong>, sistem akan merekomendasikan antrean cadangan #1 untuk dipromosikan.
+        </div>
+
+        <form id="deleteForm" method="POST" action="">
+            @csrf
+            @method('DELETE')
+
+            <div class="flex items-center justify-end gap-2">
+                <button type="button" onclick="closeDeleteModal()" class="px-4 py-2.5 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
+                    Batal
+                </button>
+                <button type="submit" class="px-4 py-2.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-xs transition-colors flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    <span>Ya, Hapus Permanen</span>
                 </button>
             </div>
         </form>
@@ -299,6 +337,17 @@
     function closeCancelModal() {
         document.getElementById('cancelModal').classList.add('hidden');
         document.getElementById('cancelModal').classList.remove('flex');
+    }
+
+    function openDeleteModal(id, name, code, session, status) {
+        document.getElementById('deleteParticipantText').innerHTML = `Anda akan menghapus data pendaftaran siswa <strong>${name}</strong> (Kode: <code class="font-bold text-slate-900">${code}</code>, Sesi ${session}, Status: <strong>${status}</strong>).`;
+        document.getElementById('deleteForm').action = `/admin/participants/${id}`;
+        document.getElementById('deleteModal').classList.remove('hidden');
+        document.getElementById('deleteModal').classList.add('flex');
+    }
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+        document.getElementById('deleteModal').classList.remove('flex');
     }
 </script>
 @endsection

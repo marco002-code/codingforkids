@@ -646,118 +646,102 @@
 
             <!-- RUNDOWN SESI 1 CONTENT -->
             <div id="rundownSesi1" class="space-y-4 transition-all">
-                <div class="cartoon-box p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                        <span class="px-3 py-1.5 rounded-xl bg-slate-100 font-mono font-black text-xs text-slate-800 shrink-0 border border-slate-300 w-fit">07:00 – 07:30</span>
-                        <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Registrasi Ulang &amp; Pengambilan Name Tag</h4>
-                            <p class="text-xs text-slate-600 font-medium">Check-in scan QR Code E-Ticket atau sebutkan 5 huruf kode registrasi, pembagian Name Tag dan persiapan komputer di Lab TIK 1 &amp; Lab TIK 3.</p>
-                        </div>
-                    </div>
-                    <span class="text-xs font-bold text-slate-500 shrink-0 sm:text-right">30 Menit</span>
-                </div>
+                @foreach($session1Rundown as $item)
+                    @php
+                        $type = $item['type'] ?? 'default';
+                        $boxClass = 'cartoon-box p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4';
+                        $badgeClass = 'px-3 py-1.5 rounded-xl font-mono font-black text-xs shrink-0 w-fit border ';
+                        
+                        if ($type === 'blue') {
+                            $boxClass .= ' border-l-8 border-l-blue-900';
+                            $badgeClass .= 'bg-blue-100 text-blue-900 border-blue-300';
+                        } elseif ($type === 'amber') {
+                            $boxClass .= ' bg-amber-50/50';
+                            $badgeClass .= 'bg-amber-100 text-amber-900 border-amber-300';
+                        } elseif ($type === 'purple') {
+                            $boxClass .= ' border-l-8 border-l-purple-900';
+                            $badgeClass .= 'bg-purple-100 text-purple-900 border-purple-300';
+                        } elseif ($type === 'emerald') {
+                            $boxClass .= ' border-l-8 border-l-emerald-800';
+                            $badgeClass .= 'bg-emerald-100 text-emerald-900 border-emerald-300';
+                        } else {
+                            $badgeClass .= 'bg-slate-100 text-slate-800 border-slate-300';
+                        }
+                    @endphp
 
-                <div class="cartoon-box p-4 sm:p-5 border-l-8 border-l-blue-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                        <span class="px-3 py-1.5 rounded-xl bg-blue-100 font-mono font-black text-xs text-blue-900 shrink-0 border border-blue-300 w-fit">07:30 – 08:35</span>
-                        <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 1: Coding &amp; Praktik Membuat Game 🎮</h4>
-                            <p class="text-xs text-slate-600 font-medium">Logika sekuensial, algoritma visual Scratch, dan merakit game interaktif perdana.</p>
+                    <div class="{{ $boxClass }}">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                            <span class="{{ $badgeClass }}">{{ $item['time'] ?? '' }}</span>
+                            <div>
+                                <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">{{ $item['title'] ?? '' }}</h4>
+                                <p class="text-xs text-slate-600 font-medium">{{ $item['description'] ?? '' }}</p>
+                            </div>
                         </div>
+                        @if(!empty($item['duration']))
+                            @if($type === 'amber')
+                                <span class="text-xs font-black text-amber-700 shrink-0 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300 w-fit">{{ $item['duration'] }}</span>
+                            @elseif($type === 'blue')
+                                <span class="text-xs font-bold text-blue-900 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                            @elseif($type === 'purple')
+                                <span class="text-xs font-bold text-purple-900 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                            @elseif($type === 'emerald')
+                                <span class="text-xs font-bold text-emerald-800 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                            @else
+                                <span class="text-xs font-bold text-slate-500 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                            @endif
+                        @endif
                     </div>
-                    <span class="text-xs font-bold text-blue-900 shrink-0 sm:text-right">65 Menit</span>
-                </div>
-
-                <div class="cartoon-box p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-amber-50/50">
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                        <span class="px-3 py-1.5 rounded-xl bg-amber-100 font-mono font-black text-xs text-amber-900 shrink-0 border border-amber-300 w-fit">08:35 – 08:50</span>
-                        <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Istirahat (Snack Time &amp; Fun Quiz) 🍪</h4>
-                            <p class="text-xs text-slate-600 font-medium">Waktu istirahat snack lezat 15 menit, kuis seru berhadiah, dan networking teman baru.</p>
-                        </div>
-                    </div>
-                    <span class="text-xs font-black text-amber-700 shrink-0 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300 w-fit">15 Menit Istirahat</span>
-                </div>
-
-                <div class="cartoon-box p-4 sm:p-5 border-l-8 border-l-purple-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                        <span class="px-3 py-1.5 rounded-xl bg-purple-100 font-mono font-black text-xs text-purple-900 shrink-0 border border-purple-300 w-fit">08:50 – 09:30</span>
-                        <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 2: Pemanfaatan A.I. untuk Belajar 🤖</h4>
-                            <p class="text-xs text-slate-600 font-medium">Eksplorasi kecerdasan buatan ramah anak, prompt cilik, dan praktik A.I. sebagai sahabat belajar pintar.</p>
-                        </div>
-                    </div>
-                    <span class="text-xs font-bold text-purple-900 shrink-0 sm:text-right">40 Menit</span>
-                </div>
-
-                <div class="cartoon-box p-4 sm:p-5 border-l-8 border-l-emerald-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                        <span class="px-3 py-1.5 rounded-xl bg-emerald-100 font-mono font-black text-xs text-emerald-900 shrink-0 border border-emerald-300 w-fit">09:30 – 10:00</span>
-                        <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 3: Keamanan Digital + Showcase &amp; Sertifikat 🎓</h4>
-                            <p class="text-xs text-slate-600 font-medium">Cyber safety Google Interland, pameran hasil karya game, dan penyerahan sertifikat peserta.</p>
-                        </div>
-                    </div>
-                    <span class="text-xs font-bold text-emerald-800 shrink-0 sm:text-right">30 Menit</span>
-                </div>
+                @endforeach
             </div>
 
             <!-- RUNDOWN SESI 2 CONTENT -->
             <div id="rundownSesi2" class="space-y-4 hidden transition-all">
-                <div class="cartoon-box p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                        <span class="px-3 py-1.5 rounded-xl bg-slate-100 font-mono font-black text-xs text-slate-800 shrink-0 border border-slate-300 w-fit">10:00 – 10:30</span>
-                        <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Registrasi Ulang &amp; Pengambilan Name Tag</h4>
-                            <p class="text-xs text-slate-600 font-medium">Check-in scan QR Code E-Ticket atau sebutkan 5 huruf kode registrasi, pembagian Name Tag dan persiapan komputer di Lab TIK 1 &amp; Lab TIK 3.</p>
-                        </div>
-                    </div>
-                    <span class="text-xs font-bold text-slate-500 shrink-0 sm:text-right">30 Menit</span>
-                </div>
+                @foreach($session2Rundown as $item)
+                    @php
+                        $type = $item['type'] ?? 'default';
+                        $boxClass = 'cartoon-box p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4';
+                        $badgeClass = 'px-3 py-1.5 rounded-xl font-mono font-black text-xs shrink-0 w-fit border ';
+                        
+                        if ($type === 'blue') {
+                            $boxClass .= ' border-l-8 border-l-blue-900';
+                            $badgeClass .= 'bg-blue-100 text-blue-900 border-blue-300';
+                        } elseif ($type === 'amber') {
+                            $boxClass .= ' bg-amber-50/50';
+                            $badgeClass .= 'bg-amber-100 text-amber-900 border-amber-300';
+                        } elseif ($type === 'purple') {
+                            $boxClass .= ' border-l-8 border-l-purple-900';
+                            $badgeClass .= 'bg-purple-100 text-purple-900 border-purple-300';
+                        } elseif ($type === 'emerald') {
+                            $boxClass .= ' border-l-8 border-l-emerald-800';
+                            $badgeClass .= 'bg-emerald-100 text-emerald-900 border-emerald-300';
+                        } else {
+                            $badgeClass .= 'bg-slate-100 text-slate-800 border-slate-300';
+                        }
+                    @endphp
 
-                <div class="cartoon-box p-4 sm:p-5 border-l-8 border-l-blue-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                        <span class="px-3 py-1.5 rounded-xl bg-blue-100 font-mono font-black text-xs text-blue-900 shrink-0 border border-blue-300 w-fit">10:30 – 11:05</span>
-                        <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 1: Coding &amp; Praktik Membuat Game 🎮</h4>
-                            <p class="text-xs text-slate-600 font-medium">Logika sekuensial, algoritma visual Scratch, dan merakit game interaktif perdana.</p>
+                    <div class="{{ $boxClass }}">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                            <span class="{{ $badgeClass }}">{{ $item['time'] ?? '' }}</span>
+                            <div>
+                                <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">{{ $item['title'] ?? '' }}</h4>
+                                <p class="text-xs text-slate-600 font-medium">{{ $item['description'] ?? '' }}</p>
+                            </div>
                         </div>
+                        @if(!empty($item['duration']))
+                            @if($type === 'amber')
+                                <span class="text-xs font-black text-amber-700 shrink-0 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300 w-fit">{{ $item['duration'] }}</span>
+                            @elseif($type === 'blue')
+                                <span class="text-xs font-bold text-blue-900 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                            @elseif($type === 'purple')
+                                <span class="text-xs font-bold text-purple-900 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                            @elseif($type === 'emerald')
+                                <span class="text-xs font-bold text-emerald-800 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                            @else
+                                <span class="text-xs font-bold text-slate-500 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                            @endif
+                        @endif
                     </div>
-                    <span class="text-xs font-bold text-blue-900 shrink-0 sm:text-right">35 Menit</span>
-                </div>
-
-                <div class="cartoon-box p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-amber-50/50">
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                        <span class="px-3 py-1.5 rounded-xl bg-amber-100 font-mono font-black text-xs text-amber-900 shrink-0 border border-amber-300 w-fit">11:05 – 11:20</span>
-                        <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Istirahat (Snack Time &amp; Fun Quiz) 🍪</h4>
-                            <p class="text-xs text-slate-600 font-medium">Waktu istirahat snack lezat 15 menit, ice breaking seru berhadiah, dan networking teman baru.</p>
-                        </div>
-                    </div>
-                    <span class="text-xs font-black text-amber-700 shrink-0 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300 w-fit">15 Menit Istirahat</span>
-                </div>
-
-                <div class="cartoon-box p-4 sm:p-5 border-l-8 border-l-purple-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                        <span class="px-3 py-1.5 rounded-xl bg-purple-100 font-mono font-black text-xs text-purple-900 shrink-0 border border-purple-300 w-fit">11:20 – 11:45</span>
-                        <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 2: Pemanfaatan A.I. untuk Belajar 🤖</h4>
-                            <p class="text-xs text-slate-600 font-medium">Eksplorasi kecerdasan buatan ramah anak, prompt cilik, dan praktik A.I. sebagai sahabat belajar pintar.</p>
-                        </div>
-                    </div>
-                    <span class="text-xs font-bold text-purple-900 shrink-0 sm:text-right">25 Menit</span>
-                </div>
-
-                <div class="cartoon-box p-4 sm:p-5 border-l-8 border-l-emerald-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                        <span class="px-3 py-1.5 rounded-xl bg-emerald-100 font-mono font-black text-xs text-emerald-900 shrink-0 border border-emerald-300 w-fit">11:45 – 12:00</span>
-                        <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 3: Keamanan Digital + Showcase &amp; Sertifikat 🎓</h4>
-                            <p class="text-xs text-slate-600 font-medium">Cyber safety Google Interland, pameran hasil karya game, dan penyerahan sertifikat peserta.</p>
-                        </div>
-                    </div>
-                    <span class="text-xs font-bold text-emerald-800 shrink-0 sm:text-right">15 Menit</span>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

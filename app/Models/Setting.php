@@ -32,6 +32,106 @@ class Setting extends Model
     }
 
     /**
+     * Default 5-stack rundown structure for a session.
+     */
+    public static function defaultRundown(int $session = 1): array
+    {
+        if ($session === 1) {
+            return [
+                [
+                    'time' => '07:00 – 07:30',
+                    'title' => 'Registrasi Ulang & Pengambilan Name Tag',
+                    'description' => 'Check-in scan QR Code E-Ticket atau sebutkan 5 huruf kode registrasi, pembagian Name Tag dan persiapan komputer di Lab TIK 1 & Lab TIK 3.',
+                    'duration' => '30 Menit',
+                    'type' => 'default',
+                ],
+                [
+                    'time' => '07:30 – 08:35',
+                    'title' => 'Modul 1: Coding & Praktik Membuat Game 🎮',
+                    'description' => 'Logika sekuensial, algoritma visual Scratch, dan merakit game interaktif perdana.',
+                    'duration' => '65 Menit',
+                    'type' => 'blue',
+                ],
+                [
+                    'time' => '08:35 – 08:50',
+                    'title' => 'Istirahat (Snack Time & Fun Quiz) 🍪',
+                    'description' => 'Waktu istirahat snack lezat 15 menit, kuis seru berhadiah, dan networking teman baru.',
+                    'duration' => '15 Menit Istirahat',
+                    'type' => 'amber',
+                ],
+                [
+                    'time' => '08:50 – 09:30',
+                    'title' => 'Modul 2: Pemanfaatan A.I. untuk Belajar 🤖',
+                    'description' => 'Eksplorasi kecerdasan buatan ramah anak, prompt cilik, dan praktik A.I. sebagai sahabat belajar pintar.',
+                    'duration' => '40 Menit',
+                    'type' => 'purple',
+                ],
+                [
+                    'time' => '09:30 – 10:00',
+                    'title' => 'Modul 3: Keamanan Digital + Showcase & Sertifikat 🎓',
+                    'description' => 'Cyber safety Google Interland, pameran hasil karya game, dan penyerahan sertifikat peserta.',
+                    'duration' => '30 Menit',
+                    'type' => 'emerald',
+                ],
+            ];
+        }
+
+        return [
+            [
+                'time' => '10:00 – 10:30',
+                'title' => 'Registrasi Ulang & Pengambilan Name Tag',
+                'description' => 'Check-in scan QR Code E-Ticket atau sebutkan 5 huruf kode registrasi, pembagian Name Tag dan persiapan komputer di Lab TIK 1 & Lab TIK 3.',
+                'duration' => '30 Menit',
+                'type' => 'default',
+            ],
+            [
+                'time' => '10:30 – 11:05',
+                'title' => 'Modul 1: Coding & Praktik Membuat Game 🎮',
+                'description' => 'Logika sekuensial, algoritma visual Scratch, dan merakit game interaktif perdana.',
+                'duration' => '35 Menit',
+                'type' => 'blue',
+            ],
+            [
+                'time' => '11:05 – 11:20',
+                'title' => 'Istirahat (Snack Time & Fun Quiz) 🍪',
+                'description' => 'Waktu istirahat snack lezat 15 menit, ice breaking seru berhadiah, dan networking teman baru.',
+                'duration' => '15 Menit Istirahat',
+                'type' => 'amber',
+            ],
+            [
+                'time' => '11:20 – 11:45',
+                'title' => 'Modul 2: Pemanfaatan A.I. untuk Belajar 🤖',
+                'description' => 'Eksplorasi kecerdasan buatan ramah anak, prompt cilik, dan praktik A.I. sebagai sahabat belajar pintar.',
+                'duration' => '25 Menit',
+                'type' => 'purple',
+            ],
+            [
+                'time' => '11:45 – 12:00',
+                'title' => 'Modul 3: Keamanan Digital + Showcase & Sertifikat 🎓',
+                'description' => 'Cyber safety Google Interland, pameran hasil karya game, dan penyerahan sertifikat peserta.',
+                'duration' => '15 Menit',
+                'type' => 'emerald',
+            ],
+        ];
+    }
+
+    /**
+     * Get rundown stack for a session with fallback to default.
+     */
+    public static function getRundown(int $session = 1): array
+    {
+        $key = "session_{$session}_rundown";
+        $json = static::get($key);
+        if (!empty($json)) {
+            $decoded = json_decode($json, true);
+            if (is_array($decoded) && count($decoded) > 0) {
+                return $decoded;
+            }
+        }
+        return static::defaultRundown($session);
+    }
+
+    /**
      * Set or update setting value by key.
      */
     public static function set(string $key, $value, ?string $group = null, ?string $label = null, ?string $description = null)

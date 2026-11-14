@@ -41,10 +41,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/participants/{participant}/promote', [AdminDashboardController::class, 'promote'])->name('participants.promote');
     Route::post('/participants/{participant}/cancel', [AdminDashboardController::class, 'cancel'])->name('participants.cancel');
     Route::post('/participants/{participant}/restore', [AdminDashboardController::class, 'restore'])->name('participants.restore');
+    Route::delete('/participants/{participant}', [AdminDashboardController::class, 'destroy'])->name('participants.destroy');
     Route::post('/participants/{participant}/check-in', [AdminDashboardController::class, 'toggleCheckIn'])->name('participants.checkin');
     Route::post('/quick-check-in', [AdminDashboardController::class, 'quickCheckIn'])->name('quickCheckIn');
     Route::get('/export', [AdminDashboardController::class, 'export'])->name('export');
     Route::post('/participants/toggle-publish', [AdminDashboardController::class, 'togglePublishSelected'])->name('participants.togglePublish');
     Route::get('/settings', [AdminDashboardController::class, 'settings'])->name('settings');
     Route::post('/settings', [AdminDashboardController::class, 'updateSettings'])->name('settings.update');
+    Route::post('/settings/rundown', [AdminDashboardController::class, 'updateRundown'])->name('settings.updateRundown');
 });

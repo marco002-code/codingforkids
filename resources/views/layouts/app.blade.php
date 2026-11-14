@@ -10,29 +10,36 @@
     <meta name="description" content="@yield('meta_description', 'Workshop Coding 100% GRATIS untuk Siswa SD Kelas 6. Belajar Block Programming Scratch, Pemanfaatan A.I., & Keamanan Digital di Lab Komputer SMP Muhammadiyah 1 Yogyakarta. Dapatkan E-Sertifikat Resmi & Sertifikat Google Interland.')">
     <meta name="author" content="SMP Muhammadiyah 1 Yogyakarta & Muhijunior ISS">
 
+    @php
+        $defaultOgImage = 'https://coding.muhijunior.id/images/og-preview.jpg';
+        if (app()->isLocal() && request()->getHost() !== 'coding.muhijunior.id') {
+            $defaultOgImage = asset('images/og-preview.jpg');
+        }
+    @endphp
+
     <!-- Open Graph / WhatsApp / Facebook Preview -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:site_name" content="Coding for Kids - SMP Muhammadiyah 1 Yogyakarta">
     <meta property="og:title" content="@yield('og_title', 'Coding for Kids & A.I. for Learning - SMP Muhammadiyah 1 Yogyakarta')">
     <meta property="og:description" content="@yield('og_description', 'Workshop Coding 100% GRATIS khusus Siswa SD Kelas 6! Belajar logika game Scratch, A.I. ramah anak, dan cyber safety Google Interland di Lab Komputer SMP Muh 1 Yogya.')">
-    <meta property="og:image" content="@yield('og_image', url('images/og-preview.jpg'))">
-    <meta property="og:image:secure_url" content="@yield('og_image_secure', url('images/og-preview.jpg'))">
+    <meta property="og:image" content="@yield('og_image', $defaultOgImage)">
+    <meta property="og:image:secure_url" content="@yield('og_image_secure', $defaultOgImage)">
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="800">
     <meta property="og:image:height" content="667">
     <meta property="og:image:alt" content="Coding for Kids & A.I. for Learning - SMP Muhammadiyah 1 Yogyakarta">
     
     <!-- WhatsApp & Schema.org Image Hints -->
-    <link rel="image_src" href="@yield('og_image', url('images/og-preview.jpg'))">
-    <meta itemprop="image" content="@yield('og_image', url('images/og-preview.jpg'))">
+    <link rel="image_src" href="@yield('og_image', $defaultOgImage)">
+    <meta itemprop="image" content="@yield('og_image', $defaultOgImage)">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="{{ url()->current() }}">
     <meta name="twitter:title" content="@yield('og_title', 'Coding for Kids & A.I. for Learning - SMP Muhammadiyah 1 Yogyakarta')">
     <meta name="twitter:description" content="@yield('og_description', 'Workshop Coding 100% GRATIS khusus Siswa SD Kelas 6! Belajar logika game Scratch, A.I. ramah anak, dan cyber safety Google Interland di Lab Komputer SMP Muh 1 Yogya.')">
-    <meta name="twitter:image" content="@yield('og_image', url('images/og-preview.jpg'))">
+    <meta name="twitter:image" content="@yield('og_image', $defaultOgImage)">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">

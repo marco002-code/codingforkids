@@ -53,13 +53,17 @@ class HomeController extends Controller
         $contactWhatsapp = Setting::get('contact_whatsapp', '081234567890');
         $isPublished = (bool) Setting::get('publish_selected_participants', '0');
 
+        $session1Rundown = Setting::getRundown(1);
+        $session2Rundown = Setting::getRundown(2);
+
         return view('landing', compact(
             'registrationStatus',
             'isPublished',
             's1Name', 's1Time', 's1Max', 's1WaitlistMax', 's1MainCount', 's1WaitlistCount', 's1RemainingMain', 's1RemainingWaitlist', 's1Percent', 's1IsFull', 's1IsOpen',
             's2Name', 's2Time', 's2Max', 's2WaitlistMax', 's2MainCount', 's2WaitlistCount', 's2RemainingMain', 's2RemainingWaitlist', 's2Percent', 's2IsFull', 's2IsOpen',
             'totalSeats', 'totalMainFilled', 'totalMainRemaining', 'isGlobalFull', 'isGlobalOpen',
-            'eventDate', 'eventLocation', 'contactWhatsapp'
+            'eventDate', 'eventLocation', 'contactWhatsapp',
+            'session1Rundown', 'session2Rundown'
         ));
     }
 

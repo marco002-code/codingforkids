@@ -64,6 +64,12 @@ else
     echo -e "${GREEN}✓ File .env terdeteksi.${NC}"
 fi
 
+# Pastikan APP_URL tidak mengandung port dev (:8000)
+if [ -f .env ]; then
+    sed -i 's|https://coding.muhijunior.id:8000|https://coding.muhijunior.id|g' .env 2>/dev/null || true
+    sed -i 's|http://coding.muhijunior.id:8000|https://coding.muhijunior.id|g' .env 2>/dev/null || true
+fi
+
 # Pastikan file SQLite ada jika menggunakan driver sqlite
 if grep -q "DB_CONNECTION=sqlite" .env 2>/dev/null; then
     mkdir -p database

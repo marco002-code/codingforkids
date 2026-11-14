@@ -371,4 +371,132 @@ class EventRegistrationTest extends TestCase
             'already_attended' => true,
         ]);
     }
+
+    public function test_admin_can_delete_participant_permanently_and_reorder_waitlist(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin Panitia',
+            'email' => 'admin_del@test.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $utama = Participant::create([
+            'reg_code' => 'ABCDE',
+            'session' => '1',
+            'student_name' => 'Siswa Utama 1',
+            'school_name' => 'SD 1',
+            'gender' => 'L',
+            'experience_level' => 'Belum Pernah',
+            'parent_name' => 'Ortu 1',
+            'whatsapp' => '081234567891',
+            'status' => 'UTAMA',
+        ]);
+
+        $cadangan1 = Participant::create([
+            'reg_code' => 'BCDEF',
+            'session' => '1',
+            'student_name' => 'Siswa Cadangan 1',
+            'school_name' => 'SD 2',
+            'gender' => 'P',
+            'experience_level' => 'Belum Pernah',
+            'parent_name' => 'Ortu 2',
+            'whatsapp' => '081234567892',
+            'status' => 'CADANGAN',
+            'waitlist_order' => 1,
+        ]);
+
+        $cadangan2 = Participant::create([
+            'reg_code' => 'CDEFG',
+            'session' => '1',
+            'student_name' => 'Siswa Cadangan 2',
+            'school_name' => 'SD 3',
+            'gender' => 'L',
+            'experience_level' => 'Belum Pernah',
+            'parent_name' => 'Ortu 3',
+            'whatsapp' => '081234567893',
+            'status' => 'CADANGAN',
+            'waitlist_order' => 2,
+        ]);
+
+        $this->actingAs($admin);
+
+        // 1. Delete cadangan 1 -> cadangan 2 should become waitlist_order 1
+        $delResponse = $this->delete(route('admin.participants.destroy', $cadangan1->id));
+        $delResponse->assertSessionHas('success');
+        $this->assertDatabaseMissing('participants', ['id' => $cadangan1->id]);
+
+        $cadangan2->refresh();
+        $this->assertEquals(1, $cadangan2->waitlist_order);
+
+        // 2. Delete utama -> system should suggest promoting remaining waitlist
+        $delUtamaResponse = $this->delete(route('admin.participants.destroy', $utama->id));
+        $delUtamaResponse->assertSessionHas('success');
+        $delUtamaResponse->assertSessionHas('suggest_promote_id', $cadangan2->id);
+        $this->assertDatabaseMissing('participants', ['id' => $utama->id]);
+    }
+
+    public function test_admin_settings_tabs_and_rundown_stacks_management(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin Panitia',
+            'email' => 'admin_settings@test.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $this->actingAs($admin);
+
+        // View settings tabs
+        $resEvent = $this->get(route('admin.settings', ['tab' => 'event']));
+        $resEvent->assertStatus(200);
+        $resEvent->assertSee('Tanggal Pelaksanaan Kegiatan');
+
+        $resSessions = $this->get(route('admin.settings', ['tab' => 'sessions']));
+        $resSessions->assertStatus(200);
+        $resSessions->assertSee('Jam / Waktu Pelaksanaan');
+
+        $resRundown = $this->get(route('admin.settings', ['tab' => 'rundown', 'session' => 1]));
+        $resRundown->assertStatus(200);
+        $resRundown->assertSee('Daftar Stack Materi: Sesi 1');
+
+        // Update Rundown Stacks
+        $newStacks = [
+            [
+                'time' => '07:00 – 07:45',
+                'title' => 'Check-in & Sambutan',
+                'description' => 'Persiapan peserta di lab.',
+                'duration' => '45 Menit',
+                'type' => 'default',
+            ],
+            [
+                'time' => '07:45 – 09:15',
+                'title' => 'Coding Scratch Interaktif',
+                'description' => 'Membuat game seru.',
+                'duration' => '90 Menit',
+                'type' => 'blue',
+            ],
+        ];
+
+        $updateRundownRes = $this->post(route('admin.settings.updateRundown'), [
+            'session' => 1,
+            'items' => $newStacks,
+        ]);
+        $updateRundownRes->assertRedirect(route('admin.settings', ['tab' => 'rundown', 'session' => 1]));
+        $updateRundownRes->assertSessionHas('success');
+
+        // Verify landing page reflects updated rundown
+        $landingRes = $this->get('/');
+        $landingRes->assertStatus(200);
+        $landingRes->assertSee('Coding Scratch Interaktif');
+        $landingRes->assertSee('07:45 – 09:15');
+
+        // Reset to default 5 stacks
+        $resetRes = $this->post(route('admin.settings.updateRundown'), [
+            'session' => 1,
+            'reset_default' => 1,
+        ]);
+        $resetRes->assertSessionHas('success');
+
+        $landingResAfterReset = $this->get('/');
+        $landingResAfterReset->assertSee('Modul 1: Coding &amp; Praktik Membuat Game 🎮', false);
+    }
 }
