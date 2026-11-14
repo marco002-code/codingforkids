@@ -247,23 +247,7 @@
             
             <!-- Left Branding: Muhijunior ISS -->
             <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                <div class="flex items-center gap-2">
-                    <!-- Muhijunior styled logo -->
-                    <div class="flex flex-col">
-                        <div class="flex items-center gap-1">
-                            <span class="w-2.5 h-2.5 rounded-xs bg-emerald-500"></span>
-                            <span class="w-2.5 h-2.5 rounded-xs bg-blue-500"></span>
-                            <span class="w-2.5 h-2.5 rounded-xs bg-amber-400"></span>
-                            <span class="w-2.5 h-2.5 rounded-xs bg-rose-500"></span>
-                        </div>
-                        <span class="font-display font-black text-xl text-blue-950 tracking-tight leading-none mt-1">
-                            muhijunior<span class="text-amber-500 text-sm ml-0.5 font-bold">iss</span>
-                        </span>
-                        <span class="text-[9px] text-slate-500 font-bold tracking-widest uppercase -mt-0.5">
-                            School Of Creative People
-                        </span>
-                    </div>
-                </div>
+                <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS - School Of Creative People" class="h-10 sm:h-12 w-auto object-contain transition-transform group-hover:scale-105">
             </a>
 
             <!-- Center Nav Links -->
@@ -310,12 +294,8 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                 
                 <div class="md:col-span-2 space-y-3">
-                    <div class="flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-xs bg-emerald-400"></span>
-                        <span class="w-3 h-3 rounded-xs bg-blue-400"></span>
-                        <span class="w-3 h-3 rounded-xs bg-amber-400"></span>
-                        <span class="w-3 h-3 rounded-xs bg-rose-400"></span>
-                        <span class="font-display font-black text-2xl text-white tracking-tight">muhijunior</span>
+                    <div class="bg-white p-2.5 rounded-2xl inline-block shadow-md border-2 border-amber-300">
+                        <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS - School Of Creative People" class="h-9 w-auto object-contain">
                     </div>
                     <h3 class="font-extrabold text-white text-base">SMP Muhammadiyah 1 Yogyakarta</h3>
                     <p class="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-md">

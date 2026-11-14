@@ -83,16 +83,21 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
-            <!-- School & Community Badge Bar -->
-            <div class="text-center max-w-4xl mx-auto">
-                <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-blue-950 text-white text-xs sm:text-sm font-black uppercase tracking-wider shadow-lg border-2 border-amber-300">
-                    <span>🏫 SMP Muhammadiyah 1 Yogyakarta</span>
-                    <span class="text-amber-400 font-bold">&bull;</span>
-                    <span class="text-amber-300">Muhijunior ISS</span>
+            <!-- Poster Top Branding Bar (Matching Original Poster Layout) -->
+            <div class="flex items-center justify-between gap-4 max-w-5xl mx-auto mb-6">
+                <div class="bg-white/95 backdrop-blur-xs px-4 py-2 rounded-2xl border-3 border-blue-950 shadow-md">
+                    <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS - School Of Creative People" class="h-9 sm:h-11 w-auto object-contain">
                 </div>
+                <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-blue-950 text-white text-xs sm:text-sm font-black uppercase tracking-wider shadow-md border-3 border-amber-300">
+                    <span class="w-7 h-7 rounded-full bg-blue-900 text-amber-300 flex items-center justify-center font-black text-xs border border-amber-300">★</span>
+                    <span>SMP Muhammadiyah 1 Yogyakarta</span>
+                </div>
+            </div>
 
+            <!-- Main Hero Header -->
+            <div class="text-center max-w-4xl mx-auto">
                 <!-- Main Poster Heading (Fredoka Block Font) -->
-                <h1 class="mt-4 font-display font-black text-5xl sm:text-7xl lg:text-8xl text-blue-950 tracking-tight leading-none drop-shadow-sm uppercase">
+                <h1 class="mt-2 font-display font-black text-5xl sm:text-7xl lg:text-8xl text-blue-950 tracking-tight leading-none drop-shadow-sm uppercase">
                     CODING FOR KIDS
                 </h1>
 

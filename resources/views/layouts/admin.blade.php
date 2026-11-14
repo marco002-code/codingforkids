@@ -35,9 +35,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-6">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5">
-                    <span class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-extrabold text-sm text-white shadow-xs">
-                        CK
-                    </span>
+                    <div class="bg-white px-2 py-1 rounded-lg shadow-xs">
+                        <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS" class="h-6 w-auto object-contain">
+                    </div>
                     <span class="font-extrabold text-base tracking-tight text-white hidden sm:inline">Panitia Dashboard</span>
                 </a>
 
