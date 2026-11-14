@@ -16,6 +16,7 @@ class Participant extends Model
         'student_name',
         'nickname',
         'school_name',
+        'student_whatsapp',
         'gender',
         'experience_level',
         'parent_name',

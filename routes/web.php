@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 |--------------------------------------------------------------------------
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/peserta-terpilih', [HomeController::class, 'selectedParticipants'])->name('participants.selected');
 Route::post('/register', [RegistrationController::class, 'store'])->name('register.store');
 Route::get('/ticket/{reg_code}', [RegistrationController::class, 'showTicket'])->name('ticket.show');
 Route::post('/check-ticket', [HomeController::class, 'checkTicket'])->name('ticket.check');

@@ -431,6 +431,36 @@
                     </div>
 
                 </div>
+
+                <!-- BANNER DAFTAR PESERTA TERPILIH -->
+                <div class="mt-8">
+                    <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 p-1 rounded-2xl shadow-xl border-3 border-blue-950">
+                        <div class="bg-white/95 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="flex items-center gap-3.5 text-left">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-100 border-2 border-emerald-500 flex items-center justify-center text-2xl shrink-0 shadow-xs">
+                                    🏆
+                                </div>
+                                <div>
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black uppercase tracking-wider mb-1">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                                        Pengumuman Resmi
+                                    </div>
+                                    <h3 class="font-display font-black text-base sm:text-lg text-blue-950 leading-tight">
+                                        Daftar Peserta Terpilih Telah Dibuka!
+                                    </h3>
+                                    <p class="text-xs text-slate-600 font-semibold mt-0.5">
+                                        Cek nama siswa yang lolos kuota utama di Sesi 1 &amp; Sesi 2 serta unduh e-tiket langsung.
+                                    </p>
+                                </div>
+                            </div>
+                            <a href="{{ route('participants.selected') }}" class="btn-cartoon-blue shrink-0 inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-black rounded-xl border-2 border-blue-950 !bg-emerald-600 hover:!bg-emerald-700 !shadow-[0_4px_0_#064e3b]">
+                                <span>Lihat Peserta Terpilih</span>
+                                <span>&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -840,7 +870,7 @@
                             <div class="flex items-center gap-2 mb-3">
                                 <span class="w-6 h-6 rounded-full bg-blue-950 text-white flex items-center justify-center font-black text-xs">2</span>
                                 <label class="font-display font-black text-xs sm:text-sm uppercase tracking-wider text-blue-950">
-                                    Data Coder Cilik (Siswa SD Kelas 6) <span class="text-rose-500">*</span>
+                                    Data Siswa (Peserta SD Kelas 6) <span class="text-rose-500">*</span>
                                 </label>
                             </div>
 
@@ -849,12 +879,6 @@
                                     <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Siswa <span class="text-rose-500">*</span></label>
                                     <input type="text" name="student_name" value="{{ old('student_name') }}" required placeholder="Contoh: Muhammad Rizky Pratama" class="w-full px-4 py-2.5 rounded-xl border-2 {{ $errors->has('student_name') ? 'border-rose-400' : 'border-slate-300' }} text-sm focus:border-blue-950 focus:ring-0 outline-none">
                                     @error('student_name') <p class="text-xs text-rose-500 mt-1 font-bold">{{ $message }}</p> @enderror
-                                </div>
-
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-700 mb-1">Nama Panggilan <span class="text-slate-400 font-normal">(untuk Name Tag)</span> <span class="text-rose-500">*</span></label>
-                                    <input type="text" name="nickname" value="{{ old('nickname') }}" required placeholder="Contoh: Rizky" class="w-full px-4 py-2.5 rounded-xl border-2 {{ $errors->has('nickname') ? 'border-rose-400' : 'border-slate-300' }} text-sm focus:border-blue-950 focus:ring-0 outline-none">
-                                    @error('nickname') <p class="text-xs text-rose-500 mt-1 font-bold">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div>
@@ -870,6 +894,12 @@
                                         </label>
                                     </div>
                                     @error('gender') <p class="text-xs text-rose-500 mt-1 font-bold">{{ $message }}</p> @enderror
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp Murid <span class="text-slate-400 font-normal">(Opsional jika ada)</span></label>
+                                    <input type="tel" name="student_whatsapp" value="{{ old('student_whatsapp') }}" placeholder="Contoh: 08129876543" class="w-full px-4 py-2.5 rounded-xl border-2 {{ $errors->has('student_whatsapp') ? 'border-rose-400' : 'border-slate-300' }} text-sm focus:border-blue-950 focus:ring-0 outline-none">
+                                    @error('student_whatsapp') <p class="text-xs text-rose-500 mt-1 font-bold">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div class="sm:col-span-2">
@@ -890,35 +920,24 @@
                             </div>
                         </div>
 
-                        <!-- DATA ORANG TUA -->
+                        <!-- KONTAK ORANG TUA / WALI -->
                         <div class="pt-2">
                             <div class="flex items-center gap-2 mb-3">
                                 <span class="w-6 h-6 rounded-full bg-blue-950 text-white flex items-center justify-center font-black text-xs">3</span>
                                 <label class="font-display font-black text-xs sm:text-sm uppercase tracking-wider text-blue-950">
-                                    Data Orang Tua / Wali Siswa <span class="text-rose-500">*</span>
+                                    Kontak WhatsApp Orang Tua / Wali <span class="text-rose-500">*</span>
                                 </label>
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div class="sm:col-span-2">
-                                    <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Orang Tua / Wali <span class="text-rose-500">*</span></label>
-                                    <input type="text" name="parent_name" value="{{ old('parent_name') }}" required placeholder="Contoh: Budi Pratama" class="w-full px-4 py-2.5 rounded-xl border-2 {{ $errors->has('parent_name') ? 'border-rose-400' : 'border-slate-300' }} text-sm focus:border-blue-950 focus:ring-0 outline-none">
-                                    @error('parent_name') <p class="text-xs text-rose-500 mt-1 font-bold">{{ $message }}</p> @enderror
-                                </div>
-
+                            <div class="space-y-4">
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp Aktif <span class="text-rose-500">*</span></label>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp Aktif Orang Tua / Wali <span class="text-rose-500">*</span></label>
                                     <input type="tel" name="whatsapp" value="{{ old('whatsapp') }}" required placeholder="Contoh: 08123456789" class="w-full px-4 py-2.5 rounded-xl border-2 {{ $errors->has('whatsapp') ? 'border-rose-400' : 'border-slate-300' }} text-sm focus:border-blue-950 focus:ring-0 outline-none">
-                                    <span class="text-[11px] text-slate-500 mt-1 block font-medium">Tiket &amp; info grup koordinasi akan dikirimkan ke nomor ini.</span>
+                                    <span class="text-[11px] text-slate-500 mt-1 block font-medium">E-Ticket dan konfirmasi jadwal akan dikirimkan ke nomor WhatsApp ini.</span>
                                     @error('whatsapp') <p class="text-xs text-rose-500 mt-1 font-bold">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Email <span class="text-slate-400 font-normal">(Opsional)</span></label>
-                                    <input type="email" name="email" value="{{ old('email') }}" placeholder="Contoh: budi@gmail.com" class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:border-blue-950 focus:ring-0 outline-none">
-                                </div>
-
-                                <div class="sm:col-span-2">
                                     <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Tambahan untuk Panitia <span class="text-slate-400 font-normal">(Opsional)</span></label>
                                     <textarea name="notes" rows="2" placeholder="Contoh: Ananda membawa laptop pribadi..." class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:border-blue-950 focus:ring-0 outline-none font-medium">{{ old('notes') }}</textarea>
                                 </div>

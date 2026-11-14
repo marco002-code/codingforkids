@@ -62,6 +62,42 @@ class HomeController extends Controller
     }
 
     /**
+     * Display the official list of selected/confirmed participants (Peserta Terpilih).
+     */
+    public function selectedParticipants(Request $request)
+    {
+        $session = (string) $request->query('session', 'all');
+        $search = trim($request->query('search', ''));
+
+        $query = Participant::utama()->orderBy('session')->orderBy('id');
+
+        if (in_array($session, ['1', '2'])) {
+            $query->where('session', $session);
+        }
+
+        if ($search !== '') {
+            $query->where(function ($q) use ($search) {
+                $q->where('student_name', 'like', "%{$search}%")
+                  ->orWhere('school_name', 'like', "%{$search}%")
+                  ->orWhere('reg_code', 'like', "%{$search}%");
+            });
+        }
+
+        $participants = $query->paginate(30)->withQueryString();
+
+        $s1Total = Participant::session('1')->utama()->count();
+        $s2Total = Participant::session('2')->utama()->count();
+        $totalSelected = $s1Total + $s2Total;
+
+        $eventDate = Setting::get('event_date', 'Senin, 21 Desember 2026');
+        $eventLocation = Setting::get('event_location', 'Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta');
+
+        return view('peserta-terpilih', compact(
+            'participants', 'session', 'search', 's1Total', 's2Total', 'totalSelected', 'eventDate', 'eventLocation'
+        ));
+    }
+
+    /**
      * Check registration status / search ticket.
      */
     public function checkTicket(Request $request)

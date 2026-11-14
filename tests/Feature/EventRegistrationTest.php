@@ -175,4 +175,73 @@ class EventRegistrationTest extends TestCase
         $this->assertEquals('2', $cadanganS2->session);
         $this->assertNull($cadanganS2->waitlist_order);
     }
+
+    public function test_registration_with_student_whatsapp_and_optional_fields(): void
+    {
+        // Registration without nickname, parent_name, or email
+        $response = $this->post('/register', [
+            'session' => '1',
+            'student_name' => 'Kurnia Ramadhan',
+            'school_name' => 'SD Muhammadiyah Sapen',
+            'gender' => 'L',
+            'experience_level' => 'Pernah Sedikit',
+            'whatsapp' => '081298765432',
+            'student_whatsapp' => '081298765433',
+            'terms_agreement' => '1',
+            'waitlist_agreement' => '1',
+        ]);
+
+        $participant = Participant::where('student_name', 'Kurnia Ramadhan')->first();
+        $this->assertNotNull($participant);
+        $this->assertEquals('Kurnia', $participant->nickname);
+        $this->assertEquals('081298765433', $participant->student_whatsapp);
+        $this->assertEquals('081298765432', $participant->whatsapp);
+        $response->assertRedirect(route('ticket.show', $participant->reg_code));
+    }
+
+    public function test_selected_participants_public_page(): void
+    {
+        // Seed participant UTAMA Sesi 1
+        $p1 = Participant::create([
+            'reg_code' => 'AI26-S1-001',
+            'session' => '1',
+            'student_name' => 'Fadhil Al Ghifari',
+            'school_name' => 'SD Muhammadiyah Sukonandi',
+            'gender' => 'L',
+            'experience_level' => 'Belum Pernah',
+            'whatsapp' => '08111222333',
+            'status' => 'UTAMA',
+        ]);
+
+        // Seed participant CADANGAN Sesi 1 (should NOT appear on selected list)
+        $pCadangan = Participant::create([
+            'reg_code' => 'AI26-S1-002',
+            'session' => '1',
+            'student_name' => 'Budi Santoso Cadangan',
+            'school_name' => 'SD Negeri 1',
+            'gender' => 'L',
+            'experience_level' => 'Belum Pernah',
+            'whatsapp' => '08111222444',
+            'status' => 'CADANGAN',
+            'waitlist_order' => 1,
+        ]);
+
+        // Test GET /peserta-terpilih
+        $response = $this->get('/peserta-terpilih');
+        $response->assertStatus(200);
+        $response->assertSee('Daftar Peserta Terpilih');
+        $response->assertSee('Fadhil Al Ghifari');
+        $response->assertSee('SD Muhammadiyah Sukonandi');
+        $response->assertDontSee('Budi Santoso Cadangan');
+
+        // Test filter by session 1
+        $responseS1 = $this->get('/peserta-terpilih?session=1');
+        $responseS1->assertStatus(200);
+        $responseS1->assertSee('Fadhil Al Ghifari');
+
+        // Test filter by session 2 (should be empty for p1)
+        $responseS2 = $this->get('/peserta-terpilih?session=2');
+        $responseS2->assertStatus(200);
+        $responseS2->assertDontSee('Fadhil Al Ghifari');
+    }
 }

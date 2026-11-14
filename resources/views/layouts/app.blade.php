@@ -299,6 +299,10 @@
                 <a href="{{ request()->routeIs('home') ? '#faq' : route('home') . '#faq' }}" class="hover:text-amber-600 transition-colors whitespace-nowrap">
                     FAQ
                 </a>
+                <a href="{{ route('participants.selected') }}" class="hover:text-amber-600 transition-colors whitespace-nowrap inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 font-extrabold text-xs shadow-xs hover:bg-emerald-100">
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Peserta Terpilih
+                </a>
             </nav>
 
             <!-- Right Actions Area -->
@@ -345,6 +349,9 @@
             <a href="{{ request()->routeIs('home') ? '#faq' : route('home') . '#faq' }}" onclick="toggleMobileMenu()" class="block py-2.5 px-3 rounded-xl text-sm font-extrabold text-slate-800 hover:bg-amber-50">
                 💡 Pertanyaan (FAQ)
             </a>
+            <a href="{{ route('participants.selected') }}" onclick="toggleMobileMenu()" class="block py-2.5 px-3 rounded-xl text-sm font-extrabold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300">
+                🏆 Daftar Peserta Terpilih
+            </a>
         </div>
     </header>
 
@@ -379,6 +386,7 @@
                 <div>
                     <h4 class="font-bold text-amber-400 text-xs uppercase tracking-wider mb-3">Tautan Cepat</h4>
                     <ul class="space-y-2 text-xs font-semibold">
+                        <li><a href="{{ route('participants.selected') }}" class="text-emerald-400 hover:text-emerald-300 font-bold transition-colors flex items-center gap-1.5"><span>🏆</span> Daftar Peserta Terpilih</a></li>
                         <li><a href="{{ route('home') }}#materi" class="hover:text-white transition-colors">3 Materi Utama</a></li>
                         <li><a href="{{ route('home') }}#rundown" class="hover:text-white transition-colors">Jadwal Sesi 1 &amp; Sesi 2</a></li>
                         <li><a href="{{ route('home') }}#pendaftaran" class="hover:text-white transition-colors">Formulir Pendaftaran</a></li>
