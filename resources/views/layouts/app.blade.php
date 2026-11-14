@@ -50,6 +50,179 @@
             box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.5);
         }
 
+        /* Floating keyframe animations */
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(1.5deg); }
+        }
+        @keyframes float-reverse {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(10px) rotate(-2deg); }
+        }
+        @keyframes float-gentle {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        @keyframes robot-wave {
+            0%, 100% { transform: rotate(0deg); }
+            20% { transform: rotate(18deg); }
+            40% { transform: rotate(-10deg); }
+            60% { transform: rotate(18deg); }
+            80% { transform: rotate(-5deg); }
+        }
+        @keyframes antenna-glow {
+            0%, 100% { fill: #38bdf8; filter: drop-shadow(0 0 2px #38bdf8); }
+            50% { fill: #facc15; filter: drop-shadow(0 0 10px #facc15); }
+        }
+        @keyframes spin-gear {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .animate-float {
+            animation: float-slow 4s ease-in-out infinite;
+        }
+        .animate-float-reverse {
+            animation: float-reverse 5s ease-in-out infinite;
+        }
+        .animate-float-gentle {
+            animation: float-gentle 3s ease-in-out infinite;
+        }
+        .animate-glow {
+            animation: pulse-glow 2.5s ease-in-out infinite;
+        }
+        .animate-wave {
+            transform-origin: 75% 75%;
+            animation: robot-wave 3s ease-in-out infinite;
+        }
+        .animate-spin-slow {
+            animation: spin-gear 18s linear infinite;
+        }
+        .animate-spin-reverse {
+            animation: spin-gear 22s linear infinite reverse;
+        }
+
+        /* 3D Tactile Cartoon Button */
+        .btn-cartoon-blue {
+            background: #0b2347;
+            color: #ffffff;
+            box-shadow: 0 6px 0 #051326, 0 10px 20px -2px rgba(11, 35, 71, 0.4);
+            transition: all 0.12s ease-in-out;
+        }
+        .btn-cartoon-blue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #051326, 0 14px 24px -2px rgba(11, 35, 71, 0.5);
+        }
+        .btn-cartoon-blue:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #051326;
+        }
+
+        .btn-cartoon-amber {
+            background: #f59e0b;
+            color: #0b2347;
+            box-shadow: 0 6px 0 #b45309, 0 10px 20px -2px rgba(245, 158, 11, 0.4);
+            transition: all 0.12s ease-in-out;
+        }
+        .btn-cartoon-amber:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #b45309, 0 14px 24px -2px rgba(245, 158, 11, 0.5);
+        }
+        .btn-cartoon-amber:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #b45309;
+        }
+
+        /* Cartoon Card with 3D drop depth */
+        .cartoon-box {
+            border: 3.5px solid #0b2347;
+            box-shadow: 6px 6px 0 #0b2347;
+            border-radius: 1.5rem;
+            background: #ffffff;
+        }
+        .cartoon-box-amber {
+            border: 3.5px solid #0b2347;
+            box-shadow: 6px 6px 0 #b45309;
+            border-radius: 1.5rem;
+            background: #ffffff;
+        }
+
+        /* Scratch / Blockly Visual Puzzle Block Tokens */
+        .scratch-block {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.85rem;
+            border-radius: 0.65rem;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.825rem;
+            font-weight: 700;
+            color: #ffffff;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2), 0 8px 16px -2px rgba(0,0,0,0.15);
+            position: relative;
+            user-select: none;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+        }
+        .scratch-events { background: #FFBF00; color: #573b00; text-shadow: 0 1px 0 rgba(255,255,255,0.4); border-color: #d99b00; }
+        .scratch-motion { background: #4C97FF; color: #ffffff; border-color: #2b7af0; }
+        .scratch-looks  { background: #9966FF; color: #ffffff; border-color: #7b45f0; }
+        .scratch-control { background: #FFAB19; color: #ffffff; border-color: #d68900; }
+        .scratch-sensing { background: #5CB1D6; color: #ffffff; border-color: #3b93b8; }
+        .scratch-operator { background: #59C059; color: #ffffff; border-color: #3ca23c; }
+
+        .scratch-pill {
+            background: #ffffff;
+            color: #0b2347;
+            padding: 0.15rem 0.55rem;
+            border-radius: 9999px;
+            font-weight: 800;
+            font-size: 0.75rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+        }
+        .scratch-pill-dark {
+            background: rgba(0,0,0,0.2);
+            color: #ffffff;
+            padding: 0.15rem 0.55rem;
+            border-radius: 9999px;
+            font-weight: 800;
+            font-size: 0.75rem;
+        }
+
+        /* Comic Speech Bubble */
+        .speech-bubble-bottom {
+            position: relative;
+        }
+        .speech-bubble-bottom::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 2rem;
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 14px solid #ffffff;
+        }
+        .speech-bubble-left {
+            position: relative;
+        }
+        .speech-bubble-left::after {
+            content: '';
+            position: absolute;
+            left: -14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 14px solid #ffffff;
+        }
+
         @media print {
             .no-print { display: none !important; }
             .print-only { display: block !important; }
