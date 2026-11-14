@@ -481,7 +481,7 @@
     </section>
 
     <!-- Section: 3 Materi Utama Kegiatan (Gamified Quest Stages with Block Code & Robot Badges) -->
-    <section id="materi" class="py-20 bg-coding-grid border-b-4 border-blue-950">
+    <section id="materi" class="scroll-mt-28 py-20 bg-coding-grid border-b-4 border-blue-950">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
                 <span class="font-display font-black text-xs uppercase tracking-widest text-blue-950 bg-amber-100 px-4 py-1.5 rounded-full border-2 border-blue-950 shadow-xs">
@@ -599,7 +599,7 @@
     </section>
 
     <!-- Section: Rundown Kegiatan (Tabbed Sesi 1 vs Sesi 2) -->
-    <section id="rundown" class="py-20 bg-amber-50/60 border-y-4 border-blue-950">
+    <section id="rundown" class="scroll-mt-28 py-20 bg-amber-50/60 border-y-4 border-blue-950">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-12">
                 <span class="font-display font-black text-xs uppercase tracking-widest text-blue-950 bg-white px-4 py-1.5 rounded-full border-2 border-blue-950 shadow-xs">
@@ -731,7 +731,7 @@
     </section>
 
     <!-- Section: Detail Lokasi Laboratorium (Lab TIK 1 & 3 Lantai 3 Gedung Selatan) -->
-    <section id="lokasi" class="py-16 bg-white border-b-4 border-blue-950">
+    <section id="lokasi" class="scroll-mt-28 py-16 bg-white border-b-4 border-blue-950">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-dark-coding text-white rounded-3xl p-8 sm:p-12 relative overflow-hidden border-4 border-amber-400 shadow-2xl">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -767,7 +767,7 @@
     </section>
 
     <!-- Section: Formulir Pendaftaran Gamified (Pilih Sesi 1 atau Sesi 2) -->
-    <section id="pendaftaran" class="py-20 bg-coding-grid border-b-4 border-blue-950">
+    <section id="pendaftaran" class="scroll-mt-28 py-20 bg-coding-grid border-b-4 border-blue-950">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-10">
                 <span class="font-display font-black text-xs uppercase tracking-widest text-blue-950 bg-amber-300 px-4 py-1.5 rounded-full border-2 border-blue-950 shadow-xs">
@@ -1004,7 +1004,7 @@
     </section>
 
     <!-- Section: FAQ -->
-    <section id="faq" class="py-20 bg-white">
+    <section id="faq" class="scroll-mt-28 py-20 bg-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-14">
                 <span class="font-display font-black text-xs uppercase tracking-widest text-blue-950 bg-amber-100 px-4 py-1.5 rounded-full border-2 border-blue-950 shadow-xs">
