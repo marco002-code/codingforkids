@@ -72,7 +72,7 @@
                 </h2>
 
                 <p class="mt-4 text-slate-600 text-sm sm:text-base max-w-xl mx-auto font-medium leading-relaxed">
-                    Saat ini tim panitia SMP Muhammadiyah 1 Yogyakarta sedang melakukan proses verifikasi kelengkapan berkas, validasi kehadiran, serta penetapan pembagian kuota per sesi untuk <strong>Sesi 1 (07:30 – 10:00 WIB)</strong> dan <strong>Sesi 2 (10:30 – 12:00 WIB)</strong>.
+                    Saat ini tim Coding Muhijunior (SMP Muhammadiyah 1 Yogyakarta) sedang melakukan proses verifikasi dan validasi serta penetapan pembagian kuota per sesi untuk <strong>Sesi 1 (07:30 – 10:00 WIB)</strong> dan <strong>Sesi 2 (10:30 – 12:00 WIB)</strong>.
                 </p>
 
                 <p class="mt-2 text-blue-950 font-bold text-xs sm:text-sm">
