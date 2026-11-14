@@ -275,17 +275,24 @@
 
     <!-- Navigation Bar: Muhijunior ISS & SMP Muh 1 Yogya -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-2 border-amber-200/90 shadow-sm no-print">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2 sm:gap-4">
             
-            <!-- Left Branding: Muhijunior ISS & SMP Muh 1 Official Logos -->
-            <a href="{{ route('home') }}" class="flex items-center gap-2 sm:gap-3 shrink-0">
-                <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS - School Of Creative People" class="h-10 sm:h-12 w-auto object-contain transition-transform hover:scale-105">
+            <!-- Left Branding: Muhijunior ISS & SMP Muh 1 Official Logos + Redaksi Coding For Kids on HP -->
+            <a href="{{ route('home') }}" class="flex items-center gap-1.5 sm:gap-3 shrink-0">
+                <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS - School Of Creative People" class="h-8 sm:h-11 md:h-12 w-auto object-contain transition-transform hover:scale-105">
+                
+                <!-- Redaksi khusus mode HP / Layar Sempit setelah logo -->
+                <div class="flex flex-col justify-center leading-tight sm:hidden pl-1.5 border-l-2 border-amber-400">
+                    <span class="font-display font-black text-[11px] text-blue-950 uppercase tracking-tight">Coding for Kids</span>
+                    <span class="text-[9px] font-bold text-amber-700">Muhijunior</span>
+                </div>
+
                 <span class="hidden sm:block w-px h-8 bg-slate-300"></span>
-                <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1 Yogyakarta" class="hidden sm:block h-10 sm:h-11 w-auto object-contain transition-transform hover:scale-105">
+                <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1 Yogyakarta" class="hidden sm:block h-9 sm:h-11 w-auto object-contain transition-transform hover:scale-105">
             </a>
 
             <!-- Center Nav Links (Desktop) -->
-            <nav class="hidden lg:flex items-center gap-6 xl:gap-8 text-sm font-extrabold text-slate-700">
+            <nav class="hidden lg:flex items-center gap-5 xl:gap-7 text-sm font-extrabold text-slate-700">
                 <a href="{{ request()->routeIs('home') ? '#materi' : route('home') . '#materi' }}" class="hover:text-amber-600 transition-colors whitespace-nowrap">
                     Materi Workshop
                 </a>
@@ -307,21 +314,23 @@
                 </a>
             </nav>
 
-            <!-- Right Actions Area -->
-            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-                <button type="button" onclick="openTicketSearchModal()" class="inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-black text-blue-950 bg-amber-100 hover:bg-amber-200 rounded-xl sm:rounded-2xl border-2 border-amber-300 hover:border-amber-400 transition-all shadow-xs hover:shadow-sm whitespace-nowrap">
-                    <svg class="w-4 h-4 text-blue-950 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <!-- Right Actions Area: Identical Size for Cek Sesi & Daftar -->
+            <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
+                <!-- Card Cek Sesi -->
+                <button type="button" onclick="openTicketSearchModal()" class="inline-flex items-center justify-center gap-1.5 sm:gap-2 h-9 sm:h-10 px-2.5 sm:px-4 md:px-5 text-xs sm:text-sm font-black text-blue-950 bg-amber-100 hover:bg-amber-200 rounded-xl sm:rounded-2xl border-2 border-amber-300 hover:border-amber-400 transition-all shadow-xs hover:shadow-sm whitespace-nowrap">
+                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-950 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     <span class="hidden md:inline">Cek Pembagian Sesi</span>
                     <span class="md:hidden">Cek Sesi</span>
                 </button>
 
-                <a href="{{ request()->routeIs('home') ? '#pendaftaran' : route('home') . '#pendaftaran' }}" class="btn-cartoon-blue inline-flex items-center justify-center px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-black rounded-xl sm:rounded-2xl whitespace-nowrap">
+                <!-- Card Daftar (Equal Size with Cek Sesi) -->
+                <a href="{{ request()->routeIs('home') ? '#pendaftaran' : route('home') . '#pendaftaran' }}" class="inline-flex items-center justify-center gap-1.5 sm:gap-2 h-9 sm:h-10 px-2.5 sm:px-4 md:px-5 text-xs sm:text-sm font-black text-white bg-blue-950 hover:bg-blue-900 rounded-xl sm:rounded-2xl border-2 border-blue-950 hover:border-blue-900 transition-all shadow-xs hover:shadow-sm whitespace-nowrap">
                     <span>Daftar</span><span class="hidden sm:inline">&nbsp;Sekarang</span> &rarr;
                 </a>
 
                 <!-- Mobile Hamburger Toggle -->
-                <button type="button" onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 border border-slate-200" aria-label="Toggle navigation">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                <button type="button" onclick="toggleMobileMenu()" class="lg:hidden h-9 w-9 sm:h-10 sm:w-10 flex items-center justify-center rounded-xl text-slate-700 hover:bg-slate-100 border-2 border-slate-200" aria-label="Toggle navigation">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
             </div>
         </div>

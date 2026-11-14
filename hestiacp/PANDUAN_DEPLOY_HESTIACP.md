@@ -44,7 +44,7 @@ cd /home/{USER}/web/coding.muhijunior.id/
 mv public_html public_html_bak
 
 # 3. Clone atau pindahkan source code aplikasi
-git clone <URL_REPO_ANDA> app
+git clone https://github.com/marco002-code/codingforkids.git app
 # atau jika mengunggah berkas zip, ekstrak ke folder /home/{USER}/web/coding.muhijunior.id/app
 ```
 
@@ -104,7 +104,8 @@ Aplikasi ini sudah dilengkapi dengan script `deploy.sh` khusus ekosistem HestiaC
 Jalankan perintah berikut:
 ```bash
 cd /home/{USER}/web/coding.muhijunior.id/app
-bash hestiacp/deploy.sh
+./deploy.sh
+# atau: bash hestiacp/deploy.sh
 ```
 
 Script tersebut secara otomatis akan:
@@ -165,7 +166,7 @@ Agar tugas berkala Laravel (pembersihan session, antrean otomatis, dan reminder)
 * **Password Default:** `admin12345`
 
 ### Fitur Utama Admin:
-1. **Live Quota Management:** Kuota utama 50 kursi dan kuota cadangan 20 antrean dapat diubah sewaktu-waktu di menu **Pengaturan Kuota**.
+1. **Live Quota Management:** Kuota utama 90 kursi per sesi (total 180 kursi) dan kuota cadangan 30 antrean per sesi dapat diubah sewaktu-waktu di menu **Pengaturan Kuota**.
 2. **Promosi 1-Klik Cadangan ke Utama:** Jika ada peserta utama yang berhalangan, admin cukup mengklik **"Promosi ↑"** pada antrean cadangan teratas, lalu sistem menyediakan link instan ke WhatsApp orang tua dengan pesan otomatis yang rapi.
 3. **Presensi Cepat Hari-H:** Masukkan kode registrasi 5 huruf (`HIJKL`) atau scan QR Code tiket pada bar scanner di dashboard admin untuk absensi kedatangan instan.
 4. **Export CSV:** Unduh rekap peserta untuk pencetakan sertifikat dan ID badge.
