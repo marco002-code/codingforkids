@@ -81,3 +81,4 @@ echo -e "Silakan akses website dan dashboard admin:"
 echo -e "🔗 Landing Page : URL domain Anda"
 echo -e "🔑 Admin Portal : /admin/login (admin@codingforkids.id / admin12345)"
 echo -e "${BLUE}======================================================${NC}"
+

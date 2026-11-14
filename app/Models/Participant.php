@@ -143,3 +143,4 @@ class Participant extends Model
         return $prefix . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
     }
 }
+

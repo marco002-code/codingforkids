@@ -162,3 +162,4 @@ class EventRegistrationTest extends TestCase
         $this->assertNull($cadangan->waitlist_order);
     }
 }
+

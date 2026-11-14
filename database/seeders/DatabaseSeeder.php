@@ -15,7 +15,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Admin User
+        // 1. Admin Users
+        User::updateOrCreate(
+            ['email' => 'admin@muhijunior.id'],
+            [
+                'name' => 'Administrator Panitia Muhijunior',
+                'password' => Hash::make('admin12345'),
+                'email_verified_at' => now(),
+            ]
+        );
+
         User::updateOrCreate(
             ['email' => 'admin@codingforkids.id'],
             [
@@ -39,7 +48,7 @@ class DatabaseSeeder extends Seeder
             ['key' => 'registration_status', 'value' => 'OPEN', 'group' => 'quota', 'label' => 'Status Pendaftaran (OPEN / CLOSED)'],
             ['key' => 'whatsapp_group_link', 'value' => 'https://chat.whatsapp.com/CodingKidsAI2026', 'group' => 'contact', 'label' => 'Link Grup WhatsApp Koordinasi'],
             ['key' => 'contact_whatsapp', 'value' => '081234567890', 'group' => 'contact', 'label' => 'Nomor WhatsApp Hotline Panitia'],
-            ['key' => 'contact_email', 'value' => 'panitia@codingforkids.id', 'group' => 'contact', 'label' => 'Email Panitia'],
+            ['key' => 'contact_email', 'value' => 'panitia@muhijunior.id', 'group' => 'contact', 'label' => 'Email Panitia'],
         ];
 
         foreach ($settings as $setting) {

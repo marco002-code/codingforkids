@@ -63,7 +63,7 @@
 
                 <div class="text-right hidden sm:block">
                     <span class="block text-xs font-bold text-white">{{ Auth::user()->name ?? 'Administrator' }}</span>
-                    <span class="block text-[10px] text-slate-400">{{ Auth::user()->email ?? 'admin@codingforkids.id' }}</span>
+                    <span class="block text-[10px] text-slate-400">{{ Auth::user()->email ?? 'admin@muhijunior.id' }}</span>
                 </div>
 
                 <form action="{{ route('admin.logout') }}" method="POST">
@@ -127,3 +127,4 @@
     @stack('scripts')
 </body>
 </html>
+

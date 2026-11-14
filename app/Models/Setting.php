@@ -46,3 +46,4 @@ class Setting extends Model
         return $setting;
     }
 }
+

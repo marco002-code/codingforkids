@@ -386,3 +386,4 @@ class DashboardController extends Controller
         return back()->with('success', 'Pengaturan acara & kuota pendaftaran berhasil diperbarui.');
     }
 }
+

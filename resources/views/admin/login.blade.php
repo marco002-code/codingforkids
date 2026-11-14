@@ -64,7 +64,7 @@
         <!-- Credentials hint -->
         <div class="mt-6 pt-5 border-t border-slate-700/80 text-center">
             <span class="text-[11px] text-slate-500 block mb-1 font-mono">Akun Default Demo:</span>
-            <code class="text-xs text-indigo-300 bg-slate-900 px-2 py-1 rounded-md">admin@codingforkids.id</code>
+            <code class="text-xs text-indigo-300 bg-slate-900 px-2 py-1 rounded-md">admin@muhijunior.id</code>
             <span class="text-slate-500 text-xs mx-1">/</span>
             <code class="text-xs text-indigo-300 bg-slate-900 px-2 py-1 rounded-md">admin12345</code>
         </div>
@@ -78,3 +78,4 @@
 
 </body>
 </html>
+

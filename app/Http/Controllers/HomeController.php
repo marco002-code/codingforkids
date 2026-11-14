@@ -80,3 +80,4 @@ class HomeController extends Controller
         return back()->with('search_results', $participants);
     }
 }
+

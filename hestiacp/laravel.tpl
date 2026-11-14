@@ -40,3 +40,4 @@ server {
 
     include %home%/%user%/conf/web/%domain%/nginx.conf_*;
 }
+

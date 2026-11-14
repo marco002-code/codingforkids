@@ -5,71 +5,67 @@ Dokumen ini memandu langkah demi langkah cara meng-host dan menjalankan aplikasi
 
 ---
 
-## 1. Persyaratan Server HestiaCP
-* **OS:** Ubuntu 20.04/22.04/24.04 LTS atau Debian 11/12
+## 1. Spesifikasi Domain & Lingkungan
+* **Domain Utama:** `coding.muhijunior.id` (HTTPS)
+* **OS Server:** Ubuntu 20.04/22.04/24.04 LTS atau Debian 11/12
+* **Web Panel:** Hestia Control Panel (HestiaCP)
 * **Web Server:** Nginx + PHP-FPM atau Nginx (Reverse Proxy) + Apache2
 * **Versi PHP:** PHP 8.2, 8.3, atau 8.4
-* **Ekstensi PHP Wajib:** `pdo_mysql`, `pdo_sqlite`, `curl`, `mbstring`, `xml`, `bcmath`, `fileinfo`
-* **Composer:** Composer v2.x terpasang di server
-* **Database:** MariaDB / MySQL (atau SQLite tanpa perlu konfigurasi database server)
+* **Database:** MariaDB / MySQL (atau SQLite)
 
 ---
 
 ## 2. Langkah 1: Tambahkan Domain di HestiaCP
 1. Masuk ke panel HestiaCP Anda (`https://ip-server:8083`).
-2. Buat atau pilih **User** (misal: `dev` atau `admin`).
-3. Masuk ke tab **WEB**, lalu klik **Add Web Domain** (`+`).
-4. Masukkan nama domain/subdomain (misal: `event.codingforkids.id` atau `codingkids.domainanda.com`).
-5. Centang opsi **Enable SSL for this domain** dan pilih **Use Let's Encrypt to obtain SSL** (pastikan domain sudah diarahkan ke IP server Anda melalui DNS A Record).
-6. Klik **Save**.
+2. Buat atau pilih **User** pemilik web (misal: `dev` atau `admin`).
+3. Masuk ke tab **WEB**, lalu klik tombol **Add Web Domain** (`+`).
+4. Masukkan nama domain:
+   ```text
+   coding.muhijunior.id
+   ```
+5. Centang opsi **Enable SSL for this domain** dan pilih **Use Let's Encrypt to obtain SSL** (pastikan DNS A Record `coding.muhijunior.id` sudah mengarah ke IP VPS Anda).
+6. Centang opsi **Enable Automatic HTTP-to-HTTPS Redirection**.
+7. Klik **Save**.
 
 ---
 
 ## 3. Langkah 2: Mengunggah Source Code ke Server
-Di HestiaCP, direktori web domain berada di:
+Di HestiaCP, direktori web untuk domain `coding.muhijunior.id` berada di:
 ```bash
-/home/{USER}/web/{DOMAIN}/
+/home/{USER}/web/coding.muhijunior.id/
 ```
 
-Anda dapat mengunggah source code melalui **SSH (Git / rsync)** atau **File Manager HestiaCP**:
-
-### Metode SSH / Git (Direkomendasikan):
+Jalankan perintah berikut via SSH:
 ```bash
-# Masuk ke server via SSH
-ssh user@ip-server
+# 1. Masuk ke direktori web domain
+cd /home/{USER}/web/coding.muhijunior.id/
 
-# Masuk ke folder web domain
-cd /home/{USER}/web/{DOMAIN}
-
-# Backup atau hapus folder public_html bawaan yang masih kosong
+# 2. Cadangkan folder public_html bawaan
 mv public_html public_html_bak
 
-# Clone atau pindahkan folder project codingforkids
-git clone https://github.com/username/codingforkids.git laravel_app
+# 3. Clone atau pindahkan source code aplikasi
+git clone <URL_REPO_ANDA> app
+# atau jika mengunggah berkas zip, ekstrak ke folder /home/{USER}/web/coding.muhijunior.id/app
 ```
 
 ---
 
 ## 4. Langkah 3: Mengarahkan Document Root ke Folder `public`
 
-Laravel membutuhkan folder `public/` sebagai Document Root. Di HestiaCP ada 2 cara yang dapat Anda pilih:
-
-### Cara A: Menggunakan Symlink (Paling Mudah & Tanpa Perlu Root)
-Jalankan perintah ini di SSH pada folder `/home/{USER}/web/{DOMAIN}/`:
+### Cara A: Menggunakan Symlink (Sangat Praktis)
+Jalankan di folder `/home/{USER}/web/coding.muhijunior.id/`:
 ```bash
-ln -s /home/{USER}/web/{DOMAIN}/laravel_app/public /home/{USER}/web/{DOMAIN}/public_html
+ln -s /home/{USER}/web/coding.muhijunior.id/app/public /home/{USER}/web/coding.muhijunior.id/public_html
 ```
-*Dengan cara ini, web server HestiaCP yang membaca `public_html` otomatis akan melayani folder `laravel_app/public`.*
 
-### Cara B: Menggunakan Fitur Custom Document Root di HestiaCP (GUI)
-1. Di panel HestiaCP, masuk ke menu **WEB**.
-2. Klik tombol **Edit** (ikon pensil) pada domain Anda.
-3. Klik **Advanced Options**.
-4. Cari bagian **Custom document root**, aktifkan dan ubah path menjadi:
+### Cara B: Menggunakan Fitur Custom Document Root HestiaCP (GUI)
+1. Di menu **WEB** HestiaCP, klik tombol **Edit** pada domain `coding.muhijunior.id`.
+2. Klik **Advanced Options**.
+3. Aktifkan **Custom document root** dan isi dengan:
    ```text
-   /home/{USER}/web/{DOMAIN}/public_html/public
+   /home/{USER}/web/coding.muhijunior.id/public_html/public
    ```
-5. Simpan pengaturan.
+4. Klik **Save**.
 
 ---
 
@@ -107,7 +103,7 @@ Aplikasi ini sudah dilengkapi dengan script `deploy.sh` khusus ekosistem HestiaC
 
 Jalankan perintah berikut:
 ```bash
-cd /home/{USER}/web/{DOMAIN}/laravel_app
+cd /home/{USER}/web/coding.muhijunior.id/app
 bash hestiacp/deploy.sh
 ```
 
@@ -134,8 +130,8 @@ Jika server Anda menggunakan **Nginx Standalone (PHP-FPM)**, pastikan file konfi
 Anda cukup menyalin template yang disediakan:
 ```bash
 # Salin konfigurasi custom
-cp hestiacp/nginx-laravel-custom.conf /home/{USER}/conf/web/{DOMAIN}/nginx.conf_custom
-cp hestiacp/nginx-laravel-custom.conf /home/{USER}/conf/web/{DOMAIN}/nginx.ssl.conf_custom
+cp hestiacp/nginx-laravel-custom.conf /home/{USER}/conf/web/coding.muhijunior.id/nginx.conf_custom
+cp hestiacp/nginx-laravel-custom.conf /home/{USER}/conf/web/coding.muhijunior.id/nginx.ssl.conf_custom
 
 # Restart Nginx
 systemctl restart nginx
@@ -150,7 +146,7 @@ Agar tugas berkala Laravel (pembersihan session, antrean otomatis, dan reminder)
 2. Klik **Add Cron Job** (`+`).
 3. Masukkan perintah:
    ```bash
-   /usr/bin/php /home/{USER}/web/{DOMAIN}/laravel_app/artisan schedule:run >> /dev/null 2>&1
+   /usr/bin/php /home/{USER}/web/coding.muhijunior.id/app/artisan schedule:run >> /dev/null 2>&1
    ```
 4. Atur jadwal ke: **Every 1 minute** (`* * * * *`).
 5. Klik **Save**.
@@ -160,12 +156,12 @@ Agar tugas berkala Laravel (pembersihan session, antrean otomatis, dan reminder)
 ## 9. Akun Default & Penggunaan Sistem
 
 ### Akses Pengguna Publik:
-* **Landing Page & Pendaftaran:** `https://domain-anda.com/`
-* **Cek Tiket / Status Pendaftaran:** Klik tombol **"Cek Tiket / Status"** di navigasi, atau buka link `https://domain-anda.com/ticket/{KODE_REGISTRASI}`.
+* **Landing Page & Pendaftaran:** `https://coding.muhijunior.id/`
+* **Cek Tiket / Status Pendaftaran:** Klik tombol **"Cek Tiket / Status"** di navigasi, atau buka link `https://coding.muhijunior.id/ticket/{KODE_REGISTRASI}`.
 
 ### Portal Panitia (Admin Dashboard):
-* **URL Login:** `https://domain-anda.com/admin/login`
-* **Email Default:** `admin@codingforkids.id`
+* **URL Login:** `https://coding.muhijunior.id/admin/login`
+* **Email Default:** `admin@muhijunior.id` (atau `admin@codingforkids.id`)
 * **Password Default:** `admin12345`
 
 ### Fitur Utama Admin:
@@ -184,3 +180,4 @@ Agar tugas berkala Laravel (pembersihan session, antrean otomatis, dan reminder)
 | **Halaman 404 saat klik tombol submit atau link tiket** | Nginx belum membaca rule `try_files` Laravel. | Pasang file `nginx-laravel-custom.conf` di `/home/{USER}/conf/web/{DOMAIN}/` lalu restart Nginx. |
 | **Gambar atau asset tidak tampil** | Storage symlink belum dibuat. | Jalankan `php artisan storage:link`. |
 | **SSL Certificate Error** | DNS domain belum selesai propagasi saat klik Let's Encrypt. | Pastikan DNS A record sudah mengarah ke IP VPS HestiaCP, lalu klik ulang "Issue Let's Encrypt" di HestiaCP. |
+
