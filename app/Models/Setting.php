@@ -23,11 +23,12 @@ class Setting extends Model
      */
     public static function get(string $key, $default = null)
     {
-        $setting = Cache::remember("setting_{$key}", 3600, function () use ($key) {
-            return static::where('key', $key)->first();
+        $value = Cache::remember("setting_{$key}", 3600, function () use ($key) {
+            $setting = static::where('key', $key)->first();
+            return $setting ? $setting->value : null;
         });
 
-        return $setting ? $setting->value : $default;
+        return $value ?? $default;
     }
 
     /**
