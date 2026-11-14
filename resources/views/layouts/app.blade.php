@@ -292,15 +292,18 @@
             </a>
 
             <!-- Center Nav Links (Desktop) -->
-            <nav class="hidden lg:flex items-center gap-5 xl:gap-7 text-sm font-extrabold text-slate-700">
+            <nav class="hidden lg:flex items-center gap-4 xl:gap-6 text-sm font-extrabold text-slate-700">
                 <a href="{{ request()->routeIs('home') ? '#materi' : route('home') . '#materi' }}" class="hover:text-amber-600 transition-colors whitespace-nowrap">
-                    Materi Workshop
+                    Materi
                 </a>
                 <a href="{{ request()->routeIs('home') ? '#rundown' : route('home') . '#rundown' }}" class="hover:text-amber-600 transition-colors whitespace-nowrap">
                     Jadwal Sesi
                 </a>
                 <a href="{{ request()->routeIs('home') ? '#lokasi' : route('home') . '#lokasi' }}" class="hover:text-amber-600 transition-colors whitespace-nowrap">
                     Lokasi Lab
+                </a>
+                <a href="{{ request()->routeIs('home') ? '#dokumentasi' : route('home') . '#dokumentasi' }}" class="hover:text-amber-600 transition-colors whitespace-nowrap">
+                    Dokumentasi
                 </a>
                 <a href="{{ request()->routeIs('home') ? '#pendaftaran' : route('home') . '#pendaftaran' }}" class="hover:text-amber-600 transition-colors whitespace-nowrap">
                     Pendaftaran
@@ -361,6 +364,9 @@
             <a href="{{ request()->routeIs('home') ? '#lokasi' : route('home') . '#lokasi' }}" onclick="toggleMobileMenu()" class="block py-2.5 px-3 rounded-xl text-sm font-extrabold text-slate-800 hover:bg-amber-50">
                 📍 Lokasi Lab TIK
             </a>
+            <a href="{{ request()->routeIs('home') ? '#dokumentasi' : route('home') . '#dokumentasi' }}" onclick="toggleMobileMenu()" class="block py-2.5 px-3 rounded-xl text-sm font-extrabold text-slate-800 hover:bg-amber-50">
+                🎬 Video Dokumentasi (2024 &amp; 2025)
+            </a>
             <a href="{{ request()->routeIs('home') ? '#pendaftaran' : route('home') . '#pendaftaran' }}" onclick="toggleMobileMenu()" class="block py-2.5 px-3 rounded-xl text-sm font-extrabold text-slate-800 hover:bg-amber-50">
                 📝 Formulir Pendaftaran
             </a>
@@ -407,6 +413,7 @@
                         <li><a href="{{ route('participants.selected') }}" class="text-emerald-400 hover:text-emerald-300 font-bold transition-colors flex items-center gap-1.5"><span>🏆</span> Daftar Peserta Terpilih</a></li>
                         <li><a href="{{ route('home') }}#materi" class="hover:text-white transition-colors">3 Materi Utama</a></li>
                         <li><a href="{{ route('home') }}#rundown" class="hover:text-white transition-colors">Jadwal Sesi 1 &amp; Sesi 2</a></li>
+                        <li><a href="{{ route('home') }}#dokumentasi" class="hover:text-white transition-colors">Video Dokumentasi (2024 &amp; 2025)</a></li>
                         <li><a href="{{ route('home') }}#pendaftaran" class="hover:text-white transition-colors">Formulir Pendaftaran</a></li>
                         <li><button type="button" onclick="openTicketSearchModal()" class="text-amber-400 hover:text-amber-300 transition-colors">Cek Status &amp; Tiket Pendaftaran</button></li>
                         <li><a href="{{ route('admin.login') }}" class="text-slate-400 hover:text-white transition-colors">Login Panitia &rarr;</a></li>

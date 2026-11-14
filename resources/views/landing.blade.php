@@ -796,6 +796,107 @@
         </div>
     </section>
 
+    <!-- Section: Video Dokumentasi Coding for Kids (2024 & 2025) -->
+    <section id="dokumentasi" class="scroll-mt-28 py-20 bg-amber-50/70 border-b-4 border-blue-950">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="font-display font-black text-xs uppercase tracking-widest text-blue-950 bg-white px-4 py-1.5 rounded-full border-2 border-blue-950 shadow-xs">
+                    KILAS BALIK &amp; DOKUMENTASI
+                </span>
+                <h2 class="mt-3 font-display font-black text-3xl sm:text-5xl text-blue-950 tracking-tight">
+                    Keseruan Coding for Kids Sebelumnya
+                </h2>
+                <p class="mt-2 text-slate-700 text-sm sm:text-base font-semibold">
+                    Saksikan antusiasme dan kegembiraan adik-adik peserta saat mengeksplorasi dunia coding di SMP Muhammadiyah 1 Yogyakarta pada edisi 2024 dan 2025!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Video Card 1: Coding for Kids 2024 -->
+                <div class="cartoon-box p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <!-- Header Card -->
+                        <div class="flex items-center justify-between gap-2 mb-4">
+                            <div class="flex items-center gap-2">
+                                <span class="w-8 h-8 rounded-xl bg-red-600 text-white flex items-center justify-center font-black text-sm shadow-xs">▶</span>
+                                <h3 class="font-display font-black text-lg sm:text-xl text-blue-950">Coding for Kids 2024</h3>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-black bg-blue-100 text-blue-900 border border-blue-300">
+                                Edisi 2024 🌟
+                            </span>
+                        </div>
+
+                        <!-- Video Iframe Responsive -->
+                        <div class="relative w-full aspect-video rounded-2xl overflow-hidden border-3 border-blue-950 shadow-md bg-slate-900">
+                            <iframe 
+                                class="w-full h-full"
+                                src="https://www.youtube-nocookie.com/embed/SkR3EoQGU5Q" 
+                                title="Dokumentasi Coding for Kids 2024 - SMP Muhammadiyah 1 Yogyakarta" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+
+                        <p class="mt-4 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                            Dokumentasi keceriaan dan semangat para siswa SD dalam mengikuti kelas coding dasar, merancang animasi, dan belajar logika komputasi seru bersama mentor Muhijunior.
+                        </p>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-500 flex items-center gap-1.5">
+                            <span>📍</span> Lab TIK SMP Muh 1 Yogya
+                        </span>
+                        <a href="https://www.youtube.com/watch?v=SkR3EoQGU5Q" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-black text-red-600 hover:text-red-700">
+                            <span>Tonton di YouTube</span> &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Video Card 2: Coding for Kids 2025 -->
+                <div class="cartoon-box p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <!-- Header Card -->
+                        <div class="flex items-center justify-between gap-2 mb-4">
+                            <div class="flex items-center gap-2">
+                                <span class="w-8 h-8 rounded-xl bg-red-600 text-white flex items-center justify-center font-black text-sm shadow-xs">▶</span>
+                                <h3 class="font-display font-black text-lg sm:text-xl text-blue-950">Coding for Kids 2025</h3>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-black bg-purple-100 text-purple-900 border border-purple-300">
+                                Edisi 2025 🚀
+                            </span>
+                        </div>
+
+                        <!-- Video Iframe Responsive -->
+                        <div class="relative w-full aspect-video rounded-2xl overflow-hidden border-3 border-blue-950 shadow-md bg-slate-900">
+                            <iframe 
+                                class="w-full h-full"
+                                src="https://www.youtube-nocookie.com/embed/_cb8QZZeg1M" 
+                                title="Dokumentasi Coding for Kids 2025 - SMP Muhammadiyah 1 Yogyakarta" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+
+                        <p class="mt-4 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                            Momen berharga pameran karya (<em>showcase</em>) game buatan siswa, eksplorasi kecerdasan buatan ramah anak, dan penyerahan sertifikat peserta berprestasi.
+                        </p>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-500 flex items-center gap-1.5">
+                            <span>📍</span> Lab TIK SMP Muh 1 Yogya
+                        </span>
+                        <a href="https://www.youtube.com/watch?v=_cb8QZZeg1M" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-black text-red-600 hover:text-red-700">
+                            <span>Tonton di YouTube</span> &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Section: Formulir Pendaftaran Gamified (Pilih Sesi 1 atau Sesi 2) -->
     <section id="pendaftaran" class="scroll-mt-28 py-20 bg-coding-grid border-b-4 border-blue-950">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">

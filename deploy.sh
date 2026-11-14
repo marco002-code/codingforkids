@@ -115,3 +115,4 @@ echo -e "🔐 ${BOLD}Portal Admin:${NC} https://coding.muhijunior.id/admin/login
 echo -e "   👤 Email    : ${BOLD}admin@muhijunior.id${NC} (atau admin@codingforkids.id)"
 echo -e "   🔑 Password : ${BOLD}admin12345${NC}"
 echo -e "${BLUE}================================================================${NC}"
+
