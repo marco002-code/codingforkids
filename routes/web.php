@@ -1,0 +1,48 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/register', [RegistrationController::class, 'store'])->name('register.store');
+Route::get('/ticket/{reg_code}', [RegistrationController::class, 'showTicket'])->name('ticket.show');
+Route::post('/check-ticket', [HomeController::class, 'checkTicket'])->name('ticket.check');
+
+/*
+|--------------------------------------------------------------------------
+| Admin Authentication Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
+/*
+|--------------------------------------------------------------------------
+| Protected Admin Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('admin.dashboard');
+    });
+
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/participants', [AdminDashboardController::class, 'participants'])->name('participants');
+    Route::post('/participants/{participant}/promote', [AdminDashboardController::class, 'promote'])->name('participants.promote');
+    Route::post('/participants/{participant}/cancel', [AdminDashboardController::class, 'cancel'])->name('participants.cancel');
+    Route::post('/participants/{participant}/restore', [AdminDashboardController::class, 'restore'])->name('participants.restore');
+    Route::post('/participants/{participant}/check-in', [AdminDashboardController::class, 'toggleCheckIn'])->name('participants.checkin');
+    Route::post('/quick-check-in', [AdminDashboardController::class, 'quickCheckIn'])->name('quickCheckIn');
+    Route::get('/export', [AdminDashboardController::class, 'export'])->name('export');
+    Route::get('/settings', [AdminDashboardController::class, 'settings'])->name('settings');
+    Route::post('/settings', [AdminDashboardController::class, 'updateSettings'])->name('settings.update');
+});
