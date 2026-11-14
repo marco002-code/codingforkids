@@ -138,6 +138,19 @@
             </div>
 
             <div>
+                <span class="px-3 text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">PENGELOLAAN AKUN</span>
+                <nav class="space-y-1">
+                    <a href="{{ route('admin.users.index') }}" class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-colors {{ request()->routeIs('admin.users*') ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800' }}">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            <span>Akun &amp; Password Panitia</span>
+                        </div>
+                        <span class="px-2 py-0.5 rounded-md bg-white/20 text-[10px] font-black">{{ \App\Models\User::count() }}</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div>
                 <span class="px-3 text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">HALAMAN PUBLIK</span>
                 <nav class="space-y-1">
                     <a href="{{ route('home') }}" target="_blank" class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
@@ -253,7 +266,21 @@
                     </nav>
                 </div>
 
-                <!-- Group 3: Tautan Publik -->
+                <!-- Group 3: Pengelolaan Akun -->
+                <div>
+                    <span class="px-3 text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">PENGELOLAAN AKUN</span>
+                    <nav class="space-y-1">
+                        <a href="{{ route('admin.users.index') }}" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.users*') ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                <span>Akun &amp; Password Panitia</span>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-md bg-white/20 text-[10px] font-black text-white">{{ \App\Models\User::count() }}</span>
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- Group 4: Tautan Publik -->
                 <div>
                     <span class="px-3 text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">HALAMAN PUBLIK</span>
                     <nav class="space-y-1">

@@ -573,4 +573,83 @@ class EventRegistrationTest extends TestCase
         $this->get('/admin/participants')->assertRedirect('/admin/login');
         $this->get('/admin/attendance')->assertRedirect('/admin/login');
     }
+
+    public function test_admin_user_management_and_change_password_for_all_users(): void
+    {
+        $superAdmin = User::create([
+            'name' => 'Super Panitia',
+            'email' => 'super@muhijunior.id',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $panitia2 = User::create([
+            'name' => 'Panitia Dua',
+            'email' => 'panitia2@muhijunior.id',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $this->actingAs($superAdmin);
+
+        // 1. View User List
+        $res = $this->get(route('admin.users.index'));
+        $res->assertStatus(200);
+        $res->assertSee('Manajemen Akun Panitia');
+        $res->assertSee('Super Panitia');
+        $res->assertSee('Panitia Dua');
+
+        // 2. Create New Admin User
+        $createRes = $this->post(route('admin.users.store'), [
+            'name' => 'Panitia Tiga',
+            'email' => 'panitia3@muhijunior.id',
+            'password' => 'secret123',
+            'password_confirmation' => 'secret123',
+        ]);
+        $createRes->assertRedirect(route('admin.users.index'));
+        $createRes->assertSessionHas('success');
+
+        $panitia3 = User::where('email', 'panitia3@muhijunior.id')->first();
+        $this->assertNotNull($panitia3);
+        $this->assertEquals('Panitia Tiga', $panitia3->name);
+
+        // 3. Edit User Profile (Update Name & Email)
+        $updateRes = $this->put(route('admin.users.update', $panitia3->id), [
+            'name' => 'Panitia Tiga Updated',
+            'email' => 'panitia3_baru@muhijunior.id',
+        ]);
+        $updateRes->assertRedirect(route('admin.users.index'));
+        $panitia3->refresh();
+        $this->assertEquals('Panitia Tiga Updated', $panitia3->name);
+        $this->assertEquals('panitia3_baru@muhijunior.id', $panitia3->email);
+
+        // 4. Change Password for Any User (Panitia Dua)
+        $changePassRes = $this->post(route('admin.users.changePassword', $panitia2->id), [
+            'password' => 'newPassword2026',
+            'password_confirmation' => 'newPassword2026',
+        ]);
+        $changePassRes->assertRedirect(route('admin.users.index'));
+        $changePassRes->assertSessionHas('success');
+
+        $panitia2->refresh();
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('newPassword2026', $panitia2->password));
+
+        // 5. Change Password for Self (Super Admin)
+        $changeSelfPassRes = $this->post(route('admin.users.changePassword', $superAdmin->id), [
+            'password' => 'superNewPass2026',
+            'password_confirmation' => 'superNewPass2026',
+        ]);
+        $changeSelfPassRes->assertSessionHas('success');
+        $superAdmin->refresh();
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('superNewPass2026', $superAdmin->password));
+
+        // 6. Prevent Deleting Self
+        $delSelfRes = $this->delete(route('admin.users.destroy', $superAdmin->id));
+        $delSelfRes->assertSessionHas('error');
+        $this->assertDatabaseHas('users', ['id' => $superAdmin->id]);
+
+        // 7. Delete Other User
+        $delOtherRes = $this->delete(route('admin.users.destroy', $panitia3->id));
+        $delOtherRes->assertRedirect(route('admin.users.index'));
+        $delOtherRes->assertSessionHas('success');
+        $this->assertDatabaseMissing('users', ['id' => $panitia3->id]);
+    }
 }
