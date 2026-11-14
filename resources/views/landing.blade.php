@@ -228,139 +228,98 @@
 
                 </div>
 
-                <!-- RIGHT COLUMN (5 cols): Cartoon Robot & Kid Coder Ecosystem -->
+                <!-- RIGHT COLUMN (5 cols): Cartoon Kid Coder with Animated Robot Companion -->
                 <div class="lg:col-span-5 flex flex-col items-center">
                     
-                    <!-- Cartoon Robot Ecosystem Container -->
-                    <div class="w-full max-w-md cartoon-box p-6 text-center relative overflow-hidden bg-gradient-to-b from-sky-50 to-white">
+                    <!-- Main Card Container with 3D Cartoon Box -->
+                    <div class="w-full max-w-md cartoon-box p-4 sm:p-5 relative bg-white">
                         
-                        <!-- Floating Scratch Block inside Illustration Card -->
-                        <div class="absolute top-3 left-4 z-10 animate-float-gentle">
-                            <div class="scratch-block scratch-operator !text-[11px] !py-1 !px-2.5">
+                        <!-- Floating Scratch Block Badge on Top Left -->
+                        <div class="absolute -top-3.5 -left-3 z-30 animate-float">
+                            <div class="scratch-block scratch-operator !text-xs !py-1.5 !px-3 shadow-lg">
                                 <span>A.I. + Kreativitas = 🌟</span>
                             </div>
                         </div>
 
-                        <!-- Robot Speech Bubble -->
-                        <div class="mt-6 mb-2 bg-white border-2 border-blue-950 rounded-2xl p-3 shadow-md speech-bubble-bottom text-left">
-                            <div class="flex items-center gap-2 text-xs font-black text-blue-950 font-display">
-                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                                <span>Robo-Muhi Assistant:</span>
+                        <!-- Image Container with Animated Robot Overlay -->
+                        <div class="relative rounded-2xl overflow-hidden border-3 border-blue-950 shadow-md bg-purple-950 aspect-video group">
+                            <!-- High-Res Kid Coder Illustration -->
+                            <img src="/images/kid-coder-illustration.jpg" alt="Coding for Kids & A.I. - SMP Muhammadiyah 1 Yogyakarta" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+
+                            <!-- Animated Robot Assistant Overlay (Floating dynamically on top-right) -->
+                            <div class="absolute top-2.5 right-2 sm:right-3 z-20 animate-float-gentle">
+                                <div class="relative">
+                                    <!-- Robot Speech Bubble -->
+                                    <div class="absolute -bottom-8 right-0 sm:right-1 bg-white/95 backdrop-blur-xs text-blue-950 text-[10px] sm:text-[11px] font-black font-display py-1 px-2.5 rounded-xl shadow-md border-2 border-blue-950 whitespace-nowrap animate-bounce">
+                                        Halo Coder! 🤖✨
+                                    </div>
+
+                                    <!-- Animated Cute Robot Assistant SVG -->
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 filter drop-shadow-xl">
+                                        <svg class="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <!-- Antenna with Pulsing Golden Bulb -->
+                                            <line x1="50" y1="26" x2="50" y2="10" stroke="#0b2347" stroke-width="3" stroke-linecap="round"/>
+                                            <circle cx="50" cy="8" r="6" fill="#facc15" stroke="#0b2347" stroke-width="2.5" class="animate-ping"/>
+                                            <circle cx="50" cy="8" r="5" fill="#f59e0b" stroke="#0b2347" stroke-width="2"/>
+
+                                            <!-- Robot Ears -->
+                                            <rect x="22" y="32" width="6" height="12" rx="3" fill="#38bdf8" stroke="#0b2347" stroke-width="2"/>
+                                            <rect x="72" y="32" width="6" height="12" rx="3" fill="#38bdf8" stroke="#0b2347" stroke-width="2"/>
+
+                                            <!-- Robot Head Box -->
+                                            <rect x="26" y="24" width="48" height="34" rx="10" fill="#e0f2fe" stroke="#0b2347" stroke-width="3.5"/>
+                                            <!-- Dark Glass Visor -->
+                                            <rect x="31" y="29" width="38" height="24" rx="6" fill="#0f172a"/>
+                                            <!-- Cyan Glowing Eyes -->
+                                            <circle cx="41" cy="40" r="4.5" fill="#38bdf8" class="animate-pulse"/>
+                                            <circle cx="59" cy="40" r="4.5" fill="#38bdf8" class="animate-pulse"/>
+                                            <circle cx="42" cy="39" r="1.5" fill="#ffffff"/>
+                                            <circle cx="60" cy="39" r="1.5" fill="#ffffff"/>
+                                            <!-- Smile Curve -->
+                                            <path d="M43 47Q50 51 57 47" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+
+                                            <!-- Robot Neck -->
+                                            <rect x="44" y="58" width="12" height="6" fill="#64748b" stroke="#0b2347" stroke-width="2"/>
+
+                                            <!-- Robot Body -->
+                                            <rect x="28" y="62" width="44" height="32" rx="8" fill="#bae6fd" stroke="#0b2347" stroke-width="3.5"/>
+                                            <!-- Energy Battery Meter in Chest -->
+                                            <rect x="36" y="68" width="28" height="11" rx="3" fill="#ffffff" stroke="#0b2347" stroke-width="1.5"/>
+                                            <rect x="38" y="70" width="7" height="7" rx="1.5" fill="#22c55e"/>
+                                            <rect x="46.5" y="70" width="7" height="7" rx="1.5" fill="#22c55e"/>
+                                            <rect x="55" y="70" width="7" height="7" rx="1.5" fill="#facc15"/>
+                                            <!-- Chest Buttons -->
+                                            <circle cx="41" cy="86" r="2.5" fill="#ef4444"/>
+                                            <circle cx="50" cy="86" r="2.5" fill="#f59e0b"/>
+                                            <circle cx="59" cy="86" r="2.5" fill="#10b981"/>
+
+                                            <!-- Left Arm Waving -->
+                                            <g class="animate-wave">
+                                                <path d="M28 68C18 64 12 50 16 42" stroke="#0b2347" stroke-width="4.5" stroke-linecap="round"/>
+                                                <circle cx="16" cy="40" r="4" fill="#38bdf8" stroke="#0b2347" stroke-width="2"/>
+                                            </g>
+
+                                            <!-- Right Arm Resting -->
+                                            <path d="M72 70C78 76 80 84 74 90" stroke="#0b2347" stroke-width="4.5" stroke-linecap="round"/>
+                                            <circle cx="73" cy="91" r="3.5" fill="#38bdf8" stroke="#0b2347" stroke-width="2"/>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
-                            <p class="text-xs text-slate-700 font-bold mt-1 leading-snug">
-                                "Halo teman-teman SD! Ayo belajar coding visual, bikin game sendiri &amp; kenalan sama kecerdasan buatan! 🎮🤖"
+                        </div>
+
+                        <!-- Card Caption -->
+                        <div class="mt-4 text-center">
+                            <h4 class="font-display font-black text-xl text-blue-950">
+                                "Bikin Game Karyamu &amp; Belajar Bareng A.I.!"
+                            </h4>
+                            <p class="text-xs text-slate-600 font-bold mt-1 leading-relaxed">
+                                Praktek langsung merakit game interaktif dan memanfaatkan A.I. secara cerdas di Lab Komputer SMP Muhammadiyah 1 Yogyakarta.
                             </p>
                         </div>
 
-                        <!-- SVG: Cartoon Robot & Kid Coder Side-by-Side -->
-                        <div class="w-full h-56 mx-auto relative flex items-center justify-center my-2">
-                            <svg class="w-full h-full" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <!-- Desk -->
-                                <rect x="30" y="170" width="260" height="14" rx="4" fill="#0b2347"/>
-                                <rect x="45" y="184" width="12" height="32" fill="#0b2347"/>
-                                <rect x="263" y="184" width="12" height="32" fill="#0b2347"/>
-                                
-                                <!-- Computer Monitor with Scratch Blocks -->
-                                <rect x="110" y="80" width="100" height="72" rx="8" fill="#e2e8f0" stroke="#0b2347" stroke-width="4"/>
-                                <rect x="117" y="87" width="86" height="58" rx="4" fill="#38bdf8"/>
-                                <!-- Mini Scratch Blocks on screen -->
-                                <rect x="124" y="94" width="34" height="8" rx="3" fill="#ffbf00"/>
-                                <rect x="124" y="105" width="50" height="8" rx="3" fill="#4c97ff"/>
-                                <rect x="124" y="116" width="40" height="8" rx="3" fill="#9966ff"/>
-                                <rect x="124" y="127" width="44" height="8" rx="3" fill="#59c059"/>
-                                <!-- Monitor Stand -->
-                                <rect x="154" y="152" width="12" height="18" fill="#94a3b8"/>
-                                <ellipse cx="160" cy="168" rx="26" ry="6" fill="#cbd5e1" stroke="#0b2347" stroke-width="2.5"/>
-                                <!-- Keyboard & Mouse -->
-                                <rect x="115" y="166" width="52" height="6" rx="2" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
-                                <ellipse cx="185" cy="168" rx="7" ry="4" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
-
-                                <!-- FRIENDLY CARTOON ROBOT (Right Side) -->
-                                <g class="animate-float-gentle">
-                                    <!-- Robot Antenna -->
-                                    <line x1="245" y1="65" x2="245" y2="48" stroke="#0b2347" stroke-width="3.5" stroke-linecap="round"/>
-                                    <circle cx="245" cy="45" r="7" fill="#facc15" stroke="#0b2347" stroke-width="2.5" class="animate-pulse"/>
-                                    
-                                    <!-- Robot Ears -->
-                                    <rect x="220" y="76" width="6" height="12" rx="3" fill="#38bdf8" stroke="#0b2347" stroke-width="2"/>
-                                    <rect x="264" y="76" width="6" height="12" rx="3" fill="#38bdf8" stroke="#0b2347" stroke-width="2"/>
-
-                                    <!-- Robot Head -->
-                                    <rect x="224" y="65" width="42" height="34" rx="8" fill="#e0f2fe" stroke="#0b2347" stroke-width="3"/>
-                                    <!-- Screen Face -->
-                                    <rect x="229" y="70" width="32" height="24" rx="4" fill="#0f172a"/>
-                                    <!-- Cyan Glowing Eyes -->
-                                    <ellipse cx="238" cy="80" rx="3.5" ry="4.5" fill="#38bdf8"/>
-                                    <ellipse cx="252" cy="80" rx="3.5" ry="4.5" fill="#38bdf8"/>
-                                    <path d="M239 88Q245 92 251 88" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
-
-                                    <!-- Robot Body -->
-                                    <rect x="222" y="103" width="46" height="42" rx="8" fill="#bae6fd" stroke="#0b2347" stroke-width="3"/>
-                                    <!-- Chest Meter / Battery -->
-                                    <rect x="232" y="112" width="26" height="12" rx="3" fill="#ffffff" stroke="#0b2347" stroke-width="1.5"/>
-                                    <rect x="234" y="114" width="8" height="8" rx="1.5" fill="#22c55e"/>
-                                    <rect x="243" y="114" width="8" height="8" rx="1.5" fill="#22c55e"/>
-                                    <rect x="252" y="114" width="4" height="8" rx="1.5" fill="#22c55e"/>
-                                    <!-- Robot Buttons -->
-                                    <circle cx="236" cy="133" r="3" fill="#ef4444"/>
-                                    <circle cx="245" cy="133" r="3" fill="#f59e0b"/>
-                                    <circle cx="254" cy="133" r="3" fill="#10b981"/>
-
-                                    <!-- Waving Robot Arm (Left side of robot) -->
-                                    <g class="animate-wave">
-                                        <path d="M222 110C210 105 204 90 208 82" stroke="#0b2347" stroke-width="5" stroke-linecap="round"/>
-                                        <circle cx="208" cy="80" r="4" fill="#38bdf8" stroke="#0b2347" stroke-width="2"/>
-                                    </g>
-                                    <!-- Right Arm resting on desk -->
-                                    <path d="M268 115C275 125 272 155 258 168" stroke="#0b2347" stroke-width="4.5" stroke-linecap="round"/>
-                                </g>
-
-                                <!-- HAPPY KID CODER (Left Side, Red Shirt like Poster) -->
-                                <g>
-                                    <!-- Chair back -->
-                                    <rect x="52" y="100" width="8" height="60" rx="3" fill="#f97316" stroke="#0b2347" stroke-width="2"/>
-                                    <ellipse cx="65" cy="155" rx="18" ry="6" fill="#f97316" stroke="#0b2347" stroke-width="2"/>
-
-                                    <!-- Kid Head -->
-                                    <circle cx="78" cy="85" r="22" fill="#fed7aa" stroke="#0b2347" stroke-width="3"/>
-                                    <!-- Dark Curly Hair -->
-                                    <path d="M58 80C56 62 70 52 88 52C102 52 108 64 104 80C94 74 82 72 70 76C64 77 60 79 58 80Z" fill="#1e293b"/>
-                                    <circle cx="63" cy="65" r="7" fill="#1e293b"/>
-                                    <circle cx="74" cy="58" r="8" fill="#1e293b"/>
-                                    <circle cx="86" cy="57" r="7" fill="#1e293b"/>
-                                    <circle cx="97" cy="63" r="7" fill="#1e293b"/>
-
-                                    <!-- Kid Face: Smile & Eyes -->
-                                    <circle cx="82" cy="85" r="2.5" fill="#0f172a"/>
-                                    <path d="M76 94Q83 100 89 94" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/>
-                                    <!-- Rosy Cheek -->
-                                    <circle cx="75" cy="89" r="3" fill="#fca5a5" opacity="0.6"/>
-
-                                    <!-- Red Shirt Body -->
-                                    <path d="M60 110C60 106 68 104 80 104C92 104 98 106 98 110L102 165H58L60 110Z" fill="#ef4444" stroke="#0b2347" stroke-width="3"/>
-                                    <!-- Arm on Chin (Curious coder pose like poster) -->
-                                    <path d="M72 122L80 100" stroke="#fed7aa" stroke-width="6" stroke-linecap="round"/>
-                                    <path d="M72 122L80 100" stroke="#0b2347" stroke-width="1.5" stroke-linecap="round"/>
-
-                                    <!-- Desk Accessories: Pen cup with dots -->
-                                    <rect x="96" y="146" width="12" height="18" rx="2" fill="#ef4444" stroke="#0b2347" stroke-width="1.5"/>
-                                    <circle cx="100" cy="151" r="1.2" fill="#fff"/>
-                                    <circle cx="104" cy="156" r="1.2" fill="#fff"/>
-                                    <line x1="99" y1="138" x2="101" y2="146" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="104" y1="136" x2="103" y2="146" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
-                                </g>
-                            </svg>
-                        </div>
-
-                        <h4 class="font-display font-black text-xl text-blue-950 mt-1">
-                            "Serunya Bikin Game &amp; Kenal A.I.!"
-                        </h4>
-                        <p class="text-xs text-slate-600 font-bold mt-1 leading-relaxed">
-                            Belajar logika pemrograman visual seperti menyusun puzzle balok warna-warni yang asyik!
-                        </p>
-
                         <!-- Previous Agenda Social Proof Badge -->
-                        <div class="mt-4 p-3 rounded-2xl bg-amber-100/90 border-2 border-amber-300 text-left flex items-start gap-2.5">
+                        <div class="mt-4 p-3 rounded-2xl bg-amber-100 border-2 border-amber-300 text-left flex items-start gap-2.5">
                             <span class="text-xl">📢</span>
                             <p class="text-[11px] text-blue-950 leading-snug font-bold">
                                 <strong>Kilas Balik:</strong> Pada agenda sebelumnya, pendaftar membludak hingga 2x lipat kapasitas! Segera amankan kursi ananda sebelum kuota penuh.
