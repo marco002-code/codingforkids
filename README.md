@@ -71,7 +71,7 @@ php artisan serve
 Buka di browser:
 - **Landing Page & Pendaftaran:** `http://localhost:8000`
 - **Dashboard Admin:** `http://localhost:8000/admin/login`
-  - **Email:** `admin@codingforkids.id`
+  - **Email:** `admin@muhijunior.id`
   - **Password:** `admin12345`
 
 ---

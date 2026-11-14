@@ -15,20 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Admin Users
+        // 1. Primary Admin User
         User::updateOrCreate(
             ['email' => 'admin@muhijunior.id'],
             [
                 'name' => 'Administrator Panitia Muhijunior',
-                'password' => Hash::make('admin12345'),
-                'email_verified_at' => now(),
-            ]
-        );
-
-        User::updateOrCreate(
-            ['email' => 'admin@codingforkids.id'],
-            [
-                'name' => 'Administrator Panitia',
                 'password' => Hash::make('admin12345'),
                 'email_verified_at' => now(),
             ]

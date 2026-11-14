@@ -116,3 +116,4 @@ class UserController extends Controller
             ->with('success', "Akun panitia '{$name}' ({$email}) berhasil dihapus dari sistem.");
     }
 }
+

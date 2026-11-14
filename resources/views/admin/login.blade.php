@@ -47,12 +47,12 @@
 
             <div>
                 <label class="block text-xs font-bold text-slate-300 mb-1.5">Email Administrator</label>
-                <input type="email" name="email" value="{{ old('email', 'admin@codingforkids.id') }}" required class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
+                <input type="email" name="email" value="{{ old('email') }}" required placeholder="nama@muhijunior.id" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-slate-300 mb-1.5">Kata Sandi</label>
-                <input type="password" name="password" value="admin12345" required class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
+                <input type="password" name="password" required placeholder="Masukkan kata sandi" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
             </div>
 
             <div class="flex items-center justify-between text-xs pt-1">
@@ -67,15 +67,7 @@
             </button>
         </form>
 
-        <!-- Credentials hint -->
         <div class="mt-6 pt-5 border-t border-slate-700/80 text-center">
-            <span class="text-[11px] text-slate-500 block mb-1 font-mono">Akun Default Demo:</span>
-            <code class="text-xs text-indigo-300 bg-slate-900 px-2 py-1 rounded-md">admin@muhijunior.id</code>
-            <span class="text-slate-500 text-xs mx-1">/</span>
-            <code class="text-xs text-indigo-300 bg-slate-900 px-2 py-1 rounded-md">admin12345</code>
-        </div>
-
-        <div class="mt-4 text-center">
             <a href="{{ route('home') }}" class="text-xs text-slate-400 hover:text-white transition-colors">
                 &larr; Kembali ke Landing Page
             </a>

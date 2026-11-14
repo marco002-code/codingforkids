@@ -162,8 +162,8 @@ Agar tugas berkala Laravel (pembersihan session, antrean otomatis, dan reminder)
 
 ### Portal Panitia (Admin Dashboard):
 * **URL Login:** `https://coding.muhijunior.id/admin/login`
-* **Email Default:** `admin@muhijunior.id` (atau `admin@codingforkids.id`)
-* **Password Default:** `admin12345`
+* **Email Default:** `admin@muhijunior.id`
+* **Password Default:** `admin12345` (Dapat diubah melalui menu Akun Panitia)
 
 ### Fitur Utama Admin:
 1. **Live Quota Management:** Kuota utama 90 kursi per sesi (total 180 kursi) dan kuota cadangan 30 antrean per sesi dapat diubah sewaktu-waktu di menu **Pengaturan Kuota**.
