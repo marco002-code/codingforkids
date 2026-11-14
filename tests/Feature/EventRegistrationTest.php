@@ -70,7 +70,7 @@ class EventRegistrationTest extends TestCase
     {
         // Fill Session 1 quota (limit 2)
         Participant::create([
-            'reg_code' => 'AI26-S1-001',
+            'reg_code' => 'ABCDE',
             'session' => '1',
             'student_name' => 'Siswa 1 Sesi 1',
             'nickname' => 'S1',
@@ -83,7 +83,7 @@ class EventRegistrationTest extends TestCase
         ]);
 
         Participant::create([
-            'reg_code' => 'AI26-S1-002',
+            'reg_code' => 'BCDEF',
             'session' => '1',
             'student_name' => 'Siswa 2 Sesi 1',
             'nickname' => 'S2',
@@ -144,7 +144,7 @@ class EventRegistrationTest extends TestCase
         ]);
 
         $cadanganS2 = Participant::create([
-            'reg_code' => 'AI26-S2-003',
+            'reg_code' => 'HIJKL',
             'session' => '2',
             'student_name' => 'Ananda Cadangan Sesi 2',
             'nickname' => 'Nanda',
@@ -206,7 +206,7 @@ class EventRegistrationTest extends TestCase
 
         // Seed participant UTAMA Sesi 1
         $p1 = Participant::create([
-            'reg_code' => 'AI26-S1-001',
+            'reg_code' => 'JKLMN',
             'session' => '1',
             'student_name' => 'Fadhil Al Ghifari',
             'school_name' => 'SD Muhammadiyah Sukonandi',
@@ -218,7 +218,7 @@ class EventRegistrationTest extends TestCase
 
         // Seed participant CADANGAN Sesi 1 (should NOT appear on selected list)
         $pCadangan = Participant::create([
-            'reg_code' => 'AI26-S1-002',
+            'reg_code' => 'OPQRS',
             'session' => '1',
             'student_name' => 'Budi Santoso Cadangan',
             'school_name' => 'SD Negeri 1',

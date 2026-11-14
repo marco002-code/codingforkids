@@ -134,7 +134,7 @@ Apabila ada **Peserta Utama** yang mengonfirmasi tidak bisa hadir sebelum tangga
 | Nama Kolom | Tipe Data | Keterangan |
 | :--- | :--- | :--- |
 | `id` | INT / UUID | Primary Key |
-| `reg_code` | VARCHAR(15) | Kode Unik (misal: `AI26-001`) |
+| `reg_code` | VARCHAR(15) | Kode Unik 5 Huruf (misal: `HIJKL`) |
 | `student_name` | VARCHAR(100) | Nama lengkap siswa |
 | `nickname` | VARCHAR(50) | Nama panggilan siswa |
 | `school_name` | VARCHAR(100) | Asal SD |
@@ -154,7 +154,7 @@ Apabila ada **Peserta Utama** yang mengonfirmasi tidak bisa hadir sebelum tangga
 2. **Tabel Data Peserta (Terpisah Tab):**
    * Tab 1: **Peserta Utama** (Dilengkapi tombol *Batalkan* jika berhalangan).
    * Tab 2: **Peserta Cadangan** (Diurutkan berdasarkan waktu daftar tercepat, dilengkapi tombol *Naikkan ke Utama*).
-3. **Fitur Check-in Hari-H:** Pencarian cepat berdasarkan Nama Siswa atau Kode Registrasi (`AI26-XXX`) untuk absensi kedatangan pada Senin, 21 Desember 2026.
+3. **Fitur Check-in Hari-H:** Pencarian cepat berdasarkan Nama Siswa atau Kode Registrasi 5 Huruf (`HIJKL`) serta scan QR Code untuk absensi kedatangan pada Senin, 21 Desember 2026.
 4. **Export Data:** Unduh data peserta ke format `.xlsx` (Excel) atau `.csv` untuk keperluan pencetakan sertifikat dan *name tag*.
 
 ---

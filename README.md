@@ -27,7 +27,7 @@ Aplikasi ini dioptimalkan khusus untuk kemudahan deployment di server panel **He
   - Data Orang Tua: Nama wali, nomor WhatsApp aktif, email, persetujuan syarat & ketentuan.
   - Alokasi otomatis: Jika kuota utama masih tersedia $\rightarrow$ **PESERTA UTAMA**. Jika kuota utama habis $\rightarrow$ **PESERTA CADANGAN (Nomor Urut #X)**.
 * **E-Ticket Resmi (Printable & Shareable):**
-  - Kode registrasi unik format `AI26-XXX` dengan barcode simulator.
+  - Kode registrasi unik format 5 huruf (misal: `HIJKL`) dengan QR Code presensi instan.
   - Badge status pendaftaran (Hijau untuk Utama, Kuning/Oranye untuk Cadangan).
   - Tombol gabung grup WhatsApp koordinasi peserta & kontak hotline panitia.
   - Cetak atau simpan tiket ke format PDF dalam 1 klik (`window.print()`).

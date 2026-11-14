@@ -83,12 +83,10 @@ class DatabaseSeeder extends Seeder
             ['student_name' => 'Bagas Arya Wicaksono', 'nickname' => 'Bagas', 'school_name' => 'SD Global Mandiri', 'gender' => 'L', 'experience_level' => 'Belum Pernah', 'parent_name' => 'Joko Wicaksono', 'whatsapp' => '081234567814', 'email' => 'joko.wicaksono@example.com', 'status' => 'DIBATALKAN', 'waitlist_order' => null, 'is_attended' => false, 'cancellation_reason' => 'Ada acara keluarga ke luar kota.'],
         ];
 
-        $s1Index = 1;
         foreach ($session1Participants as $data) {
             $data['session'] = '1';
-            $data['reg_code'] = 'AI26-S1-' . str_pad($s1Index, 3, '0', STR_PAD_LEFT);
+            $data['reg_code'] = Participant::generateRegCode('1');
             Participant::create($data);
-            $s1Index++;
         }
 
         // 4. Demo Participants for Session 2 (10:30 - 12:00 WIB)
@@ -102,12 +100,10 @@ class DatabaseSeeder extends Seeder
             ['student_name' => 'Gibran Arka Mahendra', 'nickname' => 'Gibran', 'school_name' => 'SD Al-Ikhlas Cipete', 'gender' => 'L', 'experience_level' => 'Belum Pernah', 'parent_name' => 'Arka Mahendra', 'whatsapp' => '081234567817', 'email' => 'arka.m@example.com', 'status' => 'CADANGAN', 'waitlist_order' => 1, 'is_attended' => false],
         ];
 
-        $s2Index = 1;
         foreach ($session2Participants as $data) {
             $data['session'] = '2';
-            $data['reg_code'] = 'AI26-S2-' . str_pad($s2Index, 3, '0', STR_PAD_LEFT);
+            $data['reg_code'] = Participant::generateRegCode('2');
             Participant::create($data);
-            $s2Index++;
         }
     }
 }

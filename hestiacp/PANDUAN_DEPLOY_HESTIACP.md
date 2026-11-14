@@ -167,7 +167,7 @@ Agar tugas berkala Laravel (pembersihan session, antrean otomatis, dan reminder)
 ### Fitur Utama Admin:
 1. **Live Quota Management:** Kuota utama 50 kursi dan kuota cadangan 20 antrean dapat diubah sewaktu-waktu di menu **Pengaturan Kuota**.
 2. **Promosi 1-Klik Cadangan ke Utama:** Jika ada peserta utama yang berhalangan, admin cukup mengklik **"Promosi ↑"** pada antrean cadangan teratas, lalu sistem menyediakan link instan ke WhatsApp orang tua dengan pesan otomatis yang rapi.
-3. **Presensi Cepat Hari-H:** Masukkan kode registrasi (`AI26-XXX`) atau nama anak pada bar scanner di dashboard admin untuk absensi kedatangan instan.
+3. **Presensi Cepat Hari-H:** Masukkan kode registrasi 5 huruf (`HIJKL`) atau scan QR Code tiket pada bar scanner di dashboard admin untuk absensi kedatangan instan.
 4. **Export CSV:** Unduh rekap peserta untuk pencetakan sertifikat dan ID badge.
 
 ---
