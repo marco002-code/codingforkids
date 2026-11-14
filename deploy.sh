@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Script Otomasi Deployment Laravel - Production Ready
-# Aplikasi : Coding for Kids & A.I. for Learning
+# Script Otomasi Deployment Laravel - Production Ready (Auto Git Pull)
+# Aplikasi      : Coding for Kids & A.I. for Learning
 # Penyelenggara : SMP Muhammadiyah 1 Yogyakarta & Muhijunior ISS
-# Repository   : https://github.com/marco002-code/codingforkids.git
+# Repository    : https://github.com/marco002-code/codingforkids.git
 # ==============================================================================
 
 set -e
@@ -26,17 +26,47 @@ PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$PROJECT_DIR"
 echo -e "${YELLOW}📁 Lokasi Direktori Aplikasi:${NC} $PROJECT_DIR"
 
-# 2. Cek dan Siapkan File .env
+# 2. Sinkronisasi Git: Tarik Seluruh Source Code dari GitHub
+REPO_URL="https://github.com/marco002-code/codingforkids.git"
+BRANCH="main"
+
+echo -e "${CYAN}📥 Menarik pembaruan terbaru dari GitHub (${REPO_URL})...${NC}"
+
+if command -v git &> /dev/null; then
+    if [ ! -d ".git" ]; then
+        echo -e "${YELLOW}⚡ Direktori .git belum ada. Menginisialisasi dan menarik source code...${NC}"
+        git init
+        git remote add origin "$REPO_URL" 2>/dev/null || git remote set-url origin "$REPO_URL"
+        git fetch origin "$BRANCH"
+        git checkout -f -B "$BRANCH" "origin/$BRANCH"
+    else
+        echo -e "${GREEN}✓ Direktori .git terdeteksi. Menarik commit terbaru (git fetch & reset)...${NC}"
+        git remote set-url origin "$REPO_URL" 2>/dev/null || true
+        git fetch origin "$BRANCH"
+        git reset --hard "origin/$BRANCH"
+    fi
+    echo -e "${GREEN}✓ Source code berhasil disinkronkan dari GitHub (Branch: $BRANCH).${NC}"
+else
+    echo -e "${YELLOW}⚠️ Git tidak terdeteksi di server. Menggunakan file lokal saat ini.${NC}"
+fi
+
+# 3. Cek dan Siapkan File .env
 if [ ! -f .env ]; then
     echo -e "${YELLOW}⚙️ File .env tidak ditemukan. Menyalin dari .env.example...${NC}"
-    cp .env.example .env
+    if [ -f .env.example ]; then
+        cp .env.example .env
+    else
+        echo -e "${RED}❌ File .env.example tidak ditemukan!${NC}"
+        exit 1
+    fi
     php artisan key:generate --force
 else
     echo -e "${GREEN}✓ File .env terdeteksi.${NC}"
 fi
 
-# Cek Database SQLite jika DB_CONNECTION=sqlite
+# Pastikan file SQLite ada jika menggunakan driver sqlite
 if grep -q "DB_CONNECTION=sqlite" .env 2>/dev/null; then
+    mkdir -p database
     if [ ! -f database/database.sqlite ]; then
         echo -e "${YELLOW}🗄️ Menyiapkan file database/database.sqlite...${NC}"
         touch database/database.sqlite
@@ -44,23 +74,25 @@ if grep -q "DB_CONNECTION=sqlite" .env 2>/dev/null; then
     fi
 fi
 
-# 3. Aktifkan Maintenance Mode Sementara
-echo -e "${CYAN}🔒 Mengaktifkan Maintenance Mode saat pembaruan...${NC}"
-php artisan down --render="errors::503" --retry=30 || true
+# 4. Aktifkan Maintenance Mode Sementara
+echo -e "${CYAN}🔒 Mengaktifkan Maintenance Mode saat proses update...${NC}"
+if [ -f artisan ]; then
+    php artisan down --render="errors::503" --retry=30 || true
+fi
 
-# 4. Instalasi & Optimasi Composer Dependencies
+# 5. Instalasi & Optimasi Composer Dependencies
 if command -v composer &> /dev/null; then
-    echo -e "${CYAN}📦 Mengoptimalkan Composer Autoloader (No-Dev)...${NC}"
+    echo -e "${CYAN}📦 Mengoptimalkan Composer Dependencies (No-Dev)...${NC}"
     composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 else
     echo -e "${YELLOW}⚠️ Composer CLI tidak ditemukan di PATH, melewati composer install.${NC}"
 fi
 
-# 5. Jalankan Database Migration
+# 6. Jalankan Database Migration
 echo -e "${CYAN}🗄️ Menjalankan Database Migration...${NC}"
 php artisan migrate --force
 
-# 6. Cek & Seed Data Admin Awal jika Database Masih Kosong
+# 7. Cek & Seed Data Admin Awal jika Database Masih Kosong
 USER_COUNT=$(php artisan tinker --execute="echo \App\Models\User::count();" 2>/dev/null | tr -dc '0-9' || echo "0")
 if [ "$USER_COUNT" = "0" ] || [ -z "$USER_COUNT" ]; then
     echo -e "${YELLOW}🌱 Database admin belum ada. Menjalankan Database Seeder awal...${NC}"
@@ -69,7 +101,7 @@ else
     echo -e "${GREEN}✓ Data admin & konfigurasi sudah ada ($USER_COUNT admin terdaftar).${NC}"
 fi
 
-# 7. Bersihkan & Optimalkan Cache Laravel (Config, Route, View, Event)
+# 8. Bersihkan & Optimalkan Cache Laravel (Config, Route, View)
 echo -e "${CYAN}⚡ Mengoptimalkan Cache Laravel (Config, Routes, Views)...${NC}"
 php artisan config:clear
 php artisan route:clear
@@ -80,11 +112,11 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# 8. Pastikan Storage Symlink Terhubung
+# 9. Pastikan Storage Symlink Terhubung
 echo -e "${CYAN}🔗 Memastikan Storage Symlink Terhubung...${NC}"
 php artisan storage:link || true
 
-# 9. Penyesuaian Hak Akses (Permissions)
+# 10. Penyesuaian Hak Akses (Permissions)
 echo -e "${CYAN}🛡️ Menyesuaikan Hak Akses Folder storage & bootstrap/cache...${NC}"
 chmod -R 775 storage bootstrap/cache
 
@@ -101,7 +133,7 @@ if [ "$EUID" -eq 0 ]; then
     fi
 fi
 
-# 10. Matikan Maintenance Mode
+# 11. Matikan Maintenance Mode
 echo -e "${GREEN}🔓 Mematikan Maintenance Mode. Aplikasi kembali aktif!${NC}"
 php artisan up
 
@@ -115,4 +147,3 @@ echo -e "🔐 ${BOLD}Portal Admin:${NC} https://coding.muhijunior.id/admin/login
 echo -e "   👤 Email    : ${BOLD}admin@muhijunior.id${NC} (atau admin@codingforkids.id)"
 echo -e "   🔑 Password : ${BOLD}admin12345${NC}"
 echo -e "${BLUE}================================================================${NC}"
-

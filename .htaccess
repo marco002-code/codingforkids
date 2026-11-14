@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    Options -Indexes
+
+    # Block direct access to hidden files and dotfiles (.env, .git, etc.)
+    RewriteRule (^\.|/\.) - [F,L]
+
+    # Block direct access to core Laravel system directories
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests|vendor)/.*$ - [F,L]
+
+    # Forward all other requests to the public directory
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L,QSA]
+</IfModule>
