@@ -164,9 +164,9 @@
                         <span class="w-5 text-center">📍</span>
                         <span><strong>Lokasi Acara:</strong> {{ $eventLocation }}</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="w-5 text-center">💻</span>
-                        <span><strong>Perlengkapan:</strong> Membawa laptop pribadi + charger (Windows / Mac / Chromebook).</span>
+                    <div class="flex items-start gap-2 text-emerald-900 bg-emerald-50 p-3 rounded-xl border border-emerald-200">
+                        <span class="w-5 text-center text-base shrink-0">🖥️</span>
+                        <span><strong>Catatan Komputer:</strong> Peserta <strong>tidak perlu membawa PC, Laptop, atau Tablet</strong>. Seluruh praktikum mini workshop dilaksanakan di Lab Komputer menggunakan fasilitas PC Lab lengkap SMP Muhammadiyah 1 Yogyakarta.</span>
                     </div>
                 </div>
 

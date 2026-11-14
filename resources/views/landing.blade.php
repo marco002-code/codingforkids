@@ -772,8 +772,8 @@
                             <span><strong>Alamat:</strong> Jl. Purwodiningratan NG I/902, Ngampilan, Kota Yogyakarta, D.I. Yogyakarta 55261</span>
                         </div>
                         <div class="flex items-start gap-3">
-                            <span class="text-xl">💻</span>
-                            <span><strong>Perlengkapan:</strong> Siswa disarankan membawa laptop pribadi + charger (Windows / Mac / Chromebook). Lab juga menyediakan PC cadangan.</span>
+                            <span class="text-xl">🖥️</span>
+                            <span><strong>Fasilitas Komputer:</strong> Peserta <strong>tidak perlu membawa PC, Laptop, atau Tablet</strong>. Karena mini workshop berlangsung di Lab Komputer, maka seluruh kegiatan praktikum menggunakan fasilitas PC Lab lengkap SMP Muhammadiyah 1 Yogyakarta.</span>
                         </div>
                         <div class="flex items-start gap-3">
                             <span class="text-xl">📜</span>
@@ -972,7 +972,7 @@
 
                                 <div>
                                     <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Tambahan untuk Panitia <span class="text-slate-400 font-normal">(Opsional)</span></label>
-                                    <textarea name="notes" rows="2" placeholder="Contoh: Ananda membawa laptop pribadi..." class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:border-blue-950 focus:ring-0 outline-none font-medium">{{ old('notes') }}</textarea>
+                                    <textarea name="notes" rows="2" placeholder="Contoh: Ananda memiliki kebutuhan khusus atau catatan untuk panitia..." class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:border-blue-950 focus:ring-0 outline-none font-medium">{{ old('notes') }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -1036,11 +1036,11 @@
 
                 <details class="group cartoon-box p-6 transition-all [&_summary::-webkit-details-marker]:hidden">
                     <summary class="flex items-center justify-between cursor-pointer font-display font-black text-slate-900 text-sm sm:text-base">
-                        <span>Apakah siswa wajib membawa laptop sendiri?</span>
+                        <span>Apakah siswa perlu membawa laptop, PC, atau tablet sendiri?</span>
                         <span class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-blue-950 group-open:rotate-180 transition-transform">▾</span>
                     </summary>
                     <p class="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                        Laboratorium TIK SMP Muhammadiyah 1 Yogyakarta menyediakan perangkat komputer, namun siswa disarankan membawa laptop pribadi + charger masing-masing agar karya game dan proyek A.I. yang dibuat dapat langsung disimpan dan dilanjutkan di rumah.
+                        <strong>Tidak perlu.</strong> Peserta tidak perlu membawa PC, Laptop, maupun Tablet. Karena mini workshop diselenggarakan di Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta (Lab TIK 1 &amp; Lab TIK 3), maka seluruh kegiatan praktikum menggunakan fasilitas komputer PC yang telah disediakan secara lengkap oleh sekolah.
                     </p>
                 </details>
 

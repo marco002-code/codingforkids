@@ -278,7 +278,7 @@
                 <ul class="text-xs text-slate-700 space-y-1.5 list-disc list-inside font-medium leading-relaxed">
                     <li>Peserta wajib hadir <strong>30 menit sebelum sesi dimulai</strong> untuk registrasi ulang dan pengambilan Name Tag resmi.</li>
                     <li>Membawa <strong>E-Ticket (cetak atau tunjukkan di HP)</strong> saat tiba di Lab TIK SMP Muhammadiyah 1 Yogyakarta.</li>
-                    <li>Peserta disarankan membawa <strong>laptop pribadi + charger</strong> masing-masing (Windows / Mac / Chromebook).</li>
+                    <li>Peserta <strong>tidak perlu membawa PC, Laptop, ataupun Tablet</strong> karena mini workshop bertempat di laboratorium dan menggunakan fasilitas PC Lab lengkap.</li>
                     <li>Memakai seragam sekolah masing-masing atau pakaian bebas rapi bersepatu.</li>
                 </ul>
             </div>
