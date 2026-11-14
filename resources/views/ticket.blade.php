@@ -80,21 +80,37 @@
             <!-- Body Details -->
             <div class="p-6 sm:p-8 space-y-6">
 
-                <!-- Reg Code Barcode Simulation -->
-                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/90 text-center">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-widest block">Nomor Registrasi Siswa</span>
-                    <div class="text-3xl sm:text-4xl font-black text-slate-900 tracking-wider my-2 font-mono">
-                        {{ $participant->reg_code }}
+                <!-- Reg Code & QR Code for Panitia Presensi -->
+                <div class="bg-gradient-to-b from-slate-50 to-amber-50/40 p-6 rounded-3xl border-2 border-slate-200 text-center relative overflow-hidden">
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-[11px] font-black uppercase tracking-wider mb-2">
+                        <span>📲</span> QR Code Presensi Hari-H
                     </div>
-                    
-                    <!-- Simulated Code128 / Barcode graphic -->
-                    <div class="flex justify-center items-center gap-1 h-12 max-w-xs mx-auto py-1 opacity-80" title="{{ $participant->reg_code }}">
-                        @for($i = 0; $i < 42; $i++)
-                            @php $w = ($i % 3 === 0 || $i % 7 === 0) ? 'w-1.5' : (($i % 2 === 0) ? 'w-1' : 'w-0.5'); @endphp
-                            <div class="{{ $w }} h-full bg-slate-800 rounded-xs"></div>
-                        @endfor
+
+                    <!-- 5-Huruf Unik Random Code -->
+                    <div class="my-2">
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-widest block">Kode Registrasi (5 Huruf)</span>
+                        <div class="inline-flex items-center gap-3 mt-1">
+                            <span class="text-4xl sm:text-5xl font-black text-blue-950 tracking-widest font-mono bg-white px-5 py-2 rounded-2xl border-2 border-blue-950 shadow-sm select-all">
+                                {{ $participant->reg_code }}
+                            </span>
+                            <button type="button" onclick="navigator.clipboard.writeText('{{ $participant->reg_code }}'); alert('Kode {{ $participant->reg_code }} disalin!')" title="Salin Kode" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors border border-slate-300 no-print">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                            </button>
+                        </div>
                     </div>
-                    <span class="text-[11px] text-slate-500 font-mono mt-1 block">Tunjukkan kode ini kepada panitia saat registrasi ulang</span>
+
+                    <!-- High-Resolution QR Code -->
+                    <div class="my-4 flex flex-col items-center justify-center">
+                        <div class="p-3 bg-white rounded-2xl shadow-md border-2 border-blue-950 inline-block hover:scale-105 transition-transform duration-200">
+                            {!! $qrSvg ?? \App\Services\QrCodeService::svg($participant->reg_code, 190) !!}
+                        </div>
+                        <span class="text-xs font-black text-blue-900 mt-2 flex items-center gap-1">
+                            <span>⚡</span> Scan QR untuk Presensi Langsung
+                        </span>
+                        <p class="text-[11px] text-slate-500 max-w-sm mt-0.5">
+                            Tunjukkan QR code ini ke panitia di meja registrasi, atau cukup sebutkan 5 huruf kode registrasi di atas.
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Participant Info Grid -->
@@ -122,14 +138,16 @@
                     </div>
 
                     <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/60">
-                        <span class="block text-xs font-medium text-slate-400">Nama Orang Tua / Wali</span>
-                        <span class="font-semibold text-slate-800">{{ $participant->parent_name }}</span>
-                    </div>
-
-                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/60">
                         <span class="block text-xs font-medium text-slate-400">No. WhatsApp Orang Tua</span>
                         <span class="font-semibold text-slate-800">{{ $participant->whatsapp }}</span>
                     </div>
+
+                    @if($participant->student_whatsapp)
+                        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/60">
+                            <span class="block text-xs font-medium text-slate-400">No. WhatsApp Siswa</span>
+                            <span class="font-semibold text-slate-800">{{ $participant->student_whatsapp }}</span>
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Schedule & Location Info -->

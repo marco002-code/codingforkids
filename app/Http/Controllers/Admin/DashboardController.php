@@ -255,34 +255,77 @@ class DashboardController extends Controller
     }
 
     /**
-     * Quick Check-in via search bar / barcode scanner with session awareness.
+     * Quick Check-in via search bar / QR scanner / Camera scanner with session awareness.
      */
     public function quickCheckIn(Request $request)
     {
-        $query = trim($request->input('code', ''));
+        $rawQuery = trim($request->input('code', ''));
 
-        if (empty($query)) {
+        if (empty($rawQuery)) {
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Masukkan Kode Registrasi atau Nama Siswa.'], 400);
+            }
             return back()->with('error', 'Masukkan Kode Registrasi atau Nama Siswa untuk check-in.');
         }
 
-        $participant = Participant::where('reg_code', $query)
-            ->orWhere('student_name', 'LIKE', "%{$query}%")
+        // Clean query: if full URL was scanned, extract the code
+        $code = $rawQuery;
+        if (preg_match('#/(?:ticket)/([A-Za-z0-9\-]+)#', $rawQuery, $matches)) {
+            $code = $matches[1];
+        } elseif (preg_match('/[?&]code=([A-Za-z0-9\-]+)/', $rawQuery, $matches)) {
+            $code = $matches[1];
+        }
+
+        $codeUpper = strtoupper($code);
+
+        $participant = Participant::where('reg_code', $codeUpper)
+            ->orWhere('reg_code', $code)
+            ->orWhere('student_name', 'LIKE', "%{$rawQuery}%")
             ->first();
 
         if (!$participant) {
-            return back()->with('error', "Peserta dengan kode/nama '{$query}' tidak ditemukan.");
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Peserta dengan kode/nama '{$rawQuery}' tidak ditemukan."
+                ], 404);
+            }
+            return back()->with('error', "Peserta dengan kode/nama '{$rawQuery}' tidak ditemukan.");
         }
 
         if ($participant->status === 'DIBATALKAN') {
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Pendaftaran {$participant->student_name} ({$participant->reg_code}) berstatus DIBATALKAN."
+                ], 422);
+            }
             return back()->with('error', "Pendaftaran {$participant->student_name} ({$participant->reg_code}) berstatus DIBATALKAN.");
         }
 
+        $alreadyAttended = $participant->is_attended;
         $participant->update([
             'is_attended' => true,
             'attended_at' => now(),
         ]);
 
-        return back()->with('success', "✅ CHECK-IN BERHASIL: {$participant->student_name} ({$participant->reg_code}) &bull; [{$participant->session_label}] &bull; Status: {$participant->status}");
+        $statusMsg = $alreadyAttended
+            ? "ℹ️ SUDAH PERNAH CHECK-IN SEBELUMNYA: {$participant->student_name} ({$participant->reg_code}) &bull; [{$participant->session_label}]"
+            : "✅ CHECK-IN BERHASIL: {$participant->student_name} ({$participant->reg_code}) &bull; [{$participant->session_label}] &bull; Status: {$participant->status}";
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'already_attended' => $alreadyAttended,
+                'student_name' => $participant->student_name,
+                'reg_code' => $participant->reg_code,
+                'session_label' => $participant->session_label,
+                'status' => $participant->status,
+                'message' => $statusMsg,
+            ]);
+        }
+
+        return back()->with('success', $statusMsg);
     }
 
     /**

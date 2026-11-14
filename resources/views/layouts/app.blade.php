@@ -443,14 +443,14 @@
                     🎟️
                 </div>
                 <h3 class="text-xl font-display font-black text-slate-900">Cek Pembagian Sesi &amp; E-Ticket</h3>
-                <p class="text-xs text-slate-500 mt-1">Masukkan Kode Registrasi (misal: AI26-S1-001) atau Nomor WhatsApp Orang Tua saat mendaftar.</p>
+                <p class="text-xs text-slate-500 mt-1">Masukkan 5 Huruf Kode Registrasi (misal: <strong>KMPXW</strong>) atau Nomor WhatsApp saat mendaftar.</p>
             </div>
 
             <form action="{{ route('ticket.check') }}" method="POST" class="space-y-4">
                 @csrf
                 <div>
-                    <label class="block text-xs font-black uppercase tracking-wider text-slate-700 mb-1.5">Kode Registrasi / No. WhatsApp</label>
-                    <input type="text" name="query" required placeholder="Contoh: AI26-S1-001 atau 08123456789" class="w-full px-4 py-3 rounded-2xl border-2 border-slate-300 text-sm focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none transition-all font-semibold">
+                    <label class="block text-xs font-black uppercase tracking-wider text-slate-700 mb-1.5">Kode Registrasi (5 Huruf) / No. WhatsApp</label>
+                    <input type="text" name="query" required placeholder="Contoh: KMPXW atau 08123456789" class="w-full px-4 py-3 rounded-2xl border-2 border-slate-300 text-sm focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none transition-all font-semibold uppercase tracking-wider">
                 </div>
 
                 <div class="flex items-center gap-2 pt-2">

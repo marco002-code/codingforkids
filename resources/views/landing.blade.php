@@ -616,7 +616,7 @@
                         <span class="px-3.5 py-1.5 rounded-xl bg-slate-100 font-mono font-black text-xs text-slate-800 shrink-0 border border-slate-300">07:30 – 08:00</span>
                         <div>
                             <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Registrasi Ulang &amp; Pengambilan Name Tag</h4>
-                            <p class="text-xs text-slate-600 font-medium">Check-in barcode E-Ticket, pembagian Name Tag dan snack pagi di Lab TIK 1 &amp; Lab TIK 3.</p>
+                            <p class="text-xs text-slate-600 font-medium">Check-in scan QR Code E-Ticket atau sebutkan 5 huruf kode registrasi, pembagian Name Tag dan snack pagi di Lab TIK 1 &amp; Lab TIK 3.</p>
                         </div>
                     </div>
                     <span class="text-xs font-bold text-slate-500 shrink-0">30 Menit</span>
@@ -674,7 +674,7 @@
                         <span class="px-3.5 py-1.5 rounded-xl bg-slate-100 font-mono font-black text-xs text-slate-800 shrink-0 border border-slate-300">12:00 – 12:30</span>
                         <div>
                             <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Registrasi Ulang Sesi 2 &amp; Welcome Drink</h4>
-                            <p class="text-xs text-slate-600 font-medium">Check-in barcode E-Ticket, pengambilan Name Tag dan persiapan komputer di Lab TIK.</p>
+                            <p class="text-xs text-slate-600 font-medium">Check-in scan QR Code E-Ticket atau sebutkan 5 huruf kode registrasi, pengambilan Name Tag dan persiapan komputer di Lab TIK.</p>
                         </div>
                     </div>
                     <span class="text-xs font-bold text-slate-500 shrink-0">30 Menit</span>

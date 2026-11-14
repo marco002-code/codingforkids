@@ -25,22 +25,30 @@
 
     <!-- Quick Check-in Hari-H Bar -->
     <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-purple-950 rounded-3xl p-6 text-white shadow-xl border border-slate-800">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
-                <span class="inline-block px-3 py-1 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase tracking-wider mb-1.5">
-                    Presensi Otomatis Barcode Scanner
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase tracking-wider mb-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Presensi Otomatis QR Code &bull; 5 Huruf Registrasi
                 </span>
                 <h3 class="text-xl font-black tracking-tight">Check-in Kehadiran Siswa Hari-H</h3>
-                <p class="text-xs text-slate-300 mt-0.5">Scan barcode tiket atau ketik Kode Registrasi (misal: AI26-S1-001) / Nama Siswa lalu tekan Enter.</p>
+                <p class="text-xs text-slate-300 mt-0.5">Scan QR Code tiket atau ketik 5 huruf kode registrasi (misal: <strong>KMPXW</strong>) / nama siswa.</p>
             </div>
 
-            <form action="{{ route('admin.quickCheckIn') }}" method="POST" class="flex items-center gap-2 max-w-md w-full">
-                @csrf
-                <input type="text" name="code" autofocus placeholder="Scan / Ketik kode: AI26-S1-001..." class="flex-grow px-4 py-3 rounded-2xl bg-white text-slate-900 placeholder:text-slate-400 text-sm font-bold outline-none focus:ring-2 focus:ring-emerald-400 shadow-inner">
-                <button type="submit" class="px-5 py-3 bg-emerald-500 hover:bg-emerald-600 font-black text-xs uppercase tracking-wider rounded-2xl text-white shadow-md transition-colors shrink-0">
-                    Check-in
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 max-w-xl w-full">
+                <form action="{{ route('admin.quickCheckIn') }}" method="POST" id="quickCheckInForm" class="flex items-center gap-2 flex-grow">
+                    @csrf
+                    <input type="text" name="code" id="checkInCodeInput" autofocus placeholder="Scan QR / ketik 5 huruf (misal: KMPXW)..." class="flex-grow px-4 py-3 rounded-2xl bg-white text-slate-900 placeholder:text-slate-400 text-sm font-bold uppercase tracking-wider outline-none focus:ring-2 focus:ring-emerald-400 shadow-inner">
+                    <button type="submit" class="px-5 py-3 bg-emerald-500 hover:bg-emerald-600 font-black text-xs uppercase tracking-wider rounded-2xl text-white shadow-md transition-colors shrink-0">
+                        Check-in
+                    </button>
+                </form>
+
+                <button type="button" onclick="openQrScannerModal()" class="px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-black text-xs uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-1.5 shrink-0 whitespace-nowrap">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <span>Kamera QR</span>
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -329,4 +337,210 @@
     </div>
 
 </div>
+
+<!-- Modal Scanner QR Kamera -->
+<div id="qrScannerModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border-2 border-slate-700">
+        
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-950 to-indigo-950 p-4 sm:p-5 text-white flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center text-base">
+                    📷
+                </div>
+                <div>
+                    <h3 class="font-extrabold text-base">Scanner QR Presensi</h3>
+                    <p class="text-[11px] text-slate-300">Arahkan kamera ke QR Code pada E-Tiket siswa</p>
+                </div>
+            </div>
+            <button type="button" onclick="closeQrScannerModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold text-sm transition-colors">
+                &times;
+            </button>
+        </div>
+
+        <!-- Video Viewport with Targeting Overlay -->
+        <div class="relative bg-slate-950 flex items-center justify-center overflow-hidden" style="min-height: 320px; max-height: 400px;">
+            <video id="qrScannerVideo" playsinline autoplay muted class="w-full h-full object-cover"></video>
+
+            <!-- Viewfinder Overlay Box -->
+            <div class="absolute inset-0 pointer-events-none flex items-center justify-center p-6">
+                <div class="relative w-56 h-56 border-2 border-emerald-400/80 rounded-2xl shadow-[0_0_0_9999px_rgba(0,0,0,0.45)]">
+                    <!-- Corner Brackets -->
+                    <span class="absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 border-emerald-400 rounded-tl-lg"></span>
+                    <span class="absolute -top-1 -right-1 w-6 h-6 border-t-4 border-r-4 border-emerald-400 rounded-tr-lg"></span>
+                    <span class="absolute -bottom-1 -left-1 w-6 h-6 border-b-4 border-l-4 border-emerald-400 rounded-bl-lg"></span>
+                    <span class="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-emerald-400 rounded-br-lg"></span>
+                </div>
+            </div>
+
+            <!-- Loading / Camera Request Placeholder -->
+            <div id="qrScannerLoading" class="absolute inset-0 bg-slate-900 flex flex-col items-center justify-center text-white text-center p-6 space-y-3">
+                <div class="w-10 h-10 border-4 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-xs font-bold text-slate-300">Menghubungkan ke kamera...</p>
+                <p class="text-[11px] text-slate-400">Pastikan izin kamera disetujui di browser.</p>
+            </div>
+        </div>
+
+        <!-- Status Toast Banner -->
+        <div id="qrScanResultToast" class="hidden p-4 text-center border-t transition-all"></div>
+
+        <!-- Footer Actions -->
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-3">
+            <span class="text-xs text-slate-500 font-medium">
+                💡 Tip: Anda juga dapat mengetik 5 huruf kode registrasi di form utama.
+            </span>
+
+            <button type="button" onclick="closeQrScannerModal()" class="px-4 py-2 text-xs font-bold text-slate-700 bg-white border border-slate-300 hover:bg-slate-100 rounded-xl transition-colors shrink-0">
+                Tutup Scanner
+            </button>
+        </div>
+
+    </div>
+</div>
+
+@push('scripts')
+<script>
+let qrMediaStream = null;
+let qrScanInterval = null;
+let isProcessingQr = false;
+let barcodeDetector = null;
+
+if ('BarcodeDetector' in window) {
+    try {
+        barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
+    } catch(e) {
+        console.warn('BarcodeDetector format qr_code not supported:', e);
+    }
+}
+
+function playSuccessBeep() {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.2);
+    } catch(e) {}
+}
+
+async function openQrScannerModal() {
+    const modal = document.getElementById('qrScannerModal');
+    const video = document.getElementById('qrScannerVideo');
+    const loading = document.getElementById('qrScannerLoading');
+    const toast = document.getElementById('qrScanResultToast');
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    toast.className = 'hidden';
+    loading.style.display = 'flex';
+    isProcessingQr = false;
+
+    try {
+        qrMediaStream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+        });
+        video.srcObject = qrMediaStream;
+        await video.play();
+        loading.style.display = 'none';
+
+        startScanLoop();
+    } catch(err) {
+        loading.innerHTML = `
+            <div class="text-rose-400 text-3xl">⚠️</div>
+            <p class="text-xs font-bold text-rose-300">Tidak dapat mengakses kamera</p>
+            <p class="text-[11px] text-slate-400 max-w-xs">${err.message || 'Izin kamera ditolak atau perangkat tidak memiliki kamera.'}</p>
+        `;
+    }
+}
+
+function closeQrScannerModal() {
+    const modal = document.getElementById('qrScannerModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+
+    if (qrScanInterval) {
+        clearInterval(qrScanInterval);
+        qrScanInterval = null;
+    }
+    if (qrMediaStream) {
+        qrMediaStream.getTracks().forEach(track => track.stop());
+        qrMediaStream = null;
+    }
+}
+
+function startScanLoop() {
+    const video = document.getElementById('qrScannerVideo');
+
+    if (qrScanInterval) clearInterval(qrScanInterval);
+
+    qrScanInterval = setInterval(async () => {
+        if (isProcessingQr || !video.videoWidth || !barcodeDetector) return;
+
+        try {
+            const barcodes = await barcodeDetector.detect(video);
+            if (barcodes.length > 0) {
+                const detectedCode = barcodes[0].rawValue;
+                handleDetectedQrCode(detectedCode);
+            }
+        } catch (e) {
+            console.error('QR detection error:', e);
+        }
+    }, 300);
+}
+
+async function handleDetectedQrCode(rawCode) {
+    if (isProcessingQr) return;
+    isProcessingQr = true;
+
+    playSuccessBeep();
+
+    const toast = document.getElementById('qrScanResultToast');
+    toast.className = 'p-3 bg-amber-50 text-amber-900 text-xs font-bold border-t border-amber-200 block';
+    toast.innerHTML = `Memproses Check-in untuk: <span class="font-mono text-sm">${rawCode}</span>...`;
+
+    try {
+        const response = await fetch("{{ route('admin.quickCheckIn') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            },
+            body: 'code=' + encodeURIComponent(rawCode)
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            toast.className = 'p-4 bg-emerald-50 text-emerald-950 text-xs font-bold border-t-2 border-emerald-400 block';
+            toast.innerHTML = `
+                <div class="text-base font-black text-emerald-700">✅ CHECK-IN BERHASIL!</div>
+                <div class="text-sm font-bold text-slate-800 mt-1">${data.student_name} (${data.reg_code})</div>
+                <div class="text-xs text-slate-600 mt-0.5">${data.session_label} &bull; Status: <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">${data.status}</span></div>
+            `;
+            // Refresh main input
+            document.getElementById('checkInCodeInput').value = data.reg_code;
+        } else {
+            toast.className = 'p-3 bg-rose-50 text-rose-900 text-xs font-bold border-t border-rose-200 block';
+            toast.innerHTML = `❌ ${data.message || 'Peserta tidak ditemukan atau gagal check-in.'}`;
+        }
+    } catch(err) {
+        toast.className = 'p-3 bg-rose-50 text-rose-900 text-xs font-bold border-t border-rose-200 block';
+        toast.innerHTML = `❌ Kesalahan jaringan / server.`;
+    }
+
+    // Resume scanning after 2.5 seconds
+    setTimeout(() => {
+        isProcessingQr = false;
+    }, 2500);
+}
+</script>
+@endpush
 @endsection

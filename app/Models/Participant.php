@@ -160,21 +160,20 @@ class Participant extends Model
     }
 
     /**
-     * Generate next registration code per session: AI26-S1-001 or AI26-S2-001.
+     * Generate 5 unique random uppercase letters for registration code (e.g. KMPXW).
+     * Easy to read, remember, and quick for panitia presensi.
      */
     public static function generateRegCode($session = '1'): string
     {
-        $prefix = 'AI26-S' . $session . '-';
-        $latest = static::where('session', (string) $session)->orderBy('id', 'desc')->first();
-        $nextNumber = $latest ? (static::where('session', (string) $session)->count() + 1) : 1;
-        
-        $code = $prefix . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
-        
-        // Ensure uniqueness
-        while (static::where('reg_code', $code)->exists()) {
-            $nextNumber++;
-            $code = $prefix . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
-        }
+        $letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+        $maxIndex = strlen($letters) - 1;
+
+        do {
+            $code = '';
+            for ($i = 0; $i < 5; $i++) {
+                $code .= $letters[random_int(0, $maxIndex)];
+            }
+        } while (static::where('reg_code', $code)->exists());
 
         return $code;
     }

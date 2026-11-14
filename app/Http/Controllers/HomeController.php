@@ -105,7 +105,7 @@ class HomeController extends Controller
         $request->validate([
             'query' => 'required|string|min:3',
         ], [
-            'query.required' => 'Masukkan Kode Registrasi (misal: AI26-S1-001) atau Nomor WhatsApp.',
+            'query.required' => 'Masukkan 5 Huruf Kode Registrasi (misal: KMPXW) atau Nomor WhatsApp.',
             'query.min' => 'Pencarian minimal 3 karakter.',
         ]);
 

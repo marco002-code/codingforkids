@@ -61,7 +61,7 @@ class EventRegistrationTest extends TestCase
         $this->assertEquals('1', $participant->session);
         $this->assertEquals('UTAMA', $participant->status);
         $this->assertNull($participant->waitlist_order);
-        $this->assertStringStartsWith('AI26-S1-', $participant->reg_code);
+        $this->assertMatchesRegularExpression('/^[A-Z]{5}$/', $participant->reg_code);
 
         $response->assertRedirect(route('ticket.show', $participant->reg_code));
     }
@@ -243,5 +243,81 @@ class EventRegistrationTest extends TestCase
         $responseS2 = $this->get('/peserta-terpilih?session=2');
         $responseS2->assertStatus(200);
         $responseS2->assertDontSee('Fadhil Al Ghifari');
+    }
+
+    public function test_generate_reg_code_is_5_uppercase_letters(): void
+    {
+        $code1 = Participant::generateRegCode('1');
+        $code2 = Participant::generateRegCode('2');
+
+        $this->assertEquals(5, strlen($code1));
+        $this->assertEquals(5, strlen($code2));
+        $this->assertMatchesRegularExpression('/^[A-Z]{5}$/', $code1);
+        $this->assertMatchesRegularExpression('/^[A-Z]{5}$/', $code2);
+    }
+
+    public function test_e_ticket_displays_qr_code_and_5_letter_code(): void
+    {
+        $code = Participant::generateRegCode('1');
+        $participant = Participant::create([
+            'reg_code' => $code,
+            'session' => '1',
+            'student_name' => 'Ahmad Dahlan Muda',
+            'school_name' => 'SD Muhammadiyah 1',
+            'gender' => 'L',
+            'experience_level' => 'Belum Pernah',
+            'whatsapp' => '08123456789',
+            'status' => 'UTAMA',
+        ]);
+
+        $response = $this->get(route('ticket.show', $participant->reg_code));
+        $response->assertStatus(200);
+        $response->assertSee($code);
+        $response->assertSee('QR Code Presensi Hari-H');
+        $response->assertSee('<svg', false); // SVG QR code rendered
+    }
+
+    public function test_admin_quick_checkin_with_5_letter_code_and_json(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin Panitia',
+            'email' => 'panitia@test.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $code = Participant::generateRegCode('1');
+        $participant = Participant::create([
+            'reg_code' => $code,
+            'session' => '1',
+            'student_name' => 'Siswa Presensi Cepat',
+            'school_name' => 'SD Teladan',
+            'gender' => 'P',
+            'experience_level' => 'Pernah Sedikit',
+            'whatsapp' => '08123456789',
+            'status' => 'UTAMA',
+        ]);
+
+        $this->actingAs($admin);
+
+        // Test lowercase input (e.g. kmpxw) -> should match uppercase KMPXW
+        $response = $this->post('/admin/quick-check-in', [
+            'code' => strtolower($code),
+        ]);
+        $response->assertSessionHas('success');
+
+        $participant->refresh();
+        $this->assertTrue((bool)$participant->is_attended);
+        $this->assertNotNull($participant->attended_at);
+
+        // Test JSON request (as sent by Camera Scanner)
+        $responseJson = $this->postJson('/admin/quick-check-in', [
+            'code' => $code,
+        ]);
+        $responseJson->assertStatus(200);
+        $responseJson->assertJson([
+            'success' => true,
+            'reg_code' => $code,
+            'already_attended' => true,
+        ]);
     }
 }

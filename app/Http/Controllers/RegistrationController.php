@@ -129,9 +129,11 @@ class RegistrationController extends Controller
         $eventLocation = Setting::get('event_location', 'Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta');
         $whatsappGroupLink = Setting::get('whatsapp_group_link', 'https://chat.whatsapp.com');
         $contactWhatsapp = Setting::get('contact_whatsapp', '081234567890');
+        $qrSvg = \App\Services\QrCodeService::svg($participant->reg_code, 200);
 
         return view('ticket', compact(
             'participant',
+            'qrSvg',
             'eventName',
             'eventDate',
             'eventLocation',

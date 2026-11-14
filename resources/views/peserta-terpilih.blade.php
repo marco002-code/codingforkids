@@ -162,7 +162,9 @@
                                         {{ $participants->firstItem() + $idx }}
                                     </td>
                                     <td class="py-3.5 px-4 font-mono font-bold text-blue-950">
-                                        {{ $student->reg_code }}
+                                        <span class="inline-block px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-300 font-mono font-black text-xs text-blue-950 tracking-widest shadow-2xs">
+                                            {{ $student->reg_code }}
+                                        </span>
                                     </td>
                                     <td class="py-3.5 px-4">
                                         <strong class="text-slate-900 font-extrabold text-sm block">{{ $student->student_name }}</strong>
@@ -216,3 +218,4 @@
     </div>
 </div>
 @endsection
+

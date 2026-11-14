@@ -68,7 +68,7 @@
             <input type="hidden" name="session" value="{{ $sessionFilter }}">
             
             <div class="relative flex-grow w-full">
-                <input type="text" name="search" value="{{ $search }}" placeholder="Cari nama siswa, panggilan, kode AI26-SX-XXX, nama ortu, WA, atau sekolah..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                <input type="text" name="search" value="{{ $search }}" placeholder="Cari nama siswa, panggilan, kode 5 huruf (misal: KMPXW), WA, atau sekolah..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
                 <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
 
