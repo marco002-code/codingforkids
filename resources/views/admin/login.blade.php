@@ -20,8 +20,10 @@
         
         <!-- Header -->
         <div class="text-center mb-8">
-            <div class="bg-white px-5 py-2.5 rounded-2xl shadow-lg inline-block mx-auto mb-4 border border-slate-600">
+            <div class="bg-white px-5 py-3 rounded-2xl shadow-lg inline-flex items-center gap-3.5 mx-auto mb-4 border border-slate-300">
                 <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS" class="h-10 w-auto object-contain">
+                <span class="w-px h-8 bg-slate-300"></span>
+                <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-10 w-auto object-contain">
             </div>
             <h1 class="text-2xl font-black text-white tracking-tight">Portal Panitia Event</h1>
             <p class="text-xs text-slate-400 mt-1">Coding for Kids and A.I. for Learning 2026</p>

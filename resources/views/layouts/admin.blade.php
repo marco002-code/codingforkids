@@ -39,10 +39,12 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-6">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5">
-                    <div class="bg-white px-2 py-1 rounded-lg shadow-xs">
+                    <div class="bg-white px-2.5 py-1 rounded-lg shadow-xs flex items-center gap-2">
                         <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS" class="h-6 w-auto object-contain">
+                        <span class="w-px h-5 bg-slate-300"></span>
+                        <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1" class="h-6 w-auto object-contain">
                     </div>
-                    <span class="font-extrabold text-base tracking-tight text-white hidden sm:inline">Panitia Dashboard</span>
+                    <span class="font-extrabold text-sm tracking-tight text-white hidden sm:inline">Panitia Workshop</span>
                 </a>
 
                 <nav class="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm font-semibold">

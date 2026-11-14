@@ -40,7 +40,7 @@
                     <div class="flex items-center gap-3 bg-white/95 backdrop-blur-xs px-4 py-2 rounded-2xl shadow-md mb-3 border border-white/50">
                         <img src="/images/logo-muhijunior-iss.png" alt="Muhijunior ISS" class="h-8 sm:h-9 w-auto object-contain">
                         <span class="w-px h-6 bg-slate-300"></span>
-                        <img src="/images/logo-smp-muh1.png" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-8 w-8 object-contain rounded-full">
+                        <img src="/images/logo-smp-muh1.png" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-8 sm:h-9 w-auto object-contain">
                     </div>
                     <span class="inline-block px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-widest bg-white/20 backdrop-blur-md mb-2">
                         Official Workshop Pass &bull; Muhijunior

@@ -85,11 +85,11 @@
             
             <!-- School & Community Identity Pill -->
             <div class="text-center mb-3">
-                <div class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-blue-950 text-white text-xs sm:text-sm font-black uppercase tracking-wider shadow-lg border-2 border-amber-300">
-                    <img src="/images/logo-smp-muh1.png" alt="SMP Muhammadiyah 1" class="h-5 w-5 object-contain rounded-full">
-                    <span>SMP Muhammadiyah 1 Yogyakarta</span>
-                    <span class="text-amber-400 font-bold">&bull;</span>
-                    <span class="text-amber-300">Muhijunior ISS</span>
+                <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white text-blue-950 text-xs sm:text-sm font-black shadow-lg border-3 border-blue-950">
+                    <img src="/images/logo-muhijunior-iss.png" alt="Muhijunior ISS - School Of Creative People" class="h-6 sm:h-7 w-auto object-contain">
+                    <span class="w-px h-5 bg-slate-300"></span>
+                    <img src="/images/logo-smp-muh1.png" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-6 sm:h-7 w-auto object-contain">
+                    <span class="hidden sm:inline font-display font-black text-xs uppercase tracking-wider text-blue-950">SMP Muhammadiyah 1 Yogyakarta</span>
                 </div>
             </div>
 

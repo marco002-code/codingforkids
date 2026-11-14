@@ -277,9 +277,11 @@
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-2 border-amber-200/90 shadow-sm no-print">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
             
-            <!-- Left Branding: Muhijunior ISS Official Logo -->
-            <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0">
+            <!-- Left Branding: Muhijunior ISS & SMP Muh 1 Official Logos -->
+            <a href="{{ route('home') }}" class="flex items-center gap-2 sm:gap-3 shrink-0">
                 <img src="/images/logo-muhijunior-iss.png" alt="Muhijunior ISS - School Of Creative People" class="h-10 sm:h-12 w-auto object-contain transition-transform hover:scale-105">
+                <span class="hidden sm:block w-px h-8 bg-slate-300"></span>
+                <img src="/images/logo-smp-muh1.png" alt="SMP Muhammadiyah 1 Yogyakarta" class="hidden sm:block h-10 sm:h-11 w-auto object-contain transition-transform hover:scale-105">
             </a>
 
             <!-- Center Nav Links (Desktop) -->
@@ -334,6 +336,12 @@
 
         <!-- Mobile Dropdown Navigation -->
         <div id="mobileMenu" class="hidden lg:hidden bg-white border-t border-amber-200 px-4 pt-3 pb-5 space-y-2 shadow-xl">
+            <div class="flex items-center gap-3 pb-3 border-b border-slate-100 mb-2">
+                <img src="/images/logo-muhijunior-iss.png" alt="Muhijunior ISS" class="h-8 w-auto object-contain">
+                <span class="w-px h-6 bg-slate-300"></span>
+                <img src="/images/logo-smp-muh1.png" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-8 w-auto object-contain">
+                <span class="text-xs font-black text-blue-950">SMP Muh 1 Yogya</span>
+            </div>
             <a href="{{ request()->routeIs('home') ? '#materi' : route('home') . '#materi' }}" onclick="toggleMobileMenu()" class="block py-2.5 px-3 rounded-xl text-sm font-extrabold text-slate-800 hover:bg-amber-50">
                 🎮 Materi Workshop
             </a>
@@ -371,7 +379,7 @@
                             <img src="/images/logo-muhijunior-iss.png" alt="Muhijunior ISS - School Of Creative People" class="h-9 w-auto object-contain">
                         </div>
                         <div class="bg-white p-2 rounded-2xl inline-block shadow-md border-2 border-amber-300">
-                            <img src="/images/logo-smp-muh1.png" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-9 w-9 object-contain rounded-full">
+                            <img src="/images/logo-smp-muh1.png" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-9 w-auto object-contain">
                         </div>
                     </div>
                     <h3 class="font-extrabold text-white text-base">SMP Muhammadiyah 1 Yogyakarta</h3>
