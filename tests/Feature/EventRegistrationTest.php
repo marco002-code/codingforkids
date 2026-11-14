@@ -545,4 +545,32 @@ class EventRegistrationTest extends TestCase
         $this->assertTrue((bool)$p->is_attended);
         $this->assertNotNull($p->attended_at);
     }
+
+    public function test_logged_out_admin_refreshing_dashboard_redirects_to_login_gracefully(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin Logout Test',
+            'email' => 'logout_test@test.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $this->actingAs($admin);
+
+        // Verify dashboard is accessible while logged in
+        $dashRes = $this->get('/admin/dashboard');
+        $dashRes->assertStatus(200);
+
+        // Admin logs out
+        $logoutRes = $this->post(route('admin.logout'));
+        $logoutRes->assertRedirect(route('admin.login'));
+        $this->assertGuest();
+
+        // Refreshing or visiting /admin/dashboard as logged out guest must redirect to /admin/login (not 500 error!)
+        $refreshRes = $this->get('/admin/dashboard');
+        $refreshRes->assertRedirect('/admin/login');
+
+        // Also visiting /admin/participants or /admin/attendance as guest redirects to /admin/login
+        $this->get('/admin/participants')->assertRedirect('/admin/login');
+        $this->get('/admin/attendance')->assertRedirect('/admin/login');
+    }
 }

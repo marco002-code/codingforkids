@@ -517,3 +517,4 @@ async function handleDetectedQrCode(rawCode) {
 </script>
 @endpush
 @endsection
+

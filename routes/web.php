@@ -22,6 +22,7 @@ Route::post('/check-ticket', [HomeController::class, 'checkTicket'])->name('tick
 | Admin Authentication Routes
 |--------------------------------------------------------------------------
 */
+Route::get('/login', fn () => redirect()->route('admin.login'))->name('login');
 Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
