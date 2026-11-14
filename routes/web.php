@@ -38,6 +38,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/participants', [AdminDashboardController::class, 'participants'])->name('participants');
+    Route::get('/attendance', [AdminDashboardController::class, 'attendance'])->name('attendance');
     Route::post('/participants/{participant}/promote', [AdminDashboardController::class, 'promote'])->name('participants.promote');
     Route::post('/participants/{participant}/cancel', [AdminDashboardController::class, 'cancel'])->name('participants.cancel');
     Route::post('/participants/{participant}/restore', [AdminDashboardController::class, 'restore'])->name('participants.restore');

@@ -122,6 +122,74 @@ class DashboardController extends Controller
     }
 
     /**
+     * Dedicated Attendance & Live Check-in workstation for Event Day.
+     */
+    public function attendance(Request $request)
+    {
+        $sessionFilter = $request->query('session', ''); // '', '1', '2'
+        $statusFilter = $request->query('status', ''); // '', 'attended', 'unattended'
+        $search = trim($request->query('search', ''));
+
+        // Attendance stats
+        $s1Max = (int) Setting::get('session_1_quota', 90);
+        $s2Max = (int) Setting::get('session_2_quota', 90);
+
+        $s1TotalUtama = Participant::session('1')->utama()->count();
+        $s1Attended = Participant::session('1')->utama()->attended()->count();
+        $s1Percent = $s1TotalUtama > 0 ? round(($s1Attended / $s1TotalUtama) * 100) : 0;
+
+        $s2TotalUtama = Participant::session('2')->utama()->count();
+        $s2Attended = Participant::session('2')->utama()->attended()->count();
+        $s2Percent = $s2TotalUtama > 0 ? round(($s2Attended / $s2TotalUtama) * 100) : 0;
+
+        $totalAttended = $s1Attended + $s2Attended;
+        $totalUtama = $s1TotalUtama + $s2TotalUtama;
+        $totalPercent = $totalUtama > 0 ? round(($totalAttended / $totalUtama) * 100) : 0;
+
+        // Query participants (exclude DIBATALKAN by default)
+        $query = Participant::where('status', '!=', 'DIBATALKAN');
+
+        if ($sessionFilter && in_array($sessionFilter, ['1', '2'])) {
+            $query->where('session', $sessionFilter);
+        }
+
+        if ($statusFilter === 'attended') {
+            $query->where('is_attended', true)->orderBy('attended_at', 'desc');
+        } elseif ($statusFilter === 'unattended') {
+            $query->where('is_attended', false)->orderBy('student_name', 'asc');
+        } else {
+            $query->orderBy('is_attended', 'desc')->orderBy('attended_at', 'desc')->orderBy('id', 'desc');
+        }
+
+        if ($search !== '') {
+            $query->where(function ($q) use ($search) {
+                $q->where('reg_code', 'LIKE', "%{$search}%")
+                  ->orWhere('student_name', 'LIKE', "%{$search}%")
+                  ->orWhere('school_name', 'LIKE', "%{$search}%")
+                  ->orWhere('whatsapp', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $participants = $query->paginate(25)->withQueryString();
+
+        $recentCheckIns = Participant::where('is_attended', true)
+            ->orderBy('attended_at', 'desc')
+            ->take(8)
+            ->get();
+
+        return view('admin.attendance', compact(
+            'participants',
+            'sessionFilter',
+            'statusFilter',
+            'search',
+            's1Max', 's1TotalUtama', 's1Attended', 's1Percent',
+            's2Max', 's2TotalUtama', 's2Attended', 's2Percent',
+            'totalAttended', 'totalUtama', 'totalPercent',
+            'recentCheckIns'
+        ));
+    }
+
+    /**
      * Promote a Cadangan (Waitlist) participant to Utama within their session.
      */
     public function promote(Participant $participant)

@@ -499,4 +499,50 @@ class EventRegistrationTest extends TestCase
         $landingResAfterReset = $this->get('/');
         $landingResAfterReset->assertSee('Modul 1: Coding &amp; Praktik Membuat Game 🎮', false);
     }
+
+    public function test_admin_attendance_page_and_dedicated_checkin_menu(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin Panitia',
+            'email' => 'admin_attendance@test.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $p = Participant::create([
+            'reg_code' => 'XYZAB',
+            'session' => '1',
+            'student_name' => 'Peserta Uji Presensi',
+            'school_name' => 'SD Muhammadiyah',
+            'gender' => 'L',
+            'experience_level' => 'Belum Pernah',
+            'parent_name' => 'Ortu Uji',
+            'whatsapp' => '081234567899',
+            'status' => 'UTAMA',
+            'is_attended' => false,
+        ]);
+
+        $this->actingAs($admin);
+
+        // Access separate attendance page
+        $res = $this->get(route('admin.attendance'));
+        $res->assertStatus(200);
+        $res->assertSee('Presensi Kehadiran Siswa');
+        $res->assertSee('Peserta Uji Presensi');
+        $res->assertSee('XYZAB');
+        $res->assertSee('Buka Kamera QR');
+
+        // Check dashboard doesn't have the huge input bar anymore, but links to attendance
+        $resDash = $this->get(route('admin.dashboard'));
+        $resDash->assertStatus(200);
+        $resDash->assertSee('Buka Menu Presensi &rarr;', false);
+        $resDash->assertDontSee('id="qrScannerModal"', false);
+
+        // Toggle check-in from attendance
+        $toggleRes = $this->post(route('admin.participants.checkin', $p->id));
+        $toggleRes->assertSessionHas('success');
+
+        $p->refresh();
+        $this->assertTrue((bool)$p->is_attended);
+        $this->assertNotNull($p->attended_at);
+    }
 }
