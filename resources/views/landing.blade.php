@@ -83,16 +83,13 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
-            <!-- Poster Top Branding Bar (Matching Original Poster Layout) -->
-            <div class="flex items-center justify-between gap-4 max-w-5xl mx-auto mb-6">
-                <!-- Left: Official Muhijunior ISS Logo -->
-                <div class="bg-white px-5 py-2.5 rounded-2xl border-3 border-blue-950 shadow-md">
-                    <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS - School Of Creative People" class="h-10 sm:h-12 w-auto object-contain">
-                </div>
-                <!-- Right: Official SMP Muhammadiyah 1 Yogyakarta Crest -->
-                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-blue-950 text-white text-xs sm:text-sm font-black uppercase tracking-wider shadow-md border-3 border-amber-300">
-                    <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-9 w-9 object-contain rounded-full border border-amber-300">
+            <!-- School & Community Identity Pill -->
+            <div class="text-center mb-3">
+                <div class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-blue-950 text-white text-xs sm:text-sm font-black uppercase tracking-wider shadow-lg border-2 border-amber-300">
+                    <img src="/images/logo-smp-muh1.png" alt="SMP Muhammadiyah 1" class="h-5 w-5 object-contain rounded-full">
                     <span>SMP Muhammadiyah 1 Yogyakarta</span>
+                    <span class="text-amber-400 font-bold">&bull;</span>
+                    <span class="text-amber-300">Muhijunior ISS</span>
                 </div>
             </div>
 
