@@ -98,7 +98,7 @@
                         📅 {{ $eventDate }}
                     </span>
                     <span class="flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-slate-200 shadow-xs">
-                        📍 Lab Komputer Muhijunior
+                        📍 Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta
                     </span>
                     <span class="flex items-center gap-1.5 bg-white px-3.5 py-2 rounded-xl border border-slate-200 shadow-xs">
                         👥 2 Sesi Pilihan (Maks 90 Siswa / Sesi)
@@ -229,55 +229,55 @@
         </div>
     </section>
 
-    <!-- Section: 3 Hal Keren yang Akan Dibuat Siswa -->
+    <!-- Section: 3 Materi Utama Kegiatan -->
     <section id="materi" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
                 <span class="text-indigo-600 font-extrabold text-xs uppercase tracking-widest bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
-                    KURIKULUM MENYENANGKAN
+                    MATERI &amp; KURIKULUM WORKSHOP
                 </span>
                 <h2 class="mt-3 text-3xl font-black text-slate-900 tracking-tight sm:text-4xl">
-                    Apa yang Akan Dibuat Putra/Putri Anda?
+                    3 Pilar Pembelajaran Interaktif Siswa
                 </h2>
-                <p class="mt-3 text-slate-600 text-sm sm:text-base">
-                    Bukan hanya teori membosankan! Siswa diajak praktik langsung menghasilkan karya digital yang bisa mereka tunjukkan dan banggakan ke orang tua.
+                <p class="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed">
+                    Dirancang aplikatif dan ramah anak kelas 6 SD agar siswa tidak hanya menjadi pengguna teknologi, namun menjadi kreator yang cakap dan beretika digital.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
+                <!-- Card 1: Coding dan Praktik membuat Game -->
                 <div class="group relative rounded-3xl p-8 bg-gradient-to-b from-blue-50/60 to-white border border-blue-100 hover:border-blue-300 shadow-sm hover:shadow-xl transition-all">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center text-3xl font-bold mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
                         🎮
                     </div>
-                    <span class="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-1">PROYEK 1</span>
-                    <h3 class="text-xl font-extrabold text-slate-900 mb-3">Membuat Game Interaktif Sendiri</h3>
+                    <span class="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-1">MATERI 1</span>
+                    <h3 class="text-xl font-extrabold text-slate-900 mb-3">Coding dan Praktik Membuat Game</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">
-                        Menggunakan visual block coding (Scratch), siswa belajar mengontrol karakter, menambahkan skor, efek suara, dan rintangan game dengan logika komputasional yang runtut.
+                        Mempelajari logika komputasi dasar dan algoritma melalui visual block coding (Scratch/Blockly). Siswa langsung merakit game komputer interaktif karyanya sendiri: mengontrol karakter, merancang level tantangan, animasi gerak, serta sistem skor permainan.
                     </p>
                 </div>
 
-                <!-- Card 2 -->
+                <!-- Card 2: Pemanfaatan A.I. untuk belajar -->
                 <div class="group relative rounded-3xl p-8 bg-gradient-to-b from-purple-50/60 to-white border border-purple-100 hover:border-purple-300 shadow-sm hover:shadow-xl transition-all">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-600 text-white flex items-center justify-center text-3xl font-bold mb-6 shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">
                         🤖
                     </div>
-                    <span class="text-xs font-bold text-purple-600 uppercase tracking-wider block mb-1">PROYEK 2</span>
-                    <h3 class="text-xl font-extrabold text-slate-900 mb-3">Membuat Chatbot &amp; Cerita Bersama A.I.</h3>
+                    <span class="text-xs font-bold text-purple-600 uppercase tracking-wider block mb-1">MATERI 2</span>
+                    <h3 class="text-xl font-extrabold text-slate-900 mb-3">Pemanfaatan A.I. untuk Belajar</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">
-                        Anak diajak memahami bagaimana Artificial Intelligence mengenali perintah, menyusun ide cerita petualangan komik, dan merancang ilustrasi karakter kartun dengan prompt cerdas.
+                        Mengenalkan konsep Artificial Intelligence dengan pendekatan yang mudah dipahami anak. Siswa mempraktikkan A.I. sebagai sahabat belajar pintar: membantu memahami konsep sains sulit, brainstorming ide kreatif, eksplorasi bahasa, dan melatih nalar kritis tanpa ketergantungan pasif.
                     </p>
                 </div>
 
-                <!-- Card 3 -->
+                <!-- Card 3: Keamanan dan Etika Digital -->
                 <div class="group relative rounded-3xl p-8 bg-gradient-to-b from-emerald-50/60 to-white border border-emerald-100 hover:border-emerald-300 shadow-sm hover:shadow-xl transition-all">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-600 text-white flex items-center justify-center text-3xl font-bold mb-6 shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
-                        💡
+                        🛡️
                     </div>
-                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider block mb-1">PROYEK 3</span>
-                    <h3 class="text-xl font-extrabold text-slate-900 mb-3">A.I. for Learning (Asisten Belajar)</h3>
+                    <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider block mb-1">MATERI 3</span>
+                    <h3 class="text-xl font-extrabold text-slate-900 mb-3">Keamanan dan Etika Digital</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">
-                        Edukasi etika penting: bagaimana memanfaatkan A.I. untuk membantu memahami soal matematika sulit, latihan percakapan bahasa Inggris, tanpa mencontek secara pasif.
+                        Membekali siswa dengan pemahaman <em>cyber safety</em>: menjaga kerahasiaan data pribadi, bersikap santun dan aman saat berinteraksi online, menghindari jejak digital negatif, serta cerdas membedakan informasi fakta vs hoax maupun konten rekayasa A.I.
                     </p>
                 </div>
             </div>
@@ -326,8 +326,8 @@
                     <div class="flex items-center gap-4">
                         <span class="px-3.5 py-1.5 rounded-xl bg-indigo-100 font-mono font-black text-xs text-indigo-800 shrink-0">08:00 – 09:15</span>
                         <div>
-                            <h4 class="font-extrabold text-slate-900 text-sm">Modul 1: Coding Interaktif &amp; Game Making</h4>
-                            <p class="text-xs text-slate-500">Mempelajari logika sekuensial, loop, dan merakit game perdana dengan Scratch.</p>
+                            <h4 class="font-extrabold text-slate-900 text-sm">Modul 1: Coding &amp; Praktik Membuat Game</h4>
+                            <p class="text-xs text-slate-500">Logika sekuensial, algoritma visual Scratch, dan merakit game interaktif perdana.</p>
                         </div>
                     </div>
                     <span class="text-xs font-bold text-indigo-600 shrink-0">75 Menit</span>
@@ -337,8 +337,8 @@
                     <div class="flex items-center gap-4">
                         <span class="px-3.5 py-1.5 rounded-xl bg-amber-100 font-mono font-black text-xs text-amber-800 shrink-0">09:15 – 09:30</span>
                         <div>
-                            <h4 class="font-extrabold text-slate-900 text-sm">Snack Break &amp; Ice Breaking Games 🍪</h4>
-                            <p class="text-xs text-slate-500">Waktu santai, kuis seru berhadiah, dan networking teman baru.</p>
+                            <h4 class="font-extrabold text-slate-900 text-sm">Snack Break &amp; Fun Quiz 🍪</h4>
+                            <p class="text-xs text-slate-500">Waktu istirahat, snack lezat, kuis seru berhadiah, dan networking teman baru.</p>
                         </div>
                     </div>
                     <span class="text-xs font-semibold text-slate-400 shrink-0">15 Menit</span>
@@ -346,24 +346,24 @@
 
                 <div class="bg-white p-5 rounded-2xl border-l-4 border-l-purple-600 border border-slate-200 shadow-xs flex items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-purple-100 font-mono font-black text-xs text-purple-800 shrink-0">09:30 – 10:15</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-purple-100 font-mono font-black text-xs text-purple-800 shrink-0">09:30 – 10:05</span>
                         <div>
-                            <h4 class="font-extrabold text-slate-900 text-sm">Modul 2: A.I. for Learning &amp; Prompt Cilik</h4>
-                            <p class="text-xs text-slate-500">Eksplorasi kecerdasan buatan, membuat asisten belajar, dan prompt engineering ramah anak.</p>
+                            <h4 class="font-extrabold text-slate-900 text-sm">Modul 2: Pemanfaatan A.I. untuk Belajar</h4>
+                            <p class="text-xs text-slate-500">Eksplorasi kecerdasan buatan, prompt cilik, dan praktik A.I. sebagai sahabat belajar pintar.</p>
                         </div>
                     </div>
-                    <span class="text-xs font-bold text-purple-600 shrink-0">45 Menit</span>
+                    <span class="text-xs font-bold text-purple-600 shrink-0">35 Menit</span>
                 </div>
 
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between gap-4">
+                <div class="bg-white p-5 rounded-2xl border-l-4 border-l-emerald-600 border border-slate-200 shadow-xs flex items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 font-mono font-black text-xs text-emerald-800 shrink-0">10:15 – 10:30</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 font-mono font-black text-xs text-emerald-800 shrink-0">10:05 – 10:30</span>
                         <div>
-                            <h4 class="font-extrabold text-slate-900 text-sm">Showcase Karya, Pembagian Sertifikat &amp; Foto 🎓</h4>
-                            <p class="text-xs text-slate-500">Orang tua dipersilakan masuk menyaksikan karya siswa dan penyerahan e-certificate.</p>
+                            <h4 class="font-extrabold text-slate-900 text-sm">Modul 3: Keamanan &amp; Etika Digital + Showcase 🎓</h4>
+                            <p class="text-xs text-slate-500">Cyber safety, etika bermedia digital, pameran hasil karya game, dan penyerahan sertifikat.</p>
                         </div>
                     </div>
-                    <span class="text-xs font-semibold text-slate-400 shrink-0">15 Menit</span>
+                    <span class="text-xs font-bold text-emerald-600 shrink-0">25 Menit</span>
                 </div>
             </div>
 
@@ -382,35 +382,35 @@
 
                 <div class="bg-white p-5 rounded-2xl border-l-4 border-l-purple-600 border border-slate-200 shadow-xs flex items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-purple-100 font-mono font-black text-xs text-purple-800 shrink-0">12:30 – 13:20</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-purple-100 font-mono font-black text-xs text-purple-800 shrink-0">12:30 – 13:15</span>
                         <div>
-                            <h4 class="font-extrabold text-slate-900 text-sm">Modul 1: Fast-Track Visual Coding &amp; Game</h4>
-                            <p class="text-xs text-slate-500">Membuat game interaktif terpandu dengan fokus logika kreatif &amp; algoritma.</p>
+                            <h4 class="font-extrabold text-slate-900 text-sm">Modul 1: Coding &amp; Praktik Membuat Game</h4>
+                            <p class="text-xs text-slate-500">Mempelajari logika pemrograman visual Scratch dan merakit game kreasi mandiri.</p>
                         </div>
                     </div>
-                    <span class="text-xs font-bold text-purple-600 shrink-0">50 Menit</span>
+                    <span class="text-xs font-bold text-purple-600 shrink-0">45 Menit</span>
                 </div>
 
                 <div class="bg-white p-5 rounded-2xl border-l-4 border-l-pink-600 border border-slate-200 shadow-xs flex items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-pink-100 font-mono font-black text-xs text-pink-800 shrink-0">13:20 – 13:50</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-pink-100 font-mono font-black text-xs text-pink-800 shrink-0">13:15 – 13:40</span>
                         <div>
-                            <h4 class="font-extrabold text-slate-900 text-sm">Modul 2: A.I. for Learning Studio</h4>
-                            <p class="text-xs text-slate-500">Praktik A.I. sebagai sahabat belajar pintar, eksplorasi sains, dan kuis ceria.</p>
+                            <h4 class="font-extrabold text-slate-900 text-sm">Modul 2: Pemanfaatan A.I. untuk Belajar</h4>
+                            <p class="text-xs text-slate-500">Praktik menggunakan A.I. sebagai mitra belajar cerdas, eksplorasi ide sains &amp; nalar kreatif.</p>
                         </div>
                     </div>
-                    <span class="text-xs font-bold text-pink-600 shrink-0">30 Menit</span>
+                    <span class="text-xs font-bold text-pink-600 shrink-0">25 Menit</span>
                 </div>
 
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between gap-4">
+                <div class="bg-white p-5 rounded-2xl border-l-4 border-l-emerald-600 border border-slate-200 shadow-xs flex items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 font-mono font-black text-xs text-emerald-800 shrink-0">13:50 – 14:00</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 font-mono font-black text-xs text-emerald-800 shrink-0">13:40 – 14:00</span>
                         <div>
-                            <h4 class="font-extrabold text-slate-900 text-sm">Showcase Karya, Sertifikat &amp; Penutupan Resmi 🎓</h4>
-                            <p class="text-xs text-slate-500">Apresiasi karya anak, sertifikat resmi kegiatan, dan foto bersama.</p>
+                            <h4 class="font-extrabold text-slate-900 text-sm">Modul 3: Keamanan &amp; Etika Digital + Penutup 🎓</h4>
+                            <p class="text-xs text-slate-500">Etika digital, perlindungan privasi anak, showcase game karya siswa &amp; penyerahan sertifikat.</p>
                         </div>
                     </div>
-                    <span class="text-xs font-semibold text-slate-400 shrink-0">10 Menit</span>
+                    <span class="text-xs font-bold text-emerald-600 shrink-0">20 Menit</span>
                 </div>
             </div>
         </div>
@@ -631,7 +631,7 @@
                             <label class="flex items-start gap-3 cursor-pointer">
                                 <input type="checkbox" name="terms_agreement" value="1" {{ old('terms_agreement') ? 'checked' : '' }} required class="mt-1 w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
                                 <span class="text-xs text-slate-700 leading-relaxed">
-                                    Saya menyatakan data yang diisi adalah benar dan mengizinkan putra/putri saya untuk mengikuti kegiatan workshop ini di Kampus Muhijunior. <span class="text-rose-500">*</span>
+                                    Saya menyatakan data yang diisi adalah benar dan mengizinkan putra/putri saya untuk mengikuti kegiatan workshop ini di Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta. <span class="text-rose-500">*</span>
                                 </span>
                             </label>
                             @error('terms_agreement') <p class="text-xs text-rose-500">{{ $message }}</p> @enderror

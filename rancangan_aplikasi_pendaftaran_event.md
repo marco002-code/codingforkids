@@ -2,7 +2,15 @@
 **Nama Kegiatan:** Coding for Kids and A.I. for Learning  
 **Target Peserta:** Siswa SD Kelas 6  
 **Waktu Pelaksanaan:** Senin, 21 Desember 2026  
-**Biaya:** Gratis (Gratis dengan sistem Kuota Utama & Peserta Cadangan / *Waitlist*)
+**Lokasi Kegiatan:** Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta  
+**Pilihan Sesi:**
+- **Sesi 1 (Pagi):** 08:00 – 10:30 WIB (Batas Kuota: 90 Peserta)
+- **Sesi 2 (Siang):** 12:30 – 14:00 WIB (Batas Kuota: 90 Peserta)  
+**Materi Pembelajaran:**
+1. Coding dan Praktik membuat Game
+2. Pemanfaatan A.I. untuk belajar
+3. Keamanan dan Etika Digital  
+**Biaya:** 100% Gratis (Sistem Kuota Utama 90/sesi & Peserta Cadangan / *Waitlist*)
 
 ---
 

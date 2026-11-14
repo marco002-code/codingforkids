@@ -49,7 +49,7 @@ class HomeController extends Controller
         $isGlobalOpen = ($registrationStatus === 'OPEN') && !$isGlobalFull;
 
         $eventDate = Setting::get('event_date', 'Senin, 21 Desember 2026');
-        $eventLocation = Setting::get('event_location', 'Lab Komputer & Auditorium Utama Kampus Muhijunior');
+        $eventLocation = Setting::get('event_location', 'Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta');
         $contactWhatsapp = Setting::get('contact_whatsapp', '081234567890');
 
         return view('landing', compact(

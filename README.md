@@ -2,7 +2,12 @@
 ## Landing Page & Sistem Pendaftaran Event (Laravel + HestiaCP Ecosystem)
 **Production URL:** [https://coding.muhijunior.id](https://coding.muhijunior.id)
 
-Aplikasi web modern berbasis **Laravel 11/12** yang dirancang khusus untuk acara workshop edukasi teknologi anak SD kelas 6: **"Coding for Kids and A.I. for Learning"** (Senin, 21 Desember 2026).
+**Waktu:** Senin, 21 Desember 2026 (Sesi 1: 08:00–10:30 WIB | Sesi 2: 12:30–14:00 WIB, Kuota 90/sesi)  
+**Lokasi:** Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta  
+**Materi:**
+1. Coding dan Praktik membuat Game
+2. Pemanfaatan A.I. untuk belajar
+3. Keamanan dan Etika Digital
 
 Dilengkapi dengan sistem **manajemen kuota otomatis** (*Race-condition protected atomic transaction*) yang memisahkan pendaftar menjadi **Peserta Utama** (50 kursi) dan **Peserta Cadangan / Waitlist** (20 antrean), E-Ticket digital dengan barcode, serta Portal Admin Panitia lengkap dengan fitur presensi cepat hari-H, promosi antrean cadangan 1-klik, dan integrasi WhatsApp.
 

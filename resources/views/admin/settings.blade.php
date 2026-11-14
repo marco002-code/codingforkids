@@ -121,7 +121,7 @@
 
                 <div class="sm:col-span-2">
                     <label class="block text-xs font-bold text-slate-700 mb-1">Lokasi Kegiatan <span class="text-rose-500">*</span></label>
-                    <input type="text" name="event_location" value="{{ old('event_location', $settings['event_location']->value ?? 'Lab Komputer & Auditorium Utama Kampus Muhijunior') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="text" name="event_location" value="{{ old('event_location', $settings['event_location']->value ?? 'Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
             </div>
         </div>

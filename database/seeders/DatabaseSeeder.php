@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
             ['key' => 'event_subtitle', 'value' => 'Workshop interaktif, fun, dan 100% GRATIS dengan 2 pilihan sesi (Kapasitas terbatas 90 siswa per sesi).', 'group' => 'event', 'label' => 'Sub Headline'],
             ['key' => 'target_audience', 'value' => 'Siswa SD Kelas 6 (Tahun Ajaran 2026/2027)', 'group' => 'event', 'label' => 'Target Peserta'],
             ['key' => 'event_date', 'value' => 'Senin, 21 Desember 2026', 'group' => 'event', 'label' => 'Tanggal Pelaksanaan'],
-            ['key' => 'event_location', 'value' => 'Lab Komputer & Auditorium Utama Kampus Muhijunior', 'group' => 'event', 'label' => 'Lokasi Kegiatan'],
+            ['key' => 'event_location', 'value' => 'Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta', 'group' => 'event', 'label' => 'Lokasi Kegiatan'],
             
             // Session 1 Config
             ['key' => 'session_1_name', 'value' => 'Sesi 1 (Pagi)', 'group' => 'session', 'label' => 'Nama Sesi 1'],

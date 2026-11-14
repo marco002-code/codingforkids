@@ -127,7 +127,7 @@ class RegistrationController extends Controller
 
         $eventName = Setting::get('event_name', 'Coding for Kids and A.I. for Learning');
         $eventDate = Setting::get('event_date', 'Senin, 21 Desember 2026');
-        $eventLocation = Setting::get('event_location', 'Lab Komputer & Auditorium Utama Kampus Muhijunior');
+        $eventLocation = Setting::get('event_location', 'Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta');
         $whatsappGroupLink = Setting::get('whatsapp_group_link', 'https://chat.whatsapp.com');
         $contactWhatsapp = Setting::get('contact_whatsapp', '081234567890');
 
