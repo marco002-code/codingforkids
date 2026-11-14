@@ -19,10 +19,13 @@
     <meta property="og:image" content="@yield('og_image', url('images/og-preview.jpg'))">
     <meta property="og:image:secure_url" content="@yield('og_image_secure', url('images/og-preview.jpg'))">
     <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:image:width" content="1024">
-    <meta property="og:image:height" content="854">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="667">
     <meta property="og:image:alt" content="Coding for Kids & A.I. for Learning - SMP Muhammadiyah 1 Yogyakarta">
+    
+    <!-- WhatsApp & Schema.org Image Hints -->
     <link rel="image_src" href="@yield('og_image', url('images/og-preview.jpg'))">
+    <meta itemprop="image" content="@yield('og_image', url('images/og-preview.jpg'))">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">

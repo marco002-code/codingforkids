@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Coding for Kids - Belajar Block Programming, A.I. & Keamanan Digital | Muhijunior')
+@section('og_title', 'Coding for Kids - Belajar Block Programming, A.I. & Keamanan Digital | Muhijunior')
+@section('og_description', 'Workshop Coding 100% GRATIS khusus Siswa SD Kelas 6! Belajar logika game Scratch, A.I. ramah anak, dan cyber safety Google Interland di Lab Komputer SMP Muhammadiyah 1 Yogyakarta.')
 
 @section('content')
 
