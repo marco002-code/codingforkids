@@ -86,9 +86,9 @@
             <!-- School & Community Identity Pill -->
             <div class="text-center mb-3">
                 <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white text-blue-950 text-xs sm:text-sm font-black shadow-lg border-3 border-blue-950">
-                    <img src="/images/logo-muhijunior-iss.png" alt="Muhijunior ISS - School Of Creative People" class="h-6 sm:h-7 w-auto object-contain">
+                    <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS - School Of Creative People" class="h-6 sm:h-7 w-auto object-contain">
                     <span class="w-px h-5 bg-slate-300"></span>
-                    <img src="/images/logo-smp-muh1.png" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-6 sm:h-7 w-auto object-contain">
+                    <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-6 sm:h-7 w-auto object-contain">
                     <span class="hidden sm:inline font-display font-black text-xs uppercase tracking-wider text-blue-950">SMP Muhammadiyah 1 Yogyakarta</span>
                 </div>
             </div>
@@ -244,7 +244,7 @@
                         <!-- Image Container with Animated Robot Overlay -->
                         <div class="relative rounded-2xl overflow-hidden border-3 border-blue-950 shadow-md bg-purple-950 aspect-video group">
                             <!-- High-Res Kid Coder Illustration -->
-                            <img src="/images/kid-coder-illustration.jpg" alt="Coding for Kids & A.I. - SMP Muhammadiyah 1 Yogyakarta" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <img src="{{ asset('images/kid-coder-illustration.jpg') }}" alt="Coding for Kids & A.I. - SMP Muhammadiyah 1 Yogyakarta" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
 
                             <!-- Animated Robot Assistant Overlay (Floating dynamically on top-right) -->
                             <div class="absolute top-2.5 right-2 sm:right-3 z-20 animate-float-gentle">

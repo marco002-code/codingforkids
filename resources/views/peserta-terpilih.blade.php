@@ -30,9 +30,9 @@
             <div class="relative z-10 max-w-3xl">
                 <!-- Organizer Branding Badges -->
                 <div class="flex items-center gap-3 bg-white/95 backdrop-blur-xs px-4 py-2 rounded-2xl shadow-sm border-2 border-blue-950 mb-3 w-fit">
-                    <img src="/images/logo-muhijunior-iss.png" alt="Muhijunior ISS" class="h-7 sm:h-8 w-auto object-contain">
+                    <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS" class="h-7 sm:h-8 w-auto object-contain">
                     <span class="w-px h-6 bg-slate-300"></span>
-                    <img src="/images/logo-smp-muh1.png" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-7 sm:h-8 w-auto object-contain">
+                    <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-7 sm:h-8 w-auto object-contain">
                     <span class="hidden sm:inline font-display font-black text-xs uppercase tracking-wider text-blue-950">SMP Muhammadiyah 1 Yogyakarta</span>
                 </div>
 
