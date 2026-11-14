@@ -434,31 +434,64 @@
 
                 <!-- BANNER DAFTAR PESERTA TERPILIH -->
                 <div class="mt-8">
-                    <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 p-1 rounded-2xl shadow-xl border-3 border-blue-950">
-                        <div class="bg-white/95 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <div class="flex items-center gap-3.5 text-left">
-                                <div class="w-12 h-12 rounded-2xl bg-emerald-100 border-2 border-emerald-500 flex items-center justify-center text-2xl shrink-0 shadow-xs">
-                                    🏆
-                                </div>
-                                <div>
-                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black uppercase tracking-wider mb-1">
-                                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                                        Pengumuman Resmi
+                    @if($isPublished)
+                        <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 p-1 rounded-2xl shadow-xl border-3 border-blue-950">
+                            <div class="bg-white/95 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div class="flex items-center gap-3.5 text-left">
+                                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 border-2 border-emerald-500 flex items-center justify-center text-2xl shrink-0 shadow-xs">
+                                        🏆
                                     </div>
-                                    <h3 class="font-display font-black text-base sm:text-lg text-blue-950 leading-tight">
-                                        Daftar Peserta Terpilih Telah Dibuka!
-                                    </h3>
-                                    <p class="text-xs text-slate-600 font-semibold mt-0.5">
-                                        Cek nama siswa yang lolos kuota utama di Sesi 1 &amp; Sesi 2 serta unduh e-tiket langsung.
-                                    </p>
+                                    <div>
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black uppercase tracking-wider mb-1">
+                                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                                            Pengumuman Resmi
+                                        </div>
+                                        <h3 class="font-display font-black text-base sm:text-lg text-blue-950 leading-tight">
+                                            Daftar Peserta Terpilih Telah Dibuka!
+                                        </h3>
+                                        <p class="text-xs text-slate-600 font-semibold mt-0.5">
+                                            Cek nama siswa yang lolos kuota utama di Sesi 1 &amp; Sesi 2 serta unduh e-tiket langsung.
+                                        </p>
+                                    </div>
+                                </div>
+                                <a href="{{ route('participants.selected') }}" class="btn-cartoon-blue shrink-0 inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-black rounded-xl border-2 border-blue-950 !bg-emerald-600 hover:!bg-emerald-700 !shadow-[0_4px_0_#064e3b]">
+                                    <span>Lihat Peserta Terpilih</span>
+                                    <span>&rarr;</span>
+                                </a>
+                            </div>
+                        </div>
+                    @else
+                        <div class="bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 p-1 rounded-2xl shadow-xl border-3 border-blue-950">
+                            <div class="bg-white/95 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div class="flex items-center gap-3.5 text-left">
+                                    <div class="w-12 h-12 rounded-2xl bg-amber-100 border-2 border-amber-500 flex items-center justify-center text-2xl shrink-0 shadow-xs">
+                                        📋
+                                    </div>
+                                    <div>
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[11px] font-black uppercase tracking-wider mb-1">
+                                            <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                                            Tahap Verifikasi
+                                        </div>
+                                        <h3 class="font-display font-black text-base sm:text-lg text-blue-950 leading-tight">
+                                            Data Pendaftar dalam Proses Konfirmasi dan Validasi
+                                        </h3>
+                                        <p class="text-xs text-slate-600 font-semibold mt-0.5">
+                                            Panitia sedang memvalidasi data pendaftar. Anda tetap dapat mengecek status E-Ticket secara mandiri.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <button type="button" onclick="openTicketSearchModal()" class="px-4 py-2.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl border border-slate-300 transition-colors">
+                                        Cek E-Ticket
+                                    </button>
+                                    <a href="{{ route('participants.selected') }}" class="btn-cartoon-blue inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-black rounded-xl">
+                                        <span>Detail Info</span>
+                                        <span>&rarr;</span>
+                                    </a>
                                 </div>
                             </div>
-                            <a href="{{ route('participants.selected') }}" class="btn-cartoon-blue shrink-0 inline-flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-black rounded-xl border-2 border-blue-950 !bg-emerald-600 hover:!bg-emerald-700 !shadow-[0_4px_0_#064e3b]">
-                                <span>Lihat Peserta Terpilih</span>
-                                <span>&rarr;</span>
-                            </a>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
             </div>

@@ -48,40 +48,108 @@
             </div>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            <div class="cartoon-box p-5 bg-white flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block">Total Peserta Terpilih</span>
-                    <span class="font-display font-black text-3xl text-blue-950 mt-1 block">{{ $totalSelected }} Siswa</span>
+        @if(!$isPublished && !auth()->check())
+            <!-- CARD KETERANGAN: DATA PENDAFTAR DALAM PROSES KONFIRMASI DAN VALIDASI -->
+            <div class="cartoon-box p-8 sm:p-12 mb-8 bg-white text-center relative overflow-hidden">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-900 border-2 border-amber-400 text-xs font-black uppercase tracking-wider mb-4 animate-pulse">
+                    <span>⏳</span> STATUS PENGUMUMAN: TAHAP VERIFIKASI
                 </div>
-                <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-950 flex items-center justify-center text-2xl font-black">
-                    🎓
-                </div>
-            </div>
 
-            <div class="cartoon-box p-5 bg-white flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block">☀️ Sesi 1 (Pagi)</span>
-                    <span class="font-display font-black text-3xl text-blue-900 mt-1 block">{{ $s1Total }} / 90</span>
-                    <span class="text-[11px] text-slate-500 font-semibold">Pukul 07:30 – 10:00 WIB</span>
+                <div class="w-24 h-24 mx-auto mb-5 rounded-3xl bg-amber-50 border-3 border-blue-950 flex items-center justify-center text-5xl shadow-md">
+                    📋
                 </div>
-                <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-800 flex items-center justify-center text-2xl font-black">
-                    ☀️
-                </div>
-            </div>
 
-            <div class="cartoon-box p-5 bg-white flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block">🌤️ Sesi 2 (Siang)</span>
-                    <span class="font-display font-black text-3xl text-purple-900 mt-1 block">{{ $s2Total }} / 90</span>
-                    <span class="text-[11px] text-slate-500 font-semibold">Pukul 10:30 – 12:00 WIB</span>
+                <h2 class="font-display font-black text-2xl sm:text-4xl text-blue-950 tracking-tight leading-tight max-w-2xl mx-auto">
+                    Data Pendaftar dalam Proses Konfirmasi dan Validasi
+                </h2>
+
+                <p class="mt-4 text-slate-600 text-sm sm:text-base max-w-xl mx-auto font-medium leading-relaxed">
+                    Saat ini tim panitia SMP Muhammadiyah 1 Yogyakarta sedang melakukan proses verifikasi kelengkapan berkas, validasi kehadiran, serta penetapan pembagian kuota per sesi untuk <strong>Sesi 1 (07:30 – 10:00 WIB)</strong> dan <strong>Sesi 2 (10:30 – 12:00 WIB)</strong>.
+                </p>
+
+                <p class="mt-2 text-blue-950 font-bold text-xs sm:text-sm">
+                    Daftar resmi nama peserta terpilih akan segera dirilis di halaman ini begitu proses validasi selesai.
+                </p>
+
+                <!-- Action Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto mt-8 text-left">
+                    <div class="p-5 rounded-2xl bg-blue-50 border-2 border-blue-200">
+                        <span class="text-xs font-black uppercase tracking-wider text-blue-900 block mb-1">🎟️ Cek Tiket Mandiri</span>
+                        <p class="text-xs text-slate-600 mb-3 font-medium">Sudah mendaftar sebelumnya? Anda tetap dapat melihat status pendaftaran dan e-tiket ananda kapan saja.</p>
+                        <button type="button" onclick="openTicketSearchModal()" class="btn-cartoon-blue w-full py-2.5 px-4 text-xs font-black rounded-xl text-center">
+                            Cek Status &amp; E-Ticket Anda &rarr;
+                        </button>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-emerald-50 border-2 border-emerald-200">
+                        <span class="text-xs font-black uppercase tracking-wider text-emerald-900 block mb-1">💬 Hotline Panitia</span>
+                        <p class="text-xs text-slate-600 mb-3 font-medium">Ada pertanyaan atau butuh bantuan terkait pendaftaran workshop? Hubungi WhatsApp resmi kami.</p>
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $contactWhatsapp ?? '081234567890') }}?text={{ urlencode('Halo Panitia Coding for Kids Muhijunior, saya ingin konfirmasi pendaftaran...') }}" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-xs transition-colors text-center">
+                            Chat WhatsApp Panitia &rarr;
+                        </a>
+                    </div>
                 </div>
-                <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-800 flex items-center justify-center text-2xl font-black">
-                    🌤️
+
+                <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-center gap-3 text-xs text-slate-500 font-medium">
+                    <span>📅 Pelaksanaan: <strong>{{ $eventDate }}</strong></span>
+                    <span>&bull;</span>
+                    <span>📍 <strong>SMP Muhammadiyah 1 Yogyakarta</strong></span>
                 </div>
             </div>
-        </div>
+        @else
+            @if(!$isPublished && auth()->check())
+                <!-- Admin Preview Notice -->
+                <div class="cartoon-box p-4 mb-6 bg-amber-100 border-2 border-amber-400 text-amber-950 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">🔒</span>
+                        <div>
+                            <strong class="text-xs font-black uppercase tracking-wider block">Mode Pratinjau Panitia (Belum Dipublikasi)</strong>
+                            <p class="text-xs text-amber-900">Masyarakat umum saat ini melihat keterangan: <em>"Data Pendaftar dalam Proses Konfirmasi dan Validasi"</em>.</p>
+                        </div>
+                    </div>
+                    <form action="{{ route('admin.participants.togglePublish') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow-xs transition-colors shrink-0">
+                            📢 Publikasikan Sekarang ke Publik &rarr;
+                        </button>
+                    </form>
+                </div>
+            @endif
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                <div class="cartoon-box p-5 bg-white flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block">Total Peserta Terpilih</span>
+                        <span class="font-display font-black text-3xl text-blue-950 mt-1 block">{{ $totalSelected }} Siswa</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-950 flex items-center justify-center text-2xl font-black">
+                        🎓
+                    </div>
+                </div>
+
+                <div class="cartoon-box p-5 bg-white flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block">☀️ Sesi 1 (Pagi)</span>
+                        <span class="font-display font-black text-3xl text-blue-900 mt-1 block">{{ $s1Total }} / 90</span>
+                        <span class="text-[11px] text-slate-500 font-semibold">Pukul 07:30 – 10:00 WIB</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-800 flex items-center justify-center text-2xl font-black">
+                        ☀️
+                    </div>
+                </div>
+
+                <div class="cartoon-box p-5 bg-white flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block">🌤️ Sesi 2 (Siang)</span>
+                        <span class="font-display font-black text-3xl text-purple-900 mt-1 block">{{ $s2Total }} / 90</span>
+                        <span class="text-[11px] text-slate-500 font-semibold">Pukul 10:30 – 12:00 WIB</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-800 flex items-center justify-center text-2xl font-black">
+                        🌤️
+                    </div>
+                </div>
+            </div>
 
         <!-- Filter & Search Toolbar -->
         <div class="cartoon-box p-5 bg-white mb-6 no-print">
@@ -202,18 +270,19 @@
             @endif
         </div>
 
-        <!-- Panduan & Informasi Hari-H -->
-        <div class="cartoon-box p-6 bg-amber-50 border-2 border-amber-300">
-            <h4 class="font-display font-black text-base text-blue-950 flex items-center gap-2 mb-2">
-                <span>📌</span> Informasi Penting untuk Peserta Terpilih
-            </h4>
-            <ul class="text-xs text-slate-700 space-y-1.5 list-disc list-inside font-medium leading-relaxed">
-                <li>Peserta wajib hadir <strong>30 menit sebelum sesi dimulai</strong> untuk registrasi ulang dan pengambilan Name Tag resmi.</li>
-                <li>Membawa <strong>E-Ticket (cetak atau tunjukkan di HP)</strong> saat tiba di Lab TIK SMP Muhammadiyah 1 Yogyakarta.</li>
-                <li>Peserta disarankan membawa <strong>laptop pribadi + charger</strong> masing-masing (Windows / Mac / Chromebook).</li>
-                <li>Memakai seragam sekolah masing-masing atau pakaian bebas rapi bersepatu.</li>
-            </ul>
-        </div>
+            <!-- Panduan & Informasi Hari-H -->
+            <div class="cartoon-box p-6 bg-amber-50 border-2 border-amber-300">
+                <h4 class="font-display font-black text-base text-blue-950 flex items-center gap-2 mb-2">
+                    <span>📌</span> Informasi Penting untuk Peserta Terpilih
+                </h4>
+                <ul class="text-xs text-slate-700 space-y-1.5 list-disc list-inside font-medium leading-relaxed">
+                    <li>Peserta wajib hadir <strong>30 menit sebelum sesi dimulai</strong> untuk registrasi ulang dan pengambilan Name Tag resmi.</li>
+                    <li>Membawa <strong>E-Ticket (cetak atau tunjukkan di HP)</strong> saat tiba di Lab TIK SMP Muhammadiyah 1 Yogyakarta.</li>
+                    <li>Peserta disarankan membawa <strong>laptop pribadi + charger</strong> masing-masing (Windows / Mac / Chromebook).</li>
+                    <li>Memakai seragam sekolah masing-masing atau pakaian bebas rapi bersepatu.</li>
+                </ul>
+            </div>
+        @endif
 
     </div>
 </div>

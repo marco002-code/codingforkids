@@ -100,6 +100,15 @@
                 </div>
 
                 <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Publikasi Daftar Peserta Terpilih <span class="text-rose-500">*</span></label>
+                    <select name="publish_selected_participants" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
+                        <option value="0" {{ ($settings['publish_selected_participants']->value ?? '0') == '0' ? 'selected' : '' }}>⏳ Draf / Belum Rilis (Tampil: Data Pendaftar dalam Proses Konfirmasi &amp; Validasi)</option>
+                        <option value="1" {{ ($settings['publish_selected_participants']->value ?? '0') == '1' ? 'selected' : '' }}>🟢 Sudah Rilis (Tampilkan Tabel Daftar Peserta Terpilih)</option>
+                    </select>
+                    <span class="text-[11px] text-slate-400 mt-1 block">Jika diset Draf, publik akan melihat card "Data Pendaftar dalam Proses Konfirmasi dan Validasi".</span>
+                </div>
+
+                <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal Pelaksanaan <span class="text-rose-500">*</span></label>
                     <input type="text" name="event_date" value="{{ old('event_date', $settings['event_date']->value ?? 'Senin, 21 Desember 2026') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>

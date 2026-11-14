@@ -56,6 +56,7 @@ class DatabaseSeeder extends Seeder
             ['key' => 'session_2_waitlist_quota', 'value' => '30', 'group' => 'quota', 'label' => 'Batas Kuota Cadangan Sesi 2'],
 
             ['key' => 'registration_status', 'value' => 'OPEN', 'group' => 'quota', 'label' => 'Status Pendaftaran (OPEN / CLOSED)'],
+            ['key' => 'publish_selected_participants', 'value' => '0', 'group' => 'announcement', 'label' => 'Publikasi Daftar Peserta Terpilih (0=Draft/Validasi, 1=Published)'],
             ['key' => 'whatsapp_group_link', 'value' => 'https://chat.whatsapp.com/CodingKidsAI2026', 'group' => 'contact', 'label' => 'Link Grup WhatsApp Koordinasi'],
             ['key' => 'contact_whatsapp', 'value' => '081234567890', 'group' => 'contact', 'label' => 'Nomor WhatsApp Hotline Panitia'],
             ['key' => 'contact_email', 'value' => 'panitia@muhijunior.id', 'group' => 'contact', 'label' => 'Email Panitia'],

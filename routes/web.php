@@ -44,6 +44,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/participants/{participant}/check-in', [AdminDashboardController::class, 'toggleCheckIn'])->name('participants.checkin');
     Route::post('/quick-check-in', [AdminDashboardController::class, 'quickCheckIn'])->name('quickCheckIn');
     Route::get('/export', [AdminDashboardController::class, 'export'])->name('export');
+    Route::post('/participants/toggle-publish', [AdminDashboardController::class, 'togglePublishSelected'])->name('participants.togglePublish');
     Route::get('/settings', [AdminDashboardController::class, 'settings'])->name('settings');
     Route::post('/settings', [AdminDashboardController::class, 'updateSettings'])->name('settings.update');
 });

@@ -451,10 +451,13 @@ class DashboardController extends Controller
             'session_2_waitlist_quota' => 'required|integer|min:0',
 
             'registration_status' => 'required|in:OPEN,CLOSED',
+            'publish_selected_participants' => 'nullable|in:0,1',
             'whatsapp_group_link' => 'nullable|url|max:200',
             'contact_whatsapp' => 'nullable|string|max:30',
             'contact_email' => 'nullable|email|max:100',
         ]);
+
+        Setting::set('publish_selected_participants', $request->input('publish_selected_participants', '0'), 'announcement', 'Publikasi Daftar Peserta Terpilih');
 
         foreach ($request->only([
             'event_name',
@@ -479,5 +482,21 @@ class DashboardController extends Controller
         }
 
         return back()->with('success', 'Pengaturan sesi kegiatan & kuota pendaftaran berhasil diperbarui.');
+    }
+
+    /**
+     * Toggle publishing status for selected participants announcement.
+     */
+    public function togglePublishSelected()
+    {
+        $current = Setting::get('publish_selected_participants', '0');
+        $newStatus = ($current === '1' || $current === 1 || $current === true) ? '0' : '1';
+        Setting::set('publish_selected_participants', $newStatus, 'announcement', 'Publikasi Daftar Peserta Terpilih');
+
+        $msg = ($newStatus === '1')
+            ? '✅ Pengumuman Daftar Peserta Terpilih Berhasil DIPUBLIKASIKAN ke publik!'
+            : '🔒 Pengumuman Daftar Peserta Terpilih diubah menjadi DRAF (Masyarakat umum melihat pesan: "Data Pendaftar dalam Proses Konfirmasi dan Validasi").';
+
+        return back()->with('success', $msg);
     }
 }

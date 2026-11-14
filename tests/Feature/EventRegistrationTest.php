@@ -201,6 +201,9 @@ class EventRegistrationTest extends TestCase
 
     public function test_selected_participants_public_page(): void
     {
+        // Set published to 1
+        Setting::set('publish_selected_participants', '1');
+
         // Seed participant UTAMA Sesi 1
         $p1 = Participant::create([
             'reg_code' => 'AI26-S1-001',
@@ -243,6 +246,54 @@ class EventRegistrationTest extends TestCase
         $responseS2 = $this->get('/peserta-terpilih?session=2');
         $responseS2->assertStatus(200);
         $responseS2->assertDontSee('Fadhil Al Ghifari');
+    }
+
+    public function test_selected_participants_shows_validation_card_when_unpublished(): void
+    {
+        // Set unpublished (0)
+        Setting::set('publish_selected_participants', '0');
+
+        Participant::create([
+            'reg_code' => 'KMPXW',
+            'session' => '1',
+            'student_name' => 'Peserta Belum Rilis',
+            'school_name' => 'SD Muhammadiyah 1',
+            'gender' => 'L',
+            'experience_level' => 'Belum Pernah',
+            'whatsapp' => '08123456789',
+            'status' => 'UTAMA',
+        ]);
+
+        // 1. Guest visitor should see "Data Pendaftar dalam Proses Konfirmasi dan Validasi"
+        $response = $this->get('/peserta-terpilih');
+        $response->assertStatus(200);
+        $response->assertSee('Data Pendaftar dalam Proses Konfirmasi dan Validasi');
+        $response->assertDontSee('Peserta Belum Rilis');
+
+        // 2. Admin should see preview mode and student names
+        $admin = User::create([
+            'name' => 'Admin Pengumuman',
+            'email' => 'admin_pengumuman@test.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $this->actingAs($admin);
+        $adminResponse = $this->get('/peserta-terpilih');
+        $adminResponse->assertStatus(200);
+        $adminResponse->assertSee('Mode Pratinjau Panitia');
+        $adminResponse->assertSee('Peserta Belum Rilis');
+
+        // 3. Admin toggles publish status
+        $toggleResponse = $this->post('/admin/participants/toggle-publish');
+        $toggleResponse->assertSessionHas('success');
+        $this->assertEquals('1', Setting::get('publish_selected_participants'));
+
+        // 4. Logout admin and check guest can now see published table
+        auth()->logout();
+        $publishedResponse = $this->get('/peserta-terpilih');
+        $publishedResponse->assertStatus(200);
+        $publishedResponse->assertSee('Peserta Belum Rilis');
+        $publishedResponse->assertDontSee('Data Pendaftar dalam Proses Konfirmasi dan Validasi');
     }
 
     public function test_generate_reg_code_is_5_uppercase_letters(): void

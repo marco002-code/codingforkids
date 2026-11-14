@@ -12,10 +12,25 @@
             <p class="text-xs text-slate-500 mt-1">Kelola data peserta utama 90/sesi, antrean cadangan, promosi otomatis, dan absensi hari-H.</p>
         </div>
 
-        <div class="flex items-center gap-2">
+        @php
+            $isPublished = \App\Models\Setting::get('publish_selected_participants', '0') == '1';
+        @endphp
+        <div class="flex flex-wrap items-center gap-2">
+            <form action="{{ route('admin.participants.togglePublish') }}" method="POST">
+                @csrf
+                <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-colors shadow-xs {{ $isPublished ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100' : 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100' }}" title="Klik untuk mengubah status publikasi pengumuman peserta terpilih">
+                    <span>{{ $isPublished ? '🟢 Pengumuman: Rilis Publik' : '⏳ Pengumuman: Draf / Validasi' }}</span>
+                    <span class="underline text-[10px]">({{ $isPublished ? 'Tarik ke Draf' : 'Publikasikan' }})</span>
+                </button>
+            </form>
+
+            <a href="{{ route('participants.selected') }}" target="_blank" class="inline-flex items-center gap-1 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-300 transition-colors" title="Lihat Halaman Publik Peserta Terpilih">
+                <span>Lihat Pengumuman &rarr;</span>
+            </a>
+
             <a href="{{ route('admin.export', ['tab' => $tab, 'session' => $sessionFilter]) }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                <span>Unduh CSV Data Ini (Excel)</span>
+                <span>Unduh CSV</span>
             </a>
         </div>
     </div>
