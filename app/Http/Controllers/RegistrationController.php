@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class RegistrationController extends Controller
 {
     /**
-     * Handle incoming participant registration.
+     * Handle incoming participant registration with session choice.
      */
     public function store(Request $request)
     {
@@ -23,6 +23,7 @@ class RegistrationController extends Controller
 
         // 2. Validate input
         $validator = Validator::make($request->all(), [
+            'session' => 'required|in:1,2',
             'student_name' => 'required|string|max:120',
             'nickname' => 'required|string|max:60',
             'school_name' => 'required|string|max:150',
@@ -35,6 +36,8 @@ class RegistrationController extends Controller
             'terms_agreement' => 'required|accepted',
             'waitlist_agreement' => 'required|accepted',
         ], [
+            'session.required' => 'Pilih salah satu sesi kegiatan (Sesi 1 atau Sesi 2).',
+            'session.in' => 'Pilihan sesi tidak valid.',
             'student_name.required' => 'Nama lengkap siswa wajib diisi.',
             'nickname.required' => 'Nama panggilan siswa wajib diisi untuk tanda pengenal (Name Tag).',
             'school_name.required' => 'Asal sekolah (SD/MI) wajib diisi.',
@@ -54,15 +57,17 @@ class RegistrationController extends Controller
             return back()->withErrors($validator)->withInput()->with('error_modal', 'Terdapat kolom formulir yang belum lengkap atau tidak valid.');
         }
 
-        // 3. Process registration atomically with DB transaction
-        try {
-            $participant = DB::transaction(function () use ($request) {
-                $maxMain = (int) Setting::get('max_main_quota', 50);
-                $maxWaitlist = (int) Setting::get('max_waitlist_quota', 20);
+        $session = (string) $request->input('session');
 
-                // Lock the participants table or count active registrations
-                $activeMainCount = Participant::where('status', 'UTAMA')->lockForUpdate()->count();
-                $activeWaitlistCount = Participant::where('status', 'CADANGAN')->lockForUpdate()->count();
+        // 3. Process registration atomically with DB transaction per session
+        try {
+            $participant = DB::transaction(function () use ($request, $session) {
+                $maxMain = (int) Setting::get("session_{$session}_quota", 90);
+                $maxWaitlist = (int) Setting::get("session_{$session}_waitlist_quota", 30);
+
+                // Lock the session participants count
+                $activeMainCount = Participant::where('session', $session)->where('status', 'UTAMA')->lockForUpdate()->count();
+                $activeWaitlistCount = Participant::where('session', $session)->where('status', 'CADANGAN')->lockForUpdate()->count();
 
                 if ($activeMainCount < $maxMain) {
                     $status = 'UTAMA';
@@ -74,11 +79,12 @@ class RegistrationController extends Controller
                     throw new \Exception('QUOTA_FULL');
                 }
 
-                // Generate Unique Code
-                $regCode = Participant::generateRegCode();
+                // Generate Unique Code with Session indicator
+                $regCode = Participant::generateRegCode($session);
 
                 return Participant::create([
                     'reg_code' => $regCode,
+                    'session' => $session,
                     'student_name' => trim($request->input('student_name')),
                     'nickname' => trim($request->input('nickname')),
                     'school_name' => trim($request->input('school_name')),
@@ -95,15 +101,17 @@ class RegistrationController extends Controller
             });
 
             // Redirect to E-Ticket page
+            $sessionLabel = $participant->session_label;
             $successMessage = $participant->status === 'UTAMA'
-                ? "Selamat! Pendaftaran berhasil. Ananda {$participant->student_name} terdaftar sebagai PESERTA UTAMA."
-                : "Pendaftaran berhasil dicatat! Karena kuota utama telah terisi penuh, ananda {$participant->student_name} masuk sebagai PESERTA CADANGAN (Nomor Urut #{$participant->waitlist_order}).";
+                ? "Selamat! Pendaftaran berhasil. Ananda {$participant->student_name} terdaftar sebagai PESERTA UTAMA ({$sessionLabel})."
+                : "Pendaftaran berhasil dicatat! Karena kuota utama {$sessionLabel} telah terisi 90 kursi, ananda {$participant->student_name} masuk sebagai PESERTA CADANGAN (Nomor Antrean #{$participant->waitlist_order}).";
 
             return redirect()->route('ticket.show', $participant->reg_code)->with('status_message', $successMessage);
 
         } catch (\Exception $e) {
             if ($e->getMessage() === 'QUOTA_FULL') {
-                return back()->withInput()->with('error', 'Mohon maaf, kuota kursi utama dan batas antrean cadangan saat ini telah terpenuhi.');
+                $sessionLabel = $session === '1' ? 'Sesi 1 (08:00 - 10:30 WIB)' : 'Sesi 2 (12:30 - 14:00 WIB)';
+                return back()->withInput()->with('error', "Mohon maaf, kuota kursi utama dan batas antrean cadangan untuk {$sessionLabel} telah penuh. Anda dapat memilih sesi lainnya jika masih tersedia.");
             }
 
             return back()->withInput()->with('error', 'Terjadi kesalahan sistem saat memproses data: ' . $e->getMessage());
@@ -119,8 +127,7 @@ class RegistrationController extends Controller
 
         $eventName = Setting::get('event_name', 'Coding for Kids and A.I. for Learning');
         $eventDate = Setting::get('event_date', 'Senin, 21 Desember 2026');
-        $eventTime = Setting::get('event_time', '08.30 – 12.30 WIB');
-        $eventLocation = Setting::get('event_location', 'Lab Komputer & Auditorium Gedung Edukasi Teknologi, Lt. 3');
+        $eventLocation = Setting::get('event_location', 'Lab Komputer & Auditorium Utama Kampus Muhijunior');
         $whatsappGroupLink = Setting::get('whatsapp_group_link', 'https://chat.whatsapp.com');
         $contactWhatsapp = Setting::get('contact_whatsapp', '081234567890');
 
@@ -128,11 +135,9 @@ class RegistrationController extends Controller
             'participant',
             'eventName',
             'eventDate',
-            'eventTime',
             'eventLocation',
             'whatsappGroupLink',
             'contactWhatsapp'
         ));
     }
 }
-

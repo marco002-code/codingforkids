@@ -11,7 +11,7 @@
             <div class="mb-6 p-4 rounded-2xl {{ $participant->status === 'UTAMA' ? 'bg-emerald-50 border border-emerald-200 text-emerald-900' : 'bg-amber-50 border border-amber-200 text-amber-900' }} shadow-sm flex items-start gap-3 no-print">
                 <span class="text-2xl">{{ $participant->status === 'UTAMA' ? '🎉' : '📋' }}</span>
                 <div>
-                    <h4 class="font-bold text-sm">{{ $participant->status === 'UTAMA' ? 'Pendaftaran Berhasil!' : 'Pendaftaran Berhasil Dicatat (Cadangan)' }}</h4>
+                    <h4 class="font-bold text-sm">{{ $participant->status === 'UTAMA' ? 'Pendaftaran Berhasil!' : 'Pendaftaran Dicatat (Antrean Cadangan)' }}</h4>
                     <p class="text-xs mt-0.5 leading-relaxed">{{ session('status_message') }}</p>
                 </div>
             </div>
@@ -24,7 +24,7 @@
             </a>
 
             <div class="flex items-center gap-2">
-                <button type="button" onclick="window.print()" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 bg-white border border-slate-300 rounded-lg shadow-xs hover:bg-slate-50 transition-colors">
+                <button type="button" onclick="window.print()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-slate-700 bg-white border border-slate-300 rounded-xl shadow-xs hover:bg-slate-50 transition-colors">
                     <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                     Cetak / Simpan PDF
                 </button>
@@ -35,16 +35,19 @@
         <div class="bg-white rounded-3xl shadow-xl border border-slate-200/90 overflow-hidden relative">
             
             <!-- Ticket Header Ribbon -->
-            <div class="{{ $participant->status === 'UTAMA' ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-700' : ($participant->status === 'CADANGAN' ? 'bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700' : 'bg-slate-700') }} text-white p-6 sm:p-8 text-center relative overflow-hidden">
+            <div class="{{ $participant->status === 'UTAMA' ? ($participant->session === '1' ? 'bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700' : 'bg-gradient-to-r from-purple-700 via-pink-700 to-indigo-800') : ($participant->status === 'CADANGAN' ? 'bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700' : 'bg-slate-700') }} text-white p-6 sm:p-8 text-center relative overflow-hidden">
                 <div class="relative z-10">
                     <span class="inline-block px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-widest bg-white/20 backdrop-blur-md mb-2">
-                        Official Workshop Pass
+                        Official Workshop Pass &bull; Muhijunior
                     </span>
                     <h1 class="text-xl sm:text-2xl font-black tracking-tight">{{ $eventName }}</h1>
-                    <p class="text-xs sm:text-sm text-white/90 mt-1">E-Ticket &amp; Bukti Pendaftaran Resmi</p>
+                    
+                    <!-- High-contrast Session Banner -->
+                    <div class="mt-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-slate-900 font-black text-xs sm:text-sm shadow-md">
+                        <span>⏰ {{ $participant->session_label }}</span>
+                    </div>
                 </div>
 
-                <!-- Subtle Decorative Shapes -->
                 <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
                 <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-black/10 rounded-full blur-xl pointer-events-none"></div>
             </div>
@@ -54,7 +57,7 @@
                 @if($participant->status === 'UTAMA')
                     <div class="flex items-center justify-center gap-2 font-black text-sm sm:text-base">
                         <span>✅</span>
-                        <span>STATUS: PESERTA UTAMA (TERDAFTAR)</span>
+                        <span>STATUS: PESERTA UTAMA (TERDAFTAR RESMI)</span>
                     </div>
                 @elseif($participant->status === 'CADANGAN')
                     <div class="flex items-center justify-center gap-2 font-black text-sm sm:text-base">
@@ -74,7 +77,7 @@
 
                 <!-- Reg Code Barcode Simulation -->
                 <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/90 text-center">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-widest block">Nomor Kode Registrasi</span>
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-widest block">Nomor Registrasi Siswa</span>
                     <div class="text-3xl sm:text-4xl font-black text-slate-900 tracking-wider my-2 font-mono">
                         {{ $participant->reg_code }}
                     </div>
@@ -125,10 +128,14 @@
                 </div>
 
                 <!-- Schedule & Location Info -->
-                <div class="border-t border-slate-100 pt-5 space-y-2 text-xs sm:text-sm text-slate-600">
+                <div class="border-t border-slate-100 pt-5 space-y-2.5 text-xs sm:text-sm text-slate-600">
                     <div class="flex items-center gap-2">
                         <span class="w-5 text-center">📅</span>
-                        <span><strong>Waktu Pelaksanaan:</strong> {{ $eventDate }}, pukul {{ $eventTime }}</span>
+                        <span><strong>Hari / Tanggal:</strong> {{ $eventDate }}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-5 text-center">⏰</span>
+                        <span><strong>Jadwal Sesi Anda:</strong> <strong class="text-indigo-600">{{ $participant->session_label }}</strong></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="w-5 text-center">📍</span>
@@ -136,21 +143,23 @@
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="w-5 text-center">💻</span>
-                        <span><strong>Perlengkapan:</strong> Harap membawa laptop + charger masing-masing.</span>
+                        <span><strong>Perlengkapan:</strong> Membawa laptop pribadi + charger (Windows / Mac / Chromebook).</span>
                     </div>
                 </div>
 
                 <!-- Status Explanations & Next Steps -->
                 @if($participant->status === 'UTAMA')
-                    <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs sm:text-sm text-emerald-950 space-y-2">
-                        <div class="font-bold flex items-center gap-1.5 text-emerald-800">
-                            <span>📌</span> Langkah Selanjutnya untuk Orang Tua:
+                    <div class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-xs sm:text-sm text-indigo-950 space-y-2">
+                        <div class="font-bold flex items-center gap-1.5 text-indigo-800">
+                            <span>📌</span> Panduan Waktu Kehadiran:
                         </div>
-                        <ol class="list-decimal list-inside space-y-1 text-slate-700 leading-relaxed">
-                            <li>Simpan atau cetak tiket ini (dapat disimpan dalam format PDF atau tangkapan layar HP).</li>
-                            <li>Wajib bergabung ke <strong>Grup WhatsApp Koordinasi Orang Tua</strong> untuk informasi teknis, persiapan software, dan panduan parkir.</li>
-                            <li>Hadir tepat waktu di lokasi pada pukul <strong>08.30 WIB</strong> untuk registrasi ulang dan pengambilan <em>Name Tag</em>.</li>
-                        </ol>
+                        <p class="text-slate-700 leading-relaxed">
+                            @if($participant->session === '1')
+                                Siswa <strong>Sesi 1</strong> diharapkan tiba di lokasi pada pukul <strong>07:30 WIB</strong> untuk registrasi ulang dan persiapan perangkat sebelum sesi dimulai tepat pukul 08:00 WIB.
+                            @else
+                                Siswa <strong>Sesi 2</strong> diharapkan tiba di lokasi pada pukul <strong>12:00 WIB</strong> untuk registrasi ulang dan persiapan perangkat sebelum sesi dimulai tepat pukul 12:30 WIB.
+                            @endif
+                        </p>
                     </div>
 
                     <!-- WhatsApp Group CTA -->
@@ -167,13 +176,13 @@
                             <span>ℹ️</span> Informasi Jalur Antrean Cadangan:
                         </div>
                         <p class="text-slate-700 leading-relaxed">
-                            Ananda berada pada urutan antrean <strong>Nomor #{{ $participant->waitlist_order }}</strong>. Panitia akan secara aktif mengonfirmasi kehadiran seluruh 50 peserta utama. Apabila ada pembatalan kursi, sistem kami akan mempromosikan ananda secara otomatis dan panitia akan langsung menghubungi Anda via WhatsApp paling lambat pada <strong>Sabtu, 19 Desember 2026</strong>.
+                            Ananda berada pada nomor antrean <strong>#{{ $participant->waitlist_order }}</strong> untuk <strong>{{ $participant->session_label }}</strong>. Panitia akan mengonfirmasi kehadiran seluruh 90 peserta utama pada sesi ini. Jika ada yang berhalangan, ananda akan langsung dipromosikan otomatis dan panitia akan mengabari Anda via WhatsApp paling lambat H-2 acara (19 Desember 2026).
                         </p>
                     </div>
 
                     <!-- Contact Hotline Button -->
                     <div class="no-print pt-2">
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $contactWhatsapp) }}?text={{ urlencode('Halo Panitia, saya orang tua dari ' . $participant->student_name . ' (' . $participant->reg_code . ') ingin mengonfirmasi status peserta cadangan.') }}" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm shadow-md transition-all text-center">
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $contactWhatsapp) }}?text={{ urlencode('Halo Panitia Muhijunior, saya orang tua dari ' . $participant->student_name . ' (' . $participant->reg_code . ') ingin konfirmasi antrean cadangan ' . $participant->session_label) }}" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm shadow-md transition-all text-center">
                             <span>Hubungi Hotline Panitia via WhatsApp</span>
                         </a>
                     </div>
@@ -183,11 +192,10 @@
 
             <!-- Ticket Footer Timestamp -->
             <div class="bg-slate-50 border-t border-slate-100 px-6 py-3 text-center text-[11px] text-slate-400">
-                Waktu Terdaftar: {{ $participant->created_at->format('d F Y, H:i:s') }} WIB &bull; Sistem Otomasi Coding for Kids
+                Waktu Pendaftaran: {{ $participant->created_at->format('d F Y, H:i:s') }} WIB &bull; Sistem Otomasi Muhijunior
             </div>
         </div>
 
     </div>
 </div>
 @endsection
-

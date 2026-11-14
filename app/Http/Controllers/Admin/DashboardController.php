@@ -12,61 +12,76 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class DashboardController extends Controller
 {
     /**
-     * Admin Overview Dashboard.
+     * Admin Overview Dashboard with Dual Session Breakdown.
      */
     public function index()
     {
-        $maxMain = (int) Setting::get('max_main_quota', 50);
-        $maxWaitlist = (int) Setting::get('max_waitlist_quota', 20);
+        // Session 1 (08:00 - 10:30 WIB)
+        $s1Max = (int) Setting::get('session_1_quota', 90);
+        $s1WaitlistMax = (int) Setting::get('session_1_waitlist_quota', 30);
+        $s1Utama = Participant::session('1')->utama()->count();
+        $s1Cadangan = Participant::session('1')->cadangan()->count();
+        $s1Attended = Participant::session('1')->utama()->attended()->count();
+        $s1Remaining = max(0, $s1Max - $s1Utama);
 
+        // Session 2 (12:30 - 14:00 WIB)
+        $s2Max = (int) Setting::get('session_2_quota', 90);
+        $s2WaitlistMax = (int) Setting::get('session_2_waitlist_quota', 30);
+        $s2Utama = Participant::session('2')->utama()->count();
+        $s2Cadangan = Participant::session('2')->cadangan()->count();
+        $s2Attended = Participant::session('2')->utama()->attended()->count();
+        $s2Remaining = max(0, $s2Max - $s2Utama);
+
+        // Global Totals
+        $totalMax = $s1Max + $s2Max;
         $totalAll = Participant::count();
-        $countUtama = Participant::utama()->count();
-        $countCadangan = Participant::cadangan()->count();
-        $countDibatalkan = Participant::dibatalkan()->count();
-        $countAttended = Participant::utama()->attended()->count();
+        $totalUtama = $s1Utama + $s2Utama;
+        $totalCadangan = $s1Cadangan + $s2Cadangan;
+        $totalDibatalkan = Participant::dibatalkan()->count();
+        $totalAttended = $s1Attended + $s2Attended;
+        $totalRemaining = $s1Remaining + $s2Remaining;
 
-        $remainingMain = max(0, $maxMain - $countUtama);
-        $remainingWaitlist = max(0, $maxWaitlist - $countCadangan);
-
-        $recentParticipants = Participant::orderBy('id', 'desc')->take(8)->get();
-        $waitlistTop = Participant::cadangan()->take(5)->get();
+        $recentParticipants = Participant::orderBy('id', 'desc')->take(10)->get();
+        $waitlistS1 = Participant::session('1')->cadangan()->take(4)->get();
+        $waitlistS2 = Participant::session('2')->cadangan()->take(4)->get();
 
         return view('admin.dashboard', compact(
-            'maxMain',
-            'maxWaitlist',
-            'totalAll',
-            'countUtama',
-            'countCadangan',
-            'countDibatalkan',
-            'countAttended',
-            'remainingMain',
-            'remainingWaitlist',
-            'recentParticipants',
-            'waitlistTop'
+            's1Max', 's1WaitlistMax', 's1Utama', 's1Cadangan', 's1Attended', 's1Remaining',
+            's2Max', 's2WaitlistMax', 's2Utama', 's2Cadangan', 's2Attended', 's2Remaining',
+            'totalMax', 'totalAll', 'totalUtama', 'totalCadangan', 'totalDibatalkan', 'totalAttended', 'totalRemaining',
+            'recentParticipants', 'waitlistS1', 'waitlistS2'
         ));
     }
 
     /**
-     * Participant List with Tabs & Search.
+     * Participant List with Session Filters & Search.
      */
     public function participants(Request $request)
     {
         $tab = $request->query('tab', 'utama'); // 'utama', 'cadangan', 'dibatalkan', 'all'
+        $sessionFilter = $request->query('session', ''); // '', '1', '2'
         $search = trim($request->query('search', ''));
         $gender = $request->query('gender', '');
 
         $query = Participant::query();
 
+        // Filter Session
+        if ($sessionFilter && in_array($sessionFilter, ['1', '2'])) {
+            $query->where('session', $sessionFilter);
+        }
+
+        // Filter Tab Status
         if ($tab === 'utama') {
-            $query->utama()->orderBy('id', 'asc');
+            $query->utama()->orderBy('session', 'asc')->orderBy('id', 'asc');
         } elseif ($tab === 'cadangan') {
-            $query->cadangan();
+            $query->cadangan()->orderBy('session', 'asc');
         } elseif ($tab === 'dibatalkan') {
             $query->dibatalkan()->orderBy('updated_at', 'desc');
         } else {
             $query->orderBy('id', 'desc');
         }
 
+        // Search
         if ($search !== '') {
             $query->where(function ($q) use ($search) {
                 $q->where('reg_code', 'LIKE', "%{$search}%")
@@ -84,18 +99,30 @@ class DashboardController extends Controller
 
         $participants = $query->paginate(25)->withQueryString();
 
+        // Calculate dynamic counts based on session filter
+        $countQuery = function ($status = null) use ($sessionFilter) {
+            $q = Participant::query();
+            if ($sessionFilter && in_array($sessionFilter, ['1', '2'])) {
+                $q->where('session', $sessionFilter);
+            }
+            if ($status) {
+                $q->where('status', $status);
+            }
+            return $q->count();
+        };
+
         $counts = [
-            'utama' => Participant::utama()->count(),
-            'cadangan' => Participant::cadangan()->count(),
-            'dibatalkan' => Participant::dibatalkan()->count(),
-            'all' => Participant::count(),
+            'utama' => $countQuery('UTAMA'),
+            'cadangan' => $countQuery('CADANGAN'),
+            'dibatalkan' => $countQuery('DIBATALKAN'),
+            'all' => $countQuery(),
         ];
 
-        return view('admin.participants', compact('participants', 'tab', 'search', 'gender', 'counts'));
+        return view('admin.participants', compact('participants', 'tab', 'sessionFilter', 'search', 'gender', 'counts'));
     }
 
     /**
-     * Promote a Cadangan (Waitlist) participant to Utama.
+     * Promote a Cadangan (Waitlist) participant to Utama within their session.
      */
     public function promote(Participant $participant)
     {
@@ -103,17 +130,16 @@ class DashboardController extends Controller
             return back()->with('error', 'Hanya peserta dengan status CADANGAN yang dapat dipromosikan.');
         }
 
-        $maxMain = (int) Setting::get('max_main_quota', 50);
-        $currentUtama = Participant::utama()->count();
+        $session = $participant->session;
 
-        DB::transaction(function () use ($participant) {
+        DB::transaction(function () use ($participant, $session) {
             $participant->update([
                 'status' => 'UTAMA',
                 'waitlist_order' => null,
             ]);
 
-            // Re-sequence remaining waitlist order
-            $cadanganList = Participant::cadangan()->get();
+            // Re-sequence remaining waitlist order for this session
+            $cadanganList = Participant::session($session)->cadangan()->get();
             $order = 1;
             foreach ($cadanganList as $item) {
                 if ($item->waitlist_order !== $order) {
@@ -126,7 +152,7 @@ class DashboardController extends Controller
         $waLink = $participant->whatsapp_promoted_url;
 
         return back()->with([
-            'success' => "Peserta {$participant->student_name} ({$participant->reg_code}) berhasil dipromosikan menjadi PESERTA UTAMA!",
+            'success' => "Peserta {$participant->student_name} ({$participant->reg_code}) berhasil dipromosikan menjadi PESERTA UTAMA {$participant->session_label}!",
             'promoted_wa_url' => $waLink,
             'promoted_name' => $participant->student_name,
         ]);
@@ -137,9 +163,10 @@ class DashboardController extends Controller
      */
     public function cancel(Request $request, Participant $participant)
     {
-        $reason = $request->input('reason', 'Dibatalkan oleh panitia/konfirmasi orang tua.');
+        $reason = $request->input('reason', 'Dibatalkan oleh panitia / konfirmasi orang tua.');
+        $session = $participant->session;
 
-        DB::transaction(function () use ($participant, $reason) {
+        DB::transaction(function () use ($participant, $reason, $session) {
             $wasCadangan = ($participant->status === 'CADANGAN');
 
             $participant->update([
@@ -148,9 +175,9 @@ class DashboardController extends Controller
                 'cancellation_reason' => $reason,
             ]);
 
-            // If a waitlist participant was canceled, re-sequence the remaining waitlist
+            // If a waitlist participant was canceled, re-sequence the remaining waitlist for this session
             if ($wasCadangan) {
-                $cadanganList = Participant::cadangan()->get();
+                $cadanganList = Participant::session($session)->cadangan()->get();
                 $order = 1;
                 foreach ($cadanganList as $item) {
                     if ($item->waitlist_order !== $order) {
@@ -161,8 +188,8 @@ class DashboardController extends Controller
             }
         });
 
-        // Check if there is a next waitlist candidate to suggest promotion
-        $nextWaitlist = Participant::cadangan()->first();
+        // Suggest promote next candidate in THIS session
+        $nextWaitlist = Participant::session($session)->cadangan()->first();
 
         $message = "Pendaftaran {$participant->student_name} ({$participant->reg_code}) telah berhasil dibatalkan.";
 
@@ -172,6 +199,7 @@ class DashboardController extends Controller
                 'suggest_promote_id' => $nextWaitlist->id,
                 'suggest_promote_name' => $nextWaitlist->student_name,
                 'suggest_promote_code' => $nextWaitlist->reg_code,
+                'suggest_promote_session' => $nextWaitlist->session_label,
             ]);
         }
 
@@ -179,7 +207,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Restore a canceled participant.
+     * Restore a canceled participant into their session.
      */
     public function restore(Participant $participant)
     {
@@ -187,8 +215,9 @@ class DashboardController extends Controller
             return back()->with('error', 'Peserta tidak berstatus dibatalkan.');
         }
 
-        $maxMain = (int) Setting::get('max_main_quota', 50);
-        $currentUtama = Participant::utama()->count();
+        $session = $participant->session;
+        $maxMain = (int) Setting::get("session_{$session}_quota", 90);
+        $currentUtama = Participant::session($session)->utama()->count();
 
         if ($currentUtama < $maxMain) {
             $participant->update([
@@ -196,15 +225,15 @@ class DashboardController extends Controller
                 'waitlist_order' => null,
                 'cancellation_reason' => null,
             ]);
-            $msg = "Peserta {$participant->student_name} berhasil dipulihkan sebagai PESERTA UTAMA.";
+            $msg = "Peserta {$participant->student_name} berhasil dipulihkan sebagai PESERTA UTAMA ({$participant->session_label}).";
         } else {
-            $waitlistCount = Participant::cadangan()->count();
+            $waitlistCount = Participant::session($session)->cadangan()->count();
             $participant->update([
                 'status' => 'CADANGAN',
                 'waitlist_order' => $waitlistCount + 1,
                 'cancellation_reason' => null,
             ]);
-            $msg = "Kuota utama penuh. Peserta {$participant->student_name} dipulihkan sebagai PESERTA CADANGAN (#" . ($waitlistCount + 1) . ").";
+            $msg = "Kuota utama penuh. Peserta {$participant->student_name} dipulihkan sebagai PESERTA CADANGAN (Antrean #{$participant->waitlist_order} {$participant->session_label}).";
         }
 
         return back()->with('success', $msg);
@@ -222,11 +251,11 @@ class DashboardController extends Controller
         ]);
 
         $statusText = $newStatus ? 'Hadir' : 'Batal Hadir';
-        return back()->with('success', "Status absensi {$participant->student_name} berhasil diubah: {$statusText}.");
+        return back()->with('success', "Status absensi {$participant->student_name} ({$participant->session_label}) berhasil diubah: {$statusText}.");
     }
 
     /**
-     * Quick Check-in via search bar / barcode scanner.
+     * Quick Check-in via search bar / barcode scanner with session awareness.
      */
     public function quickCheckIn(Request $request)
     {
@@ -253,29 +282,36 @@ class DashboardController extends Controller
             'attended_at' => now(),
         ]);
 
-        return back()->with('success', "✅ CHECK-IN BERHASIL: {$participant->student_name} ({$participant->reg_code}) - Status: {$participant->status}");
+        return back()->with('success', "✅ CHECK-IN BERHASIL: {$participant->student_name} ({$participant->reg_code}) &bull; [{$participant->session_label}] &bull; Status: {$participant->status}");
     }
 
     /**
-     * Export data to CSV with UTF-8 BOM for Excel.
+     * Export data to CSV with UTF-8 BOM, including session breakdown.
      */
     public function export(Request $request): StreamedResponse
     {
         $tab = $request->query('tab', 'all');
+        $session = $request->query('session', '');
 
         $query = Participant::query();
+
+        if ($session && in_array($session, ['1', '2'])) {
+            $query->where('session', $session);
+        }
+
         if ($tab === 'utama') {
-            $query->utama()->orderBy('id', 'asc');
+            $query->utama()->orderBy('session', 'asc')->orderBy('id', 'asc');
         } elseif ($tab === 'cadangan') {
-            $query->cadangan();
+            $query->cadangan()->orderBy('session', 'asc');
         } elseif ($tab === 'dibatalkan') {
-            $query->dibatalkan()->orderBy('id', 'asc');
+            $query->dibatalkan()->orderBy('session', 'asc')->orderBy('id', 'asc');
         } else {
-            $query->orderBy('id', 'asc');
+            $query->orderBy('session', 'asc')->orderBy('id', 'asc');
         }
 
         $participants = $query->get();
-        $fileName = 'peserta_coding_for_kids_' . $tab . '_' . date('Ymd_His') . '.csv';
+        $sessionSuffix = $session ? "_sesi{$session}" : "_semuasesi";
+        $fileName = 'peserta_codingkids_' . $tab . $sessionSuffix . '_' . date('Ymd_His') . '.csv';
 
         $headers = [
             'Content-Type' => 'text/csv; charset=UTF-8',
@@ -288,13 +324,14 @@ class DashboardController extends Controller
         return response()->stream(function () use ($participants) {
             $output = fopen('php://output', 'w');
 
-            // UTF-8 BOM so Excel opens indonesian characters correctly
+            // UTF-8 BOM for Excel
             fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
-            // Header row
             fputcsv($output, [
                 'No.',
                 'Kode Registrasi',
+                'Pilihan Sesi',
+                'Waktu Sesi',
                 'Status Pendaftaran',
                 'Nomor Antrean Cadangan',
                 'Nama Lengkap Siswa',
@@ -316,6 +353,8 @@ class DashboardController extends Controller
                 fputcsv($output, [
                     $no++,
                     $p->reg_code,
+                    'Sesi ' . $p->session,
+                    $p->session_time,
                     $p->status,
                     $p->waitlist_order ?? '-',
                     $p->student_name,
@@ -338,7 +377,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Show event & quota settings form.
+     * Show event & dual-session settings.
      */
     public function settings()
     {
@@ -347,7 +386,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Update settings.
+     * Update dual-session and event settings.
      */
     public function updateSettings(Request $request)
     {
@@ -356,10 +395,18 @@ class DashboardController extends Controller
             'event_tagline' => 'nullable|string|max:200',
             'event_subtitle' => 'nullable|string|max:250',
             'event_date' => 'required|string|max:100',
-            'event_time' => 'required|string|max:100',
             'event_location' => 'required|string|max:200',
-            'max_main_quota' => 'required|integer|min:1',
-            'max_waitlist_quota' => 'required|integer|min:0',
+            
+            'session_1_name' => 'required|string|max:100',
+            'session_1_time' => 'required|string|max:100',
+            'session_1_quota' => 'required|integer|min:1',
+            'session_1_waitlist_quota' => 'required|integer|min:0',
+
+            'session_2_name' => 'required|string|max:100',
+            'session_2_time' => 'required|string|max:100',
+            'session_2_quota' => 'required|integer|min:1',
+            'session_2_waitlist_quota' => 'required|integer|min:0',
+
             'registration_status' => 'required|in:OPEN,CLOSED',
             'whatsapp_group_link' => 'nullable|url|max:200',
             'contact_whatsapp' => 'nullable|string|max:30',
@@ -371,10 +418,15 @@ class DashboardController extends Controller
             'event_tagline',
             'event_subtitle',
             'event_date',
-            'event_time',
             'event_location',
-            'max_main_quota',
-            'max_waitlist_quota',
+            'session_1_name',
+            'session_1_time',
+            'session_1_quota',
+            'session_1_waitlist_quota',
+            'session_2_name',
+            'session_2_time',
+            'session_2_quota',
+            'session_2_waitlist_quota',
             'registration_status',
             'whatsapp_group_link',
             'contact_whatsapp',
@@ -383,7 +435,6 @@ class DashboardController extends Controller
             Setting::set($key, $value);
         }
 
-        return back()->with('success', 'Pengaturan acara & kuota pendaftaran berhasil diperbarui.');
+        return back()->with('success', 'Pengaturan sesi kegiatan & kuota pendaftaran berhasil diperbarui.');
     }
 }
-

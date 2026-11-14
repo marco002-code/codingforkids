@@ -9,47 +9,66 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h1 class="text-2xl font-black text-slate-900 tracking-tight">Data Peserta Event</h1>
-            <p class="text-xs text-slate-500 mt-1">Kelola status peserta utama, antrean cadangan, pembatalan, dan absensi hari-H.</p>
+            <p class="text-xs text-slate-500 mt-1">Kelola data peserta utama 90/sesi, antrean cadangan, promosi otomatis, dan absensi hari-H.</p>
         </div>
 
         <div class="flex items-center gap-2">
-            <a href="{{ route('admin.export', ['tab' => $tab]) }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors">
+            <a href="{{ route('admin.export', ['tab' => $tab, 'session' => $sessionFilter]) }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                <span>Unduh CSV Tab Ini (Excel)</span>
+                <span>Unduh CSV Data Ini (Excel)</span>
             </a>
         </div>
     </div>
 
-    <!-- Tabs Navigation -->
-    <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
-        <a href="{{ route('admin.participants', ['tab' => 'utama', 'search' => $search]) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 {{ $tab === 'utama' ? 'bg-emerald-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200' }}">
-            <span>Peserta Utama</span>
-            <span class="px-1.5 py-0.5 rounded-md text-[10px] {{ $tab === 'utama' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700' }}">{{ $counts['utama'] }}</span>
-        </a>
+    <!-- Filters Row: Session Pill & Tab Badges -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+        
+        <!-- Status Tabs -->
+        <div class="flex flex-wrap items-center gap-2">
+            <a href="{{ route('admin.participants', ['tab' => 'utama', 'session' => $sessionFilter, 'search' => $search]) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 {{ $tab === 'utama' ? 'bg-emerald-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200' }}">
+                <span>Peserta Utama</span>
+                <span class="px-1.5 py-0.5 rounded-md text-[10px] {{ $tab === 'utama' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700' }}">{{ $counts['utama'] }}</span>
+            </a>
 
-        <a href="{{ route('admin.participants', ['tab' => 'cadangan', 'search' => $search]) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 {{ $tab === 'cadangan' ? 'bg-amber-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200' }}">
-            <span>Peserta Cadangan (Waitlist)</span>
-            <span class="px-1.5 py-0.5 rounded-md text-[10px] {{ $tab === 'cadangan' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700' }}">{{ $counts['cadangan'] }}</span>
-        </a>
+            <a href="{{ route('admin.participants', ['tab' => 'cadangan', 'session' => $sessionFilter, 'search' => $search]) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 {{ $tab === 'cadangan' ? 'bg-amber-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200' }}">
+                <span>Peserta Cadangan</span>
+                <span class="px-1.5 py-0.5 rounded-md text-[10px] {{ $tab === 'cadangan' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700' }}">{{ $counts['cadangan'] }}</span>
+            </a>
 
-        <a href="{{ route('admin.participants', ['tab' => 'dibatalkan', 'search' => $search]) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 {{ $tab === 'dibatalkan' ? 'bg-rose-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200' }}">
-            <span>Dibatalkan</span>
-            <span class="px-1.5 py-0.5 rounded-md text-[10px] {{ $tab === 'dibatalkan' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700' }}">{{ $counts['dibatalkan'] }}</span>
-        </a>
+            <a href="{{ route('admin.participants', ['tab' => 'dibatalkan', 'session' => $sessionFilter, 'search' => $search]) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 {{ $tab === 'dibatalkan' ? 'bg-rose-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200' }}">
+                <span>Dibatalkan</span>
+                <span class="px-1.5 py-0.5 rounded-md text-[10px] {{ $tab === 'dibatalkan' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700' }}">{{ $counts['dibatalkan'] }}</span>
+            </a>
 
-        <a href="{{ route('admin.participants', ['tab' => 'all', 'search' => $search]) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 {{ $tab === 'all' ? 'bg-slate-800 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200' }}">
-            <span>Semua Data</span>
-            <span class="px-1.5 py-0.5 rounded-md text-[10px] {{ $tab === 'all' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700' }}">{{ $counts['all'] }}</span>
-        </a>
+            <a href="{{ route('admin.participants', ['tab' => 'all', 'session' => $sessionFilter, 'search' => $search]) }}" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 {{ $tab === 'all' ? 'bg-slate-800 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200' }}">
+                <span>Semua Data</span>
+                <span class="px-1.5 py-0.5 rounded-md text-[10px] {{ $tab === 'all' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700' }}">{{ $counts['all'] }}</span>
+            </a>
+        </div>
+
+        <!-- Session Filter Switcher -->
+        <div class="inline-flex p-1 rounded-xl bg-slate-200 border border-slate-300 self-start md:self-auto">
+            <a href="{{ route('admin.participants', ['tab' => $tab, 'session' => '', 'search' => $search]) }}" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all {{ empty($sessionFilter) ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                Semua Sesi
+            </a>
+            <a href="{{ route('admin.participants', ['tab' => $tab, 'session' => '1', 'search' => $search]) }}" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all {{ $sessionFilter === '1' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                ☀️ Sesi 1 (Pagi)
+            </a>
+            <a href="{{ route('admin.participants', ['tab' => $tab, 'session' => '2', 'search' => $search]) }}" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all {{ $sessionFilter === '2' ? 'bg-purple-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900' }}">
+                🌤️ Sesi 2 (Siang)
+            </a>
+        </div>
+
     </div>
 
     <!-- Search & Filter Card -->
     <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs">
         <form method="GET" action="{{ route('admin.participants') }}" class="flex flex-col sm:flex-row items-center gap-3">
             <input type="hidden" name="tab" value="{{ $tab }}">
+            <input type="hidden" name="session" value="{{ $sessionFilter }}">
             
             <div class="relative flex-grow w-full">
-                <input type="text" name="search" value="{{ $search }}" placeholder="Cari nama siswa, panggilan, kode AI26-XXX, nama ortu, WA, atau sekolah..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                <input type="text" name="search" value="{{ $search }}" placeholder="Cari nama siswa, panggilan, kode AI26-SX-XXX, nama ortu, WA, atau sekolah..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
                 <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
 
@@ -65,7 +84,7 @@
                 </button>
 
                 @if($search || $gender)
-                    <a href="{{ route('admin.participants', ['tab' => $tab]) }}" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-semibold transition-colors shrink-0">
+                    <a href="{{ route('admin.participants', ['tab' => $tab, 'session' => $sessionFilter]) }}" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-semibold transition-colors shrink-0">
                         Reset
                     </a>
                 @endif
@@ -74,13 +93,14 @@
     </div>
 
     <!-- Table Card -->
-    <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+    <div class="bg-white rounded-3xl border border-slate-200/90 shadow-xs overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
                 <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
                     <tr>
                         <th class="py-3.5 px-4">No.</th>
                         <th class="py-3.5 px-4">Kode</th>
+                        <th class="py-3.5 px-4">Sesi Acara</th>
                         <th class="py-3.5 px-4">Data Siswa</th>
                         <th class="py-3.5 px-4">Orang Tua / Kontak</th>
                         <th class="py-3.5 px-4">Status &amp; Antrean</th>
@@ -103,13 +123,21 @@
                                 </a>
                             </td>
 
+                            <!-- Session -->
+                            <td class="py-4 px-4 whitespace-nowrap">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-extrabold {{ $p->session === '1' ? 'bg-indigo-100 text-indigo-800' : 'bg-purple-100 text-purple-800' }}">
+                                    <span>{{ $p->session === '1' ? '☀️' : '🌤️' }} Sesi {{ $p->session }}</span>
+                                </span>
+                                <span class="block text-[10px] text-slate-400 font-mono mt-0.5">{{ $p->session_time }}</span>
+                            </td>
+
                             <!-- Student Info -->
                             <td class="py-4 px-4">
                                 <div class="font-extrabold text-slate-900 text-sm">
                                     {{ $p->student_name }}
                                 </div>
                                 <div class="text-[11px] text-slate-500 mt-0.5 flex flex-wrap items-center gap-1.5">
-                                    <span class="px-1.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-bold">Tag: {{ $p->nickname }}</span>
+                                    <span class="px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-700 font-bold">Tag: {{ $p->nickname }}</span>
                                     <span>&bull; {{ $p->school_name }}</span>
                                     <span>&bull; {{ $p->gender === 'L' ? 'L' : 'P' }}</span>
                                     <span>&bull; <span class="italic text-slate-400">{{ $p->experience_level }}</span></span>
@@ -176,7 +204,7 @@
                                     @if($p->status === 'CADANGAN')
                                         <form action="{{ route('admin.participants.promote', $p->id) }}" method="POST">
                                             @csrf
-                                            <button type="submit" onclick="return confirm('Promosikan {{ $p->student_name }} menjadi Peserta Utama?')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors" title="Naikkan ke Peserta Utama">
+                                            <button type="submit" onclick="return confirm('Promosikan {{ $p->student_name }} menjadi Peserta Utama Sesi {{ $p->session }}?')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors" title="Naikkan ke Peserta Utama Sesi Ini">
                                                 Promosi &uarr;
                                             </button>
                                         </form>
@@ -184,14 +212,14 @@
 
                                     <!-- Cancel Participant -->
                                     @if($p->status !== 'DIBATALKAN')
-                                        <button type="button" onclick="openCancelModal({{ $p->id }}, '{{ addslashes($p->student_name) }}', '{{ $p->reg_code }}')" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg text-xs font-bold transition-colors">
+                                        <button type="button" onclick="openCancelModal({{ $p->id }}, '{{ addslashes($p->student_name) }}', '{{ $p->reg_code }}', '{{ $p->session }}')" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg text-xs font-bold transition-colors">
                                             Batalkan
                                         </button>
                                     @else
                                         <!-- Restore Participant -->
                                         <form action="{{ route('admin.participants.restore', $p->id) }}" method="POST">
                                             @csrf
-                                            <button type="submit" onclick="return confirm('Pulihkan kembali {{ $p->student_name }}?')" class="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-bold transition-colors">
+                                            <button type="submit" onclick="return confirm('Pulihkan kembali {{ $p->student_name }} ke Sesi {{ $p->session }}?')" class="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-bold transition-colors">
                                                 Pulihkan
                                             </button>
                                         </form>
@@ -202,8 +230,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="py-12 text-center text-slate-400">
-                                <p class="text-sm">Tidak ada data peserta ditemukan pada kriteria ini.</p>
+                            <td colspan="8" class="py-12 text-center text-slate-400">
+                                <p class="text-sm">Tidak ada data peserta ditemukan pada kriteria filter ini.</p>
                             </td>
                         </tr>
                     @endforelse
@@ -223,7 +251,7 @@
 
 <!-- Cancellation Modal -->
 <div id="cancelModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative border border-slate-100">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-slate-100">
         <h3 class="text-base font-bold text-slate-900 mb-2">Batalkan Pendaftaran Peserta</h3>
         <p class="text-xs text-slate-500 mb-4" id="cancelParticipantText">Apakah Anda yakin ingin membatalkan peserta ini?</p>
 
@@ -247,8 +275,8 @@
 </div>
 
 <script>
-    function openCancelModal(id, name, code) {
-        document.getElementById('cancelParticipantText').innerText = `Apakah Anda yakin ingin membatalkan peserta ${name} (${code})?`;
+    function openCancelModal(id, name, code, session) {
+        document.getElementById('cancelParticipantText').innerText = `Apakah Anda yakin ingin membatalkan peserta ${name} (${code} - Sesi ${session})?`;
         document.getElementById('cancelForm').action = `/admin/participants/${id}/cancel`;
         document.getElementById('cancelModal').classList.remove('hidden');
         document.getElementById('cancelModal').classList.add('flex');
@@ -259,4 +287,3 @@
     }
 </script>
 @endsection
-

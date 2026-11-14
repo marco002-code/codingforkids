@@ -9,42 +9,55 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     /**
-     * Display the landing page with live quota information.
+     * Display the landing page with live dual-session quota information.
      */
     public function index()
     {
-        $maxMain = (int) Setting::get('max_main_quota', 50);
-        $maxWaitlist = (int) Setting::get('max_waitlist_quota', 20);
         $registrationStatus = Setting::get('registration_status', 'OPEN');
 
-        $activeMainCount = Participant::utama()->count();
-        $activeWaitlistCount = Participant::cadangan()->count();
+        // Session 1 (08:00 - 10:30 WIB)
+        $s1Name = Setting::get('session_1_name', 'Sesi 1 (Pagi)');
+        $s1Time = Setting::get('session_1_time', '08:00 – 10:30 WIB');
+        $s1Max = (int) Setting::get('session_1_quota', 90);
+        $s1WaitlistMax = (int) Setting::get('session_1_waitlist_quota', 30);
+        $s1MainCount = Participant::session('1')->utama()->count();
+        $s1WaitlistCount = Participant::session('1')->cadangan()->count();
+        $s1RemainingMain = max(0, $s1Max - $s1MainCount);
+        $s1RemainingWaitlist = max(0, $s1WaitlistMax - $s1WaitlistCount);
+        $s1Percent = $s1Max > 0 ? min(100, round(($s1MainCount / $s1Max) * 100)) : 100;
+        $s1IsFull = ($s1MainCount >= $s1Max) && ($s1WaitlistCount >= $s1WaitlistMax);
+        $s1IsOpen = ($registrationStatus === 'OPEN') && !$s1IsFull;
 
-        $remainingMain = max(0, $maxMain - $activeMainCount);
-        $remainingWaitlist = max(0, $maxWaitlist - $activeWaitlistCount);
-        $totalQuota = $maxMain + $maxWaitlist;
-        $totalFilled = $activeMainCount + $activeWaitlistCount;
+        // Session 2 (12:30 - 14:00 WIB)
+        $s2Name = Setting::get('session_2_name', 'Sesi 2 (Siang)');
+        $s2Time = Setting::get('session_2_time', '12:30 – 14:00 WIB');
+        $s2Max = (int) Setting::get('session_2_quota', 90);
+        $s2WaitlistMax = (int) Setting::get('session_2_waitlist_quota', 30);
+        $s2MainCount = Participant::session('2')->utama()->count();
+        $s2WaitlistCount = Participant::session('2')->cadangan()->count();
+        $s2RemainingMain = max(0, $s2Max - $s2MainCount);
+        $s2RemainingWaitlist = max(0, $s2WaitlistMax - $s2WaitlistCount);
+        $s2Percent = $s2Max > 0 ? min(100, round(($s2MainCount / $s2Max) * 100)) : 100;
+        $s2IsFull = ($s2MainCount >= $s2Max) && ($s2WaitlistCount >= $s2WaitlistMax);
+        $s2IsOpen = ($registrationStatus === 'OPEN') && !$s2IsFull;
 
-        // Is registration completely full?
-        $isFull = ($activeMainCount >= $maxMain) && ($activeWaitlistCount >= $maxWaitlist);
-        $isOpen = ($registrationStatus === 'OPEN') && !$isFull;
+        // Global Totals
+        $totalSeats = $s1Max + $s2Max;
+        $totalMainFilled = $s1MainCount + $s2MainCount;
+        $totalMainRemaining = $s1RemainingMain + $s2RemainingMain;
+        $isGlobalFull = $s1IsFull && $s2IsFull;
+        $isGlobalOpen = ($registrationStatus === 'OPEN') && !$isGlobalFull;
 
-        // Quota percentage for progress bar
-        $percentMain = $maxMain > 0 ? min(100, round(($activeMainCount / $maxMain) * 100)) : 100;
+        $eventDate = Setting::get('event_date', 'Senin, 21 Desember 2026');
+        $eventLocation = Setting::get('event_location', 'Lab Komputer & Auditorium Utama Kampus Muhijunior');
+        $contactWhatsapp = Setting::get('contact_whatsapp', '081234567890');
 
         return view('landing', compact(
-            'maxMain',
-            'maxWaitlist',
             'registrationStatus',
-            'activeMainCount',
-            'activeWaitlistCount',
-            'remainingMain',
-            'remainingWaitlist',
-            'totalQuota',
-            'totalFilled',
-            'isFull',
-            'isOpen',
-            'percentMain'
+            's1Name', 's1Time', 's1Max', 's1WaitlistMax', 's1MainCount', 's1WaitlistCount', 's1RemainingMain', 's1RemainingWaitlist', 's1Percent', 's1IsFull', 's1IsOpen',
+            's2Name', 's2Time', 's2Max', 's2WaitlistMax', 's2MainCount', 's2WaitlistCount', 's2RemainingMain', 's2RemainingWaitlist', 's2Percent', 's2IsFull', 's2IsOpen',
+            'totalSeats', 'totalMainFilled', 'totalMainRemaining', 'isGlobalFull', 'isGlobalOpen',
+            'eventDate', 'eventLocation', 'contactWhatsapp'
         ));
     }
 
@@ -56,7 +69,7 @@ class HomeController extends Controller
         $request->validate([
             'query' => 'required|string|min:3',
         ], [
-            'query.required' => 'Masukkan Kode Registrasi (AI26-XXX) atau Nomor WhatsApp.',
+            'query.required' => 'Masukkan Kode Registrasi (misal: AI26-S1-001) atau Nomor WhatsApp.',
             'query.min' => 'Pencarian minimal 3 karakter.',
         ]);
 
@@ -80,4 +93,3 @@ class HomeController extends Controller
         return back()->with('search_results', $participants);
     }
 }
-
