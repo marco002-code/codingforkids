@@ -37,8 +37,10 @@
             <!-- Ticket Header Ribbon -->
             <div class="{{ $participant->status === 'UTAMA' ? ($participant->session === '1' ? 'bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700' : 'bg-gradient-to-r from-purple-700 via-pink-700 to-indigo-800') : ($participant->status === 'CADANGAN' ? 'bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700' : 'bg-slate-700') }} text-white p-6 sm:p-8 text-center relative overflow-hidden">
                 <div class="relative z-10 flex flex-col items-center">
-                    <div class="bg-white/95 backdrop-blur-xs px-4 py-1.5 rounded-2xl shadow-md mb-3 border border-white/40">
+                    <div class="flex items-center gap-3 bg-white/95 backdrop-blur-xs px-4 py-2 rounded-2xl shadow-md mb-3 border border-white/50">
                         <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS" class="h-8 sm:h-9 w-auto object-contain">
+                        <span class="w-px h-6 bg-slate-300"></span>
+                        <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-8 w-8 object-contain rounded-full">
                     </div>
                     <span class="inline-block px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-widest bg-white/20 backdrop-blur-md mb-2">
                         Official Workshop Pass &bull; Muhijunior

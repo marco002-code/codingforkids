@@ -58,7 +58,7 @@
     @endif
 
     <!-- HERO SECTION (Ekosistem Kartun, Robot Asisten & Block Programming Scratch Floating) -->
-    <section class="relative pt-8 pb-20 overflow-hidden bg-gradient-to-b from-[#FBB017] via-[#F59E0B] to-[#FBB017] border-b-4 border-blue-950">
+    <section class="relative pt-8 pb-20 overflow-hidden bg-hero-coding border-b-4 border-blue-950">
         
         <!-- Animated Doodles & Cartoon Atmosphere Background -->
         <div class="absolute inset-0 pointer-events-none overflow-hidden">
@@ -85,11 +85,13 @@
             
             <!-- Poster Top Branding Bar (Matching Original Poster Layout) -->
             <div class="flex items-center justify-between gap-4 max-w-5xl mx-auto mb-6">
-                <div class="bg-white/95 backdrop-blur-xs px-4 py-2 rounded-2xl border-3 border-blue-950 shadow-md">
-                    <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS - School Of Creative People" class="h-9 sm:h-11 w-auto object-contain">
+                <!-- Left: Official Muhijunior ISS Logo -->
+                <div class="bg-white px-5 py-2.5 rounded-2xl border-3 border-blue-950 shadow-md">
+                    <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS - School Of Creative People" class="h-10 sm:h-12 w-auto object-contain">
                 </div>
-                <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-blue-950 text-white text-xs sm:text-sm font-black uppercase tracking-wider shadow-md border-3 border-amber-300">
-                    <span class="w-7 h-7 rounded-full bg-blue-900 text-amber-300 flex items-center justify-center font-black text-xs border border-amber-300">★</span>
+                <!-- Right: Official SMP Muhammadiyah 1 Yogyakarta Crest -->
+                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-blue-950 text-white text-xs sm:text-sm font-black uppercase tracking-wider shadow-md border-3 border-amber-300">
+                    <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-9 w-9 object-contain rounded-full border border-amber-300">
                     <span>SMP Muhammadiyah 1 Yogyakarta</span>
                 </div>
             </div>
@@ -479,7 +481,7 @@
     </section>
 
     <!-- Section: 3 Materi Utama Kegiatan (Gamified Quest Stages with Block Code & Robot Badges) -->
-    <section id="materi" class="py-20 bg-white">
+    <section id="materi" class="py-20 bg-coding-grid border-b-4 border-blue-950">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
                 <span class="font-display font-black text-xs uppercase tracking-widest text-blue-950 bg-amber-100 px-4 py-1.5 rounded-full border-2 border-blue-950 shadow-xs">
@@ -729,9 +731,9 @@
     </section>
 
     <!-- Section: Detail Lokasi Laboratorium (Lab TIK 1 & 3 Lantai 3 Gedung Selatan) -->
-    <section id="lokasi" class="py-16 bg-white">
+    <section id="lokasi" class="py-16 bg-white border-b-4 border-blue-950">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-blue-950 text-white rounded-3xl p-8 sm:p-12 relative overflow-hidden border-4 border-amber-400 shadow-2xl">
+            <div class="bg-dark-coding text-white rounded-3xl p-8 sm:p-12 relative overflow-hidden border-4 border-amber-400 shadow-2xl">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <div>
                         <span class="font-display font-black text-xs text-amber-400 uppercase tracking-widest bg-blue-900 px-3.5 py-1.5 rounded-full border border-amber-400/50">
@@ -765,7 +767,7 @@
     </section>
 
     <!-- Section: Formulir Pendaftaran Gamified (Pilih Sesi 1 atau Sesi 2) -->
-    <section id="pendaftaran" class="py-20 bg-gradient-to-b from-amber-50 to-white border-t-4 border-blue-950">
+    <section id="pendaftaran" class="py-20 bg-coding-grid border-b-4 border-blue-950">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-10">
                 <span class="font-display font-black text-xs uppercase tracking-widest text-blue-950 bg-amber-300 px-4 py-1.5 rounded-full border-2 border-blue-950 shadow-xs">
@@ -779,8 +781,20 @@
                 </p>
             </div>
 
-            <!-- Form Card with Cartoon Box Style -->
-            <div class="cartoon-box p-6 sm:p-10 relative">
+            <!-- Form Card with Coding IDE Header Style -->
+            <div class="cartoon-box p-6 sm:p-10 relative overflow-hidden">
+                <!-- Code IDE Editor Header -->
+                <div class="flex items-center justify-between pb-4 mb-6 border-b-2 border-slate-200">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-rose-500 inline-block shadow-xs"></span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-amber-400 inline-block shadow-xs"></span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-500 inline-block shadow-xs"></span>
+                        <span class="font-mono text-xs text-slate-500 font-bold ml-2">~/terminal/registrasi-coder.sh</span>
+                    </div>
+                    <span class="font-mono text-[11px] font-black text-blue-950 bg-amber-200 px-2.5 py-0.5 rounded-md border border-amber-400">
+                        SESSION_SELECT_MODE: ACTIVE
+                    </span>
+                </div>
                 
                 @if(!$isGlobalOpen)
                     <div class="text-center py-12">

@@ -227,6 +227,34 @@
             border-right: 14px solid #ffffff;
         }
 
+        /* Web Coding Background Pattern Styles */
+        .bg-coding-grid {
+            background-color: #fffdf5;
+            background-image: 
+                radial-gradient(rgba(11, 35, 71, 0.12) 1px, transparent 1px),
+                url("{{ asset('images/pattern-coding.svg') }}");
+            background-size: 24px 24px, 180px 180px;
+            background-repeat: repeat;
+        }
+
+        .bg-hero-coding {
+            background-color: #fbb017;
+            background-image: 
+                radial-gradient(rgba(11, 35, 71, 0.14) 1.2px, transparent 1.2px),
+                url("{{ asset('images/pattern-coding.svg') }}");
+            background-size: 28px 28px, 180px 180px;
+            background-repeat: repeat;
+        }
+
+        .bg-dark-coding {
+            background-color: #061730;
+            background-image: 
+                radial-gradient(rgba(56, 189, 248, 0.18) 1px, transparent 1px),
+                url("{{ asset('images/pattern-coding-dark.svg') }}");
+            background-size: 24px 24px, 180px 180px;
+            background-repeat: repeat;
+        }
+
         @media print {
             .no-print { display: none !important; }
             .print-only { display: block !important; }
@@ -235,39 +263,51 @@
     </style>
     @stack('styles')
 </head>
-<body class="bg-amber-50/40 text-slate-800 antialiased min-h-screen flex flex-col selection:bg-amber-400 selection:text-slate-900">
+<body class="bg-coding-grid text-slate-800 antialiased min-h-screen flex flex-col selection:bg-amber-400 selection:text-slate-900">
 
     <!-- Top Announcement Bar -->
     <div class="bg-gradient-to-r from-blue-950 via-blue-900 to-indigo-950 text-white text-xs sm:text-sm py-2 px-4 text-center font-semibold shadow-xs no-print flex items-center justify-center gap-2">
-        <span class="inline-block bg-amber-400 text-blue-950 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider animate-pulse">
+        <span class="inline-block bg-amber-400 text-blue-950 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider animate-pulse">
             Workshop Siswa SD
         </span>
         <span>Senin, 21 Desember 2026 &bull; Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta</span>
     </div>
 
     <!-- Navigation Bar: Muhijunior ISS & SMP Muh 1 Yogya -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-200/80 shadow-xs no-print">
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-2 border-amber-200/90 shadow-xs no-print">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             
-            <!-- Left Branding: Muhijunior ISS -->
+            <!-- Left Branding: Muhijunior ISS Official Logo -->
             <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS - School Of Creative People" class="h-10 sm:h-12 w-auto object-contain transition-transform group-hover:scale-105">
+                <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS - School Of Creative People" class="h-11 sm:h-12 w-auto object-contain transition-transform group-hover:scale-105">
             </a>
 
             <!-- Center Nav Links -->
             <nav class="hidden md:flex items-center gap-7 text-xs sm:text-sm font-extrabold text-slate-600">
-                <a href="{{ route('home') }}#materi" class="hover:text-amber-600 transition-colors">3 Materi Utama</a>
-                <a href="{{ route('home') }}#rundown" class="hover:text-amber-600 transition-colors">Jadwal Sesi</a>
-                <a href="{{ route('home') }}#lokasi" class="hover:text-amber-600 transition-colors">Lokasi Lab</a>
-                <a href="{{ route('home') }}#faq" class="hover:text-amber-600 transition-colors">FAQ</a>
+                <a href="{{ route('home') }}#materi" class="hover:text-amber-600 transition-colors flex items-center gap-1.5">
+                    <span>🎮</span> 3 Materi Utama
+                </a>
+                <a href="{{ route('home') }}#rundown" class="hover:text-amber-600 transition-colors flex items-center gap-1.5">
+                    <span>⏰</span> Jadwal Sesi
+                </a>
+                <a href="{{ route('home') }}#lokasi" class="hover:text-amber-600 transition-colors flex items-center gap-1.5">
+                    <span>📍</span> Lokasi Lab
+                </a>
+                <a href="{{ route('home') }}#faq" class="hover:text-amber-600 transition-colors flex items-center gap-1.5">
+                    <span>💡</span> FAQ
+                </a>
             </nav>
 
             <!-- Right: SMP Muhammadiyah 1 Badge & CTA -->
             <div class="flex items-center gap-2.5 sm:gap-3">
                 <!-- SMP Muh 1 Crest Badge -->
-                <div class="hidden lg:flex items-center gap-2 pl-3 border-l border-slate-200 text-right">
+                <div class="hidden lg:flex items-center gap-2.5 pl-3 border-l border-slate-200 text-right">
                     <div>
                         <span class="block text-[11px] font-black text-blue-900 leading-tight">SMP Muhammadiyah 1</span>
+                        <span class="block text-[9px] font-bold text-slate-400 tracking-wider">YOGYAKARTA</span>
+                    </div>
+                    <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-10 w-10 object-contain rounded-full border-2 border-amber-400 shadow-xs">
+                </div>
                         <span class="block text-[9px] font-bold text-slate-400 tracking-wider">YOGYAKARTA</span>
                     </div>
                     <div class="w-9 h-9 rounded-full bg-blue-900 text-amber-400 flex items-center justify-center font-black text-xs border-2 border-amber-400 shadow-xs">
@@ -293,13 +333,18 @@
     </main>
 
     <!-- Footer: Muhijunior & SMP Muhammadiyah 1 Yogyakarta Socials -->
-    <footer class="bg-blue-950 text-slate-300 text-sm border-t-4 border-amber-400 no-print">
+    <footer class="bg-dark-coding text-slate-300 text-sm border-t-4 border-amber-400 no-print">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                 
-                <div class="md:col-span-2 space-y-3">
-                    <div class="bg-white p-2.5 rounded-2xl inline-block shadow-md border-2 border-amber-300">
-                        <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS - School Of Creative People" class="h-9 w-auto object-contain">
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white p-2.5 rounded-2xl inline-block shadow-md border-2 border-amber-300">
+                            <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS - School Of Creative People" class="h-9 w-auto object-contain">
+                        </div>
+                        <div class="bg-white p-2 rounded-2xl inline-block shadow-md border-2 border-amber-300">
+                            <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-9 w-9 object-contain rounded-full">
+                        </div>
                     </div>
                     <h3 class="font-extrabold text-white text-base">SMP Muhammadiyah 1 Yogyakarta</h3>
                     <p class="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-md">
