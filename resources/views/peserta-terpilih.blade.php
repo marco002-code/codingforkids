@@ -218,7 +218,8 @@
                     </p>
                 </div>
             @else
-                <div class="overflow-x-auto">
+                <!-- Desktop & Tablet Table View (>= 640px) -->
+                <div class="hidden sm:block overflow-x-auto">
                     <table class="w-full text-left text-xs">
                         <thead class="bg-slate-50 text-slate-700 uppercase tracking-wider font-display font-black border-b-2 border-slate-200">
                             <tr>
@@ -268,6 +269,43 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Mobile Card List View (Phones < 640px) -->
+                <div class="block sm:hidden divide-y divide-slate-100">
+                    @foreach($participants as $idx => $student)
+                        <div class="p-4 hover:bg-amber-50/50 transition-colors">
+                            <div class="flex items-start justify-between gap-2 mb-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-[10px] font-black shrink-0">
+                                        {{ $participants->firstItem() + $idx }}
+                                    </span>
+                                    <span class="inline-block px-2.5 py-0.5 rounded-lg bg-blue-50 border border-blue-200 font-mono font-black text-xs text-blue-950 tracking-widest">
+                                        {{ $student->reg_code }}
+                                    </span>
+                                </div>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 shrink-0">
+                                    ✓ TERPILIH
+                                </span>
+                            </div>
+
+                            <div class="mb-2.5">
+                                <h4 class="font-extrabold text-sm text-slate-900 leading-snug">{{ $student->student_name }}</h4>
+                                <p class="text-xs text-slate-600 mt-0.5 font-medium flex items-center gap-1.5">
+                                    <span>🏫</span> {{ $student->school_name }}
+                                </p>
+                            </div>
+
+                            <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                                <span class="inline-block px-2 py-0.5 rounded-lg text-[10px] font-black {{ $student->session === '1' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' }}">
+                                    Sesi {{ $student->session }} ({{ $student->session_time }})
+                                </span>
+                                <a href="{{ route('ticket.show', $student->reg_code) }}" class="inline-flex items-center gap-1 px-3 py-1 text-[11px] font-black bg-blue-950 text-white rounded-lg hover:bg-blue-900 transition-colors shadow-2xs">
+                                    <span>Tiket</span> &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
 
                 @if($participants->hasPages())

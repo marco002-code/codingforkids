@@ -266,11 +266,11 @@
 <body class="bg-coding-grid text-slate-800 antialiased min-h-screen flex flex-col selection:bg-amber-400 selection:text-slate-900">
 
     <!-- Top Announcement Bar -->
-    <div class="bg-gradient-to-r from-blue-950 via-blue-900 to-indigo-950 text-white text-xs sm:text-sm py-2 px-4 text-center font-semibold shadow-xs no-print flex items-center justify-center gap-2">
-        <span class="inline-block bg-amber-400 text-blue-950 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider animate-pulse">
+    <div class="bg-gradient-to-r from-blue-950 via-blue-900 to-indigo-950 text-white text-[11px] sm:text-xs md:text-sm py-2 px-3 sm:px-4 text-center font-semibold shadow-xs no-print flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+        <span class="inline-block bg-amber-400 text-blue-950 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider animate-pulse">
             Workshop Siswa SD
         </span>
-        <span>Senin, 21 Desember 2026 &bull; Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta</span>
+        <span>Senin, 21 Desember 2026 &bull; Lab Komputer SMP Muhammadiyah 1 Yogyakarta</span>
     </div>
 
     <!-- Navigation Bar: Muhijunior ISS & SMP Muh 1 Yogya -->
@@ -309,22 +309,14 @@
 
             <!-- Right Actions Area -->
             <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-                <!-- SMP Muh 1 Crest Badge (Compact & Elegant) -->
-                <div class="hidden xl:flex items-center gap-2 pl-3 border-l border-slate-200 text-right">
-                    <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-9 w-9 object-contain rounded-full border-2 border-amber-400 shadow-xs">
-                    <div>
-                        <span class="block text-[11px] font-black text-blue-900 leading-tight">SMP Muh 1</span>
-                        <span class="block text-[9px] font-bold text-slate-400 tracking-wider">YOGYAKARTA</span>
-                    </div>
-                </div>
-
-                <button type="button" onclick="openTicketSearchModal()" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-blue-950 bg-amber-100 hover:bg-amber-200 rounded-xl border border-amber-300 transition-all whitespace-nowrap">
-                    <svg class="w-3.5 h-3.5 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <span>Cek Sesi</span>
+                <button type="button" onclick="openTicketSearchModal()" class="inline-flex items-center justify-center gap-2 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-black text-blue-950 bg-amber-100 hover:bg-amber-200 rounded-xl sm:rounded-2xl border-2 border-amber-300 hover:border-amber-400 transition-all shadow-xs hover:shadow-sm whitespace-nowrap">
+                    <svg class="w-4 h-4 text-blue-950 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <span class="hidden md:inline">Cek Pembagian Sesi</span>
+                    <span class="md:hidden">Cek Sesi</span>
                 </button>
 
-                <a href="{{ request()->routeIs('home') ? '#pendaftaran' : route('home') . '#pendaftaran' }}" class="btn-cartoon-blue inline-flex items-center justify-center px-4 py-2 text-xs sm:text-sm font-black rounded-xl whitespace-nowrap">
-                    Daftar Sekarang &rarr;
+                <a href="{{ request()->routeIs('home') ? '#pendaftaran' : route('home') . '#pendaftaran' }}" class="btn-cartoon-blue inline-flex items-center justify-center px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-black rounded-xl sm:rounded-2xl whitespace-nowrap">
+                    <span>Daftar</span><span class="hidden sm:inline">&nbsp;Sekarang</span> &rarr;
                 </a>
 
                 <!-- Mobile Hamburger Toggle -->
@@ -342,6 +334,15 @@
                 <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1 Yogyakarta" class="h-8 w-auto object-contain">
                 <span class="text-xs font-black text-blue-950">SMP Muh 1 Yogya</span>
             </div>
+            
+            <!-- Quick Action: Cek Sesi Card on Mobile Menu -->
+            <button type="button" onclick="toggleMobileMenu(); openTicketSearchModal();" class="w-full text-left py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black text-blue-950 bg-amber-100 hover:bg-amber-200 border-2 border-amber-300 flex items-center justify-between shadow-2xs">
+                <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    Cek Pembagian Sesi &amp; E-Ticket
+                </span>
+                <span class="text-xs text-amber-800 font-extrabold">&rarr;</span>
+            </button>
             <a href="{{ request()->routeIs('home') ? '#materi' : route('home') . '#materi' }}" onclick="toggleMobileMenu()" class="block py-2.5 px-3 rounded-xl text-sm font-extrabold text-slate-800 hover:bg-amber-50">
                 🎮 Materi Workshop
             </a>

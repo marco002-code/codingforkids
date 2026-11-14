@@ -36,25 +36,25 @@
 
     <!-- Admin Navigation Header -->
     <header class="bg-slate-900 text-white sticky top-0 z-40 border-b border-slate-800 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-6">
-                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5">
-                    <div class="bg-white px-2.5 py-1 rounded-lg shadow-xs flex items-center gap-2">
-                        <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS" class="h-6 w-auto object-contain">
-                        <span class="w-px h-5 bg-slate-300"></span>
-                        <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1" class="h-6 w-auto object-contain">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-3 sm:gap-6 overflow-x-auto">
+                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5 shrink-0">
+                    <div class="bg-white px-2 py-1 rounded-lg shadow-xs flex items-center gap-1.5 sm:gap-2">
+                        <img src="{{ asset('images/logo-muhijunior-iss.png') }}" alt="Muhijunior ISS" class="h-5 sm:h-6 w-auto object-contain">
+                        <span class="w-px h-4 sm:h-5 bg-slate-300"></span>
+                        <img src="{{ asset('images/logo-smp-muh1.png') }}" alt="SMP Muhammadiyah 1" class="h-5 sm:h-6 w-auto object-contain">
                     </div>
-                    <span class="font-extrabold text-sm tracking-tight text-white hidden sm:inline">Panitia Workshop</span>
+                    <span class="font-extrabold text-sm tracking-tight text-white hidden md:inline">Panitia Workshop</span>
                 </a>
 
-                <nav class="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm font-semibold">
-                    <a href="{{ route('admin.dashboard') }}" class="px-3 py-1.5 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800' }} transition-colors">
+                <nav class="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm font-semibold shrink-0">
+                    <a href="{{ route('admin.dashboard') }}" class="px-2.5 sm:px-3 py-1.5 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800' }} transition-colors whitespace-nowrap">
                         Ringkasan
                     </a>
-                    <a href="{{ route('admin.participants') }}" class="px-3 py-1.5 rounded-lg {{ request()->routeIs('admin.participants*') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800' }} transition-colors">
+                    <a href="{{ route('admin.participants') }}" class="px-2.5 sm:px-3 py-1.5 rounded-lg {{ request()->routeIs('admin.participants*') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800' }} transition-colors whitespace-nowrap">
                         Data Peserta
                     </a>
-                    <a href="{{ route('admin.settings') }}" class="px-3 py-1.5 rounded-lg {{ request()->routeIs('admin.settings') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800' }} transition-colors">
+                    <a href="{{ route('admin.settings') }}" class="px-2.5 sm:px-3 py-1.5 rounded-lg {{ request()->routeIs('admin.settings') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:text-white hover:bg-slate-800' }} transition-colors whitespace-nowrap">
                         Pengaturan Kuota
                     </a>
                 </nav>

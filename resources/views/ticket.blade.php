@@ -89,11 +89,11 @@
                     <!-- 5-Huruf Unik Random Code -->
                     <div class="my-2">
                         <span class="text-xs font-semibold text-slate-400 uppercase tracking-widest block">Kode Registrasi (5 Huruf)</span>
-                        <div class="inline-flex items-center gap-3 mt-1">
-                            <span class="text-4xl sm:text-5xl font-black text-blue-950 tracking-widest font-mono bg-white px-5 py-2 rounded-2xl border-2 border-blue-950 shadow-sm select-all">
+                        <div class="inline-flex items-center gap-2 sm:gap-3 mt-1">
+                            <span class="text-3xl sm:text-4xl md:text-5xl font-black text-blue-950 tracking-widest font-mono bg-white px-4 sm:px-5 py-2 rounded-2xl border-2 border-blue-950 shadow-sm select-all">
                                 {{ $participant->reg_code }}
                             </span>
-                            <button type="button" onclick="navigator.clipboard.writeText('{{ $participant->reg_code }}'); alert('Kode {{ $participant->reg_code }} disalin!')" title="Salin Kode" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors border border-slate-300 no-print">
+                            <button type="button" onclick="navigator.clipboard.writeText('{{ $participant->reg_code }}'); alert('Kode {{ $participant->reg_code }} disalin!')" title="Salin Kode" class="p-2 sm:p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors border border-slate-300 no-print">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
                             </button>
                         </div>
