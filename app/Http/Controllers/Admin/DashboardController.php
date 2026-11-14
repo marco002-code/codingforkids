@@ -16,7 +16,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // Session 1 (08:00 - 10:30 WIB)
+        // Session 1 (07:30 - 10:00 WIB)
         $s1Max = (int) Setting::get('session_1_quota', 90);
         $s1WaitlistMax = (int) Setting::get('session_1_waitlist_quota', 30);
         $s1Utama = Participant::session('1')->utama()->count();
@@ -24,7 +24,7 @@ class DashboardController extends Controller
         $s1Attended = Participant::session('1')->utama()->attended()->count();
         $s1Remaining = max(0, $s1Max - $s1Utama);
 
-        // Session 2 (12:30 - 14:00 WIB)
+        // Session 2 (10:30 - 12:00 WIB)
         $s2Max = (int) Setting::get('session_2_quota', 90);
         $s2WaitlistMax = (int) Setting::get('session_2_waitlist_quota', 30);
         $s2Utama = Participant::session('2')->utama()->count();

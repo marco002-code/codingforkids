@@ -109,7 +109,7 @@ class RegistrationController extends Controller
 
         } catch (\Exception $e) {
             if ($e->getMessage() === 'QUOTA_FULL') {
-                $sessionLabel = $session === '1' ? 'Sesi 1 (08:00 - 10:30 WIB)' : 'Sesi 2 (12:30 - 14:00 WIB)';
+                $sessionLabel = $session === '1' ? 'Sesi 1 (07:30 - 10:00 WIB)' : 'Sesi 2 (10:30 - 12:00 WIB)';
                 return back()->withInput()->with('error', "Mohon maaf, kuota kursi utama dan batas antrean cadangan untuk {$sessionLabel} telah penuh. Anda dapat memilih sesi lainnya jika masih tersedia.");
             }
 

@@ -18,12 +18,12 @@ class EventRegistrationTest extends TestCase
 
         // Seed basic settings
         Setting::set('session_1_name', 'Sesi 1 (Pagi)');
-        Setting::set('session_1_time', '08:00 – 10:30 WIB');
+        Setting::set('session_1_time', '07:30 – 10:00 WIB');
         Setting::set('session_1_quota', 2);
         Setting::set('session_1_waitlist_quota', 2);
 
         Setting::set('session_2_name', 'Sesi 2 (Siang)');
-        Setting::set('session_2_time', '12:30 – 14:00 WIB');
+        Setting::set('session_2_time', '10:30 – 12:00 WIB');
         Setting::set('session_2_quota', 2);
         Setting::set('session_2_waitlist_quota', 2);
 
@@ -36,8 +36,8 @@ class EventRegistrationTest extends TestCase
     {
         $response = $this->get('/');
         $response->assertStatus(200);
-        $response->assertSee('08:00 – 10:30 WIB');
-        $response->assertSee('12:30 – 14:00 WIB');
+        $response->assertSee('07:30 – 10:00 WIB');
+        $response->assertSee('10:30 – 12:00 WIB');
     }
 
     public function test_registration_creates_utama_for_chosen_session(): void
@@ -163,8 +163,8 @@ class EventRegistrationTest extends TestCase
         // Access dashboard
         $response = $this->get('/admin/dashboard');
         $response->assertStatus(200);
-        $response->assertSee('08:00 – 10:30 WIB');
-        $response->assertSee('12:30 – 14:00 WIB');
+        $response->assertSee('07:30 – 10:00 WIB');
+        $response->assertSee('10:30 – 12:00 WIB');
 
         // Promote cadangan S2
         $promoteResponse = $this->post('/admin/participants/' . $cadanganS2->id . '/promote');

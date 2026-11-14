@@ -62,7 +62,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <div>
                         <span class="text-[11px] font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg">SESI 1 (PAGI)</span>
-                        <h3 class="text-lg font-black text-slate-900 mt-1">08:00 – 10:30 WIB</h3>
+                        <h3 class="text-lg font-black text-slate-900 mt-1">07:30 – 10:00 WIB</h3>
                     </div>
                     <span class="text-xs font-bold text-slate-400">Target: {{ $s1Max }} Siswa</span>
                 </div>
@@ -113,7 +113,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <div>
                         <span class="text-[11px] font-black uppercase tracking-wider text-purple-600 bg-purple-50 px-2.5 py-1 rounded-lg">SESI 2 (SIANG)</span>
-                        <h3 class="text-lg font-black text-slate-900 mt-1">12:30 – 14:00 WIB</h3>
+                        <h3 class="text-lg font-black text-slate-900 mt-1">10:30 – 12:00 WIB</h3>
                     </div>
                     <span class="text-xs font-bold text-slate-400">Target: {{ $s2Max }} Siswa</span>
                 </div>

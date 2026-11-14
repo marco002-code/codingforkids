@@ -15,9 +15,9 @@ class HomeController extends Controller
     {
         $registrationStatus = Setting::get('registration_status', 'OPEN');
 
-        // Session 1 (08:00 - 10:30 WIB)
+        // Session 1 (07:30 - 10:00 WIB)
         $s1Name = Setting::get('session_1_name', 'Sesi 1 (Pagi)');
-        $s1Time = Setting::get('session_1_time', '08:00 – 10:30 WIB');
+        $s1Time = Setting::get('session_1_time', '07:30 – 10:00 WIB');
         $s1Max = (int) Setting::get('session_1_quota', 90);
         $s1WaitlistMax = (int) Setting::get('session_1_waitlist_quota', 30);
         $s1MainCount = Participant::session('1')->utama()->count();
@@ -28,9 +28,9 @@ class HomeController extends Controller
         $s1IsFull = ($s1MainCount >= $s1Max) && ($s1WaitlistCount >= $s1WaitlistMax);
         $s1IsOpen = ($registrationStatus === 'OPEN') && !$s1IsFull;
 
-        // Session 2 (12:30 - 14:00 WIB)
+        // Session 2 (10:30 - 12:00 WIB)
         $s2Name = Setting::get('session_2_name', 'Sesi 2 (Siang)');
-        $s2Time = Setting::get('session_2_time', '12:30 – 14:00 WIB');
+        $s2Time = Setting::get('session_2_time', '10:30 – 12:00 WIB');
         $s2Max = (int) Setting::get('session_2_quota', 90);
         $s2WaitlistMax = (int) Setting::get('session_2_waitlist_quota', 30);
         $s2MainCount = Participant::session('2')->utama()->count();

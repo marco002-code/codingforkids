@@ -20,7 +20,7 @@
                     <span class="text-xs font-black text-indigo-600 uppercase tracking-widest">PENGATURAN SESI 1</span>
                     <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Sesi 1 (Pagi)</h3>
                 </div>
-                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700">08:00 – 10:30 WIB</span>
+                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700">07:30 – 10:00 WIB</span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -31,7 +31,7 @@
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Jam / Waktu Pelaksanaan <span class="text-rose-500">*</span></label>
-                    <input type="text" name="session_1_time" value="{{ old('session_1_time', $settings['session_1_time']->value ?? '08:00 – 10:30 WIB') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="text" name="session_1_time" value="{{ old('session_1_time', $settings['session_1_time']->value ?? '07:30 – 10:00 WIB') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
 
                 <div>
@@ -55,7 +55,7 @@
                     <span class="text-xs font-black text-purple-600 uppercase tracking-widest">PENGATURAN SESI 2</span>
                     <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Sesi 2 (Siang)</h3>
                 </div>
-                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-purple-50 text-purple-700">12:30 – 14:00 WIB</span>
+                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-purple-50 text-purple-700">10:30 – 12:00 WIB</span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -66,7 +66,7 @@
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Jam / Waktu Pelaksanaan <span class="text-rose-500">*</span></label>
-                    <input type="text" name="session_2_time" value="{{ old('session_2_time', $settings['session_2_time']->value ?? '12:30 – 14:00 WIB') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
+                    <input type="text" name="session_2_time" value="{{ old('session_2_time', $settings['session_2_time']->value ?? '10:30 – 12:00 WIB') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
                 </div>
 
                 <div>

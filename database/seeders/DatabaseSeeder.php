@@ -45,13 +45,13 @@ class DatabaseSeeder extends Seeder
             
             // Session 1 Config
             ['key' => 'session_1_name', 'value' => 'Sesi 1 (Pagi)', 'group' => 'session', 'label' => 'Nama Sesi 1'],
-            ['key' => 'session_1_time', 'value' => '08:00 – 10:30 WIB', 'group' => 'session', 'label' => 'Waktu Sesi 1'],
+            ['key' => 'session_1_time', 'value' => '07:30 – 10:00 WIB', 'group' => 'session', 'label' => 'Waktu Sesi 1'],
             ['key' => 'session_1_quota', 'value' => '90', 'group' => 'quota', 'label' => 'Batas Kuota Utama Sesi 1'],
             ['key' => 'session_1_waitlist_quota', 'value' => '30', 'group' => 'quota', 'label' => 'Batas Kuota Cadangan Sesi 1'],
             
             // Session 2 Config
             ['key' => 'session_2_name', 'value' => 'Sesi 2 (Siang)', 'group' => 'session', 'label' => 'Nama Sesi 2'],
-            ['key' => 'session_2_time', 'value' => '12:30 – 14:00 WIB', 'group' => 'session', 'label' => 'Waktu Sesi 2'],
+            ['key' => 'session_2_time', 'value' => '10:30 – 12:00 WIB', 'group' => 'session', 'label' => 'Waktu Sesi 2'],
             ['key' => 'session_2_quota', 'value' => '90', 'group' => 'quota', 'label' => 'Batas Kuota Utama Sesi 2'],
             ['key' => 'session_2_waitlist_quota', 'value' => '30', 'group' => 'quota', 'label' => 'Batas Kuota Cadangan Sesi 2'],
 
@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
             Setting::set($setting['key'], $setting['value'], $setting['group'], $setting['label']);
         }
 
-        // 3. Demo Participants for Session 1 (08:00 - 10:30 WIB)
+        // 3. Demo Participants for Session 1 (07:30 - 10:00 WIB)
         $session1Participants = [
             ['student_name' => 'Muhammad Rizky Pratama', 'nickname' => 'Rizky', 'school_name' => 'SD Negeri Menteng 01', 'gender' => 'L', 'experience_level' => 'Pernah Sedikit', 'parent_name' => 'Budi Pratama', 'whatsapp' => '081234567801', 'email' => 'budi.pratama@example.com', 'status' => 'UTAMA', 'waitlist_order' => null, 'is_attended' => true, 'attended_at' => now()->subMinutes(20)],
             ['student_name' => 'Aisyah Putri Rahmadani', 'nickname' => 'Aisyah', 'school_name' => 'SDIT Al-Azhar Rawamangun', 'gender' => 'P', 'experience_level' => 'Belum Pernah', 'parent_name' => 'Siti Rahmawati', 'whatsapp' => '081234567802', 'email' => 'siti.rahma@example.com', 'status' => 'UTAMA', 'waitlist_order' => null, 'is_attended' => true, 'attended_at' => now()->subMinutes(15)],
@@ -90,7 +90,7 @@ class DatabaseSeeder extends Seeder
             $s1Index++;
         }
 
-        // 4. Demo Participants for Session 2 (12:30 - 14:00 WIB)
+        // 4. Demo Participants for Session 2 (10:30 - 12:00 WIB)
         $session2Participants = [
             ['student_name' => 'Nabila Khairunnisa', 'nickname' => 'Nabila', 'school_name' => 'SD Negeri Duren Sawit 07', 'gender' => 'P', 'experience_level' => 'Belum Pernah', 'parent_name' => 'Nurul Hidayah', 'whatsapp' => '081234567809', 'email' => 'nurul.hidayah@example.com', 'status' => 'UTAMA', 'waitlist_order' => null, 'is_attended' => true, 'attended_at' => now()->subMinutes(5)],
             ['student_name' => 'Raditya Bayu Anggoro', 'nickname' => 'Radit', 'school_name' => 'SD Tarakanita 1', 'gender' => 'L', 'experience_level' => 'Pernah Sedikit', 'parent_name' => 'Hendra Anggoro', 'whatsapp' => '081234567810', 'email' => 'hendra.anggoro@example.com', 'status' => 'UTAMA', 'waitlist_order' => null, 'is_attended' => false],

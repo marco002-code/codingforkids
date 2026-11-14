@@ -68,14 +68,14 @@ class Participant extends Model
     public function getSessionLabelAttribute(): string
     {
         if ($this->session === '2') {
-            return 'Sesi 2: 12:30 – 14:00 WIB';
+            return 'Sesi 2: 10:30 – 12:00 WIB';
         }
-        return 'Sesi 1: 08:00 – 10:30 WIB';
+        return 'Sesi 1: 07:30 – 10:00 WIB';
     }
 
     public function getSessionTimeAttribute(): string
     {
-        return $this->session === '2' ? '12:30 – 14:00 WIB' : '08:00 – 10:30 WIB';
+        return $this->session === '2' ? '10:30 – 12:00 WIB' : '07:30 – 10:00 WIB';
     }
 
     /**

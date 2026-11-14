@@ -204,7 +204,7 @@
                                 <div>
                                     <span class="text-white/80 text-[11px] font-black uppercase tracking-wider block">Waktu Pelaksanaan:</span>
                                     <strong class="font-display font-black text-base sm:text-lg">{{ $eventDate }}</strong>
-                                    <span class="block text-white/95 text-xs font-bold mt-0.5">2 Pilihan Sesi: Pagi (08:00) &amp; Siang (12:30)</span>
+                                    <span class="block text-white/95 text-xs font-bold mt-0.5">2 Pilihan Sesi: Pagi (07:30) &amp; Siang (10:30)</span>
                                 </div>
                                 <div class="border-t sm:border-t-0 sm:border-l border-white/30 sm:pl-3 pt-2 sm:pt-0">
                                     <span class="text-white/80 text-[11px] font-black uppercase tracking-wider block">Lokasi Laboratorium:</span>
@@ -601,10 +601,10 @@
                 <!-- Rundown Tab Switcher -->
                 <div class="mt-8 inline-flex p-1.5 rounded-2xl bg-white border-3 border-blue-950 max-w-md w-full shadow-md">
                     <button type="button" onclick="switchRundown('1')" id="tabBtn1" class="w-1/2 py-2.5 rounded-xl font-display font-black text-xs sm:text-sm transition-all bg-blue-950 text-white shadow-xs">
-                        ☀️ Sesi 1 (08:00 – 10:30)
+                        ☀️ Sesi 1 (07:30 – 10:00)
                     </button>
                     <button type="button" onclick="switchRundown('2')" id="tabBtn2" class="w-1/2 py-2.5 rounded-xl font-display font-black text-xs sm:text-sm transition-all text-slate-600 hover:text-blue-950">
-                        🌤️ Sesi 2 (12:30 – 14:00)
+                        🌤️ Sesi 2 (10:30 – 12:00)
                     </button>
                 </div>
             </div>
@@ -613,10 +613,10 @@
             <div id="rundownSesi1" class="space-y-4 transition-all">
                 <div class="cartoon-box p-5 flex items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-slate-100 font-mono font-black text-xs text-slate-800 shrink-0 border border-slate-300">07:30 – 08:00</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-slate-100 font-mono font-black text-xs text-slate-800 shrink-0 border border-slate-300">07:00 – 07:30</span>
                         <div>
                             <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Registrasi Ulang &amp; Pengambilan Name Tag</h4>
-                            <p class="text-xs text-slate-600 font-medium">Check-in scan QR Code E-Ticket atau sebutkan 5 huruf kode registrasi, pembagian Name Tag dan snack pagi di Lab TIK 1 &amp; Lab TIK 3.</p>
+                            <p class="text-xs text-slate-600 font-medium">Check-in scan QR Code E-Ticket atau sebutkan 5 huruf kode registrasi, pembagian Name Tag dan persiapan komputer di Lab TIK 1 &amp; Lab TIK 3.</p>
                         </div>
                     </div>
                     <span class="text-xs font-bold text-slate-500 shrink-0">30 Menit</span>
@@ -624,46 +624,46 @@
 
                 <div class="cartoon-box p-5 border-l-8 border-l-blue-900 flex items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-blue-100 font-mono font-black text-xs text-blue-900 shrink-0 border border-blue-300">08:00 – 09:15</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-blue-100 font-mono font-black text-xs text-blue-900 shrink-0 border border-blue-300">07:30 – 08:35</span>
                         <div>
                             <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 1: Coding &amp; Praktik Membuat Game 🎮</h4>
                             <p class="text-xs text-slate-600 font-medium">Logika sekuensial, algoritma visual Scratch, dan merakit game interaktif perdana.</p>
                         </div>
                     </div>
-                    <span class="text-xs font-bold text-blue-900 shrink-0">75 Menit</span>
+                    <span class="text-xs font-bold text-blue-900 shrink-0">65 Menit</span>
                 </div>
 
-                <div class="cartoon-box p-5 flex items-center justify-between gap-4">
+                <div class="cartoon-box p-5 flex items-center justify-between gap-4 bg-amber-50/50">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-amber-100 font-mono font-black text-xs text-amber-800 shrink-0 border border-amber-300">09:15 – 09:30</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-amber-100 font-mono font-black text-xs text-amber-900 shrink-0 border border-amber-300">08:35 – 08:50</span>
                         <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Snack Break &amp; Fun Quiz 🍪</h4>
-                            <p class="text-xs text-slate-600 font-medium">Waktu istirahat, snack lezat, kuis seru berhadiah, dan networking teman baru.</p>
+                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Istirahat (Snack Time &amp; Fun Quiz) 🍪</h4>
+                            <p class="text-xs text-slate-600 font-medium">Waktu istirahat snack lezat 15 menit, kuis seru berhadiah, dan networking teman baru.</p>
                         </div>
                     </div>
-                    <span class="text-xs font-bold text-amber-700 shrink-0">15 Menit</span>
+                    <span class="text-xs font-black text-amber-700 shrink-0 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300">15 Menit Istirahat</span>
                 </div>
 
                 <div class="cartoon-box p-5 border-l-8 border-l-purple-900 flex items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-purple-100 font-mono font-black text-xs text-purple-900 shrink-0 border border-purple-300">09:30 – 10:05</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-purple-100 font-mono font-black text-xs text-purple-900 shrink-0 border border-purple-300">08:50 – 09:30</span>
                         <div>
                             <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 2: Pemanfaatan A.I. untuk Belajar 🤖</h4>
                             <p class="text-xs text-slate-600 font-medium">Eksplorasi kecerdasan buatan ramah anak, prompt cilik, dan praktik A.I. sebagai sahabat belajar pintar.</p>
                         </div>
                     </div>
-                    <span class="text-xs font-bold text-purple-900 shrink-0">35 Menit</span>
+                    <span class="text-xs font-bold text-purple-900 shrink-0">40 Menit</span>
                 </div>
 
                 <div class="cartoon-box p-5 border-l-8 border-l-emerald-800 flex items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 font-mono font-black text-xs text-emerald-900 shrink-0 border border-emerald-300">10:05 – 10:30</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 font-mono font-black text-xs text-emerald-900 shrink-0 border border-emerald-300">09:30 – 10:00</span>
                         <div>
                             <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 3: Keamanan Digital + Showcase &amp; Sertifikat 🎓</h4>
-                            <p class="text-xs text-slate-600 font-medium">Cyber safety, Google Interland, pameran hasil karya game, dan penyerahan sertifikat.</p>
+                            <p class="text-xs text-slate-600 font-medium">Cyber safety Google Interland, pameran hasil karya game, dan penyerahan sertifikat peserta.</p>
                         </div>
                     </div>
-                    <span class="text-xs font-bold text-emerald-800 shrink-0">25 Menit</span>
+                    <span class="text-xs font-bold text-emerald-800 shrink-0">30 Menit</span>
                 </div>
             </div>
 
@@ -671,7 +671,7 @@
             <div id="rundownSesi2" class="space-y-4 hidden transition-all">
                 <div class="cartoon-box p-5 flex items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-slate-100 font-mono font-black text-xs text-slate-800 shrink-0 border border-slate-300">12:00 – 12:30</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-slate-100 font-mono font-black text-xs text-slate-800 shrink-0 border border-slate-300">10:00 – 10:30</span>
                         <div>
                             <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Registrasi Ulang Sesi 2 &amp; Welcome Drink</h4>
                             <p class="text-xs text-slate-600 font-medium">Check-in scan QR Code E-Ticket atau sebutkan 5 huruf kode registrasi, pengambilan Name Tag dan persiapan komputer di Lab TIK.</p>
@@ -682,35 +682,35 @@
 
                 <div class="cartoon-box p-5 border-l-8 border-l-blue-900 flex items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-blue-100 font-mono font-black text-xs text-blue-900 shrink-0 border border-blue-300">12:30 – 13:15</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-blue-100 font-mono font-black text-xs text-blue-900 shrink-0 border border-blue-300">10:30 – 11:10</span>
                         <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 1: Coding &amp; Praktik Membuat Game 🎮</h4>
-                            <p class="text-xs text-slate-600 font-medium">Mempelajari logika pemrograman visual Scratch dan merakit game kreasi mandiri.</p>
+                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 1: Coding &amp; Logika Block Programming 🎮</h4>
+                            <p class="text-xs text-slate-600 font-medium">Mempelajari logika pemrograman visual Scratch, gerakan karakter game, dan tantangan kreasi mandiri.</p>
                         </div>
                     </div>
-                    <span class="text-xs font-bold text-blue-900 shrink-0">45 Menit</span>
+                    <span class="text-xs font-bold text-blue-900 shrink-0">40 Menit</span>
                 </div>
 
-                <div class="cartoon-box p-5 border-l-8 border-l-purple-900 flex items-center justify-between gap-4">
+                <div class="cartoon-box p-5 flex items-center justify-between gap-4 bg-amber-50/50">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-purple-100 font-mono font-black text-xs text-purple-900 shrink-0 border border-purple-300">13:15 – 13:40</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-amber-100 font-mono font-black text-xs text-amber-900 shrink-0 border border-amber-300">11:10 – 11:25</span>
                         <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 2: Pemanfaatan A.I. untuk Belajar 🤖</h4>
-                            <p class="text-xs text-slate-600 font-medium">Praktik menggunakan A.I. sebagai mitra belajar cerdas, eksplorasi ide sains &amp; nalar kreatif.</p>
+                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Istirahat (Snack Time &amp; Ice Breaking) 🍪</h4>
+                            <p class="text-xs text-slate-600 font-medium">Waktu istirahat snack lezat 15 menit, ice breaking seru, dan penyegaran santai.</p>
                         </div>
                     </div>
-                    <span class="text-xs font-bold text-purple-900 shrink-0">25 Menit</span>
+                    <span class="text-xs font-black text-amber-700 shrink-0 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300">15 Menit Istirahat</span>
                 </div>
 
                 <div class="cartoon-box p-5 border-l-8 border-l-emerald-800 flex items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 font-mono font-black text-xs text-emerald-900 shrink-0 border border-emerald-300">13:40 – 14:00</span>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 font-mono font-black text-xs text-emerald-900 shrink-0 border border-emerald-300">11:25 – 12:00</span>
                         <div>
-                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 3: Keamanan Digital + Penutup &amp; Sertifikat 🎓</h4>
-                            <p class="text-xs text-slate-600 font-medium">Etika digital, Google Interland, showcase game karya siswa &amp; penyerahan sertifikat.</p>
+                            <h4 class="font-display font-black text-slate-900 text-sm sm:text-base">Modul 2 &amp; 3: A.I. for Learning + Keamanan Digital &amp; Sertifikat 🤖🎓</h4>
+                            <p class="text-xs text-slate-600 font-medium">Eksplorasi A.I. untuk belajar, etika dan keamanan Google Interland, showcase game &amp; penyerahan sertifikat.</p>
                         </div>
                     </div>
-                    <span class="text-xs font-bold text-emerald-800 shrink-0">20 Menit</span>
+                    <span class="text-xs font-bold text-emerald-800 shrink-0">35 Menit</span>
                 </div>
             </div>
         </div>
@@ -997,7 +997,7 @@
                         <span class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-blue-950 group-open:rotate-180 transition-transform">▾</span>
                     </summary>
                     <p class="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                        Materi pembelajaran inti keduanya sama persis (Block Programming Game, A.I. for Learning, dan Keamanan Digital Google Interland). Perbedaannya terletak pada waktu: <strong>Sesi 1 berlangsung pukul 08:00 – 10:30 WIB</strong>, sedangkan <strong>Sesi 2 berlangsung pukul 12:30 – 14:00 WIB</strong>. Orang tua bebas memilih sesi yang paling nyaman.
+                        Materi pembelajaran inti keduanya sama persis (Block Programming Game, A.I. for Learning, dan Keamanan Digital Google Interland). Perbedaannya terletak pada waktu: <strong>Sesi 1 berlangsung pukul 07:30 – 10:00 WIB</strong>, sedangkan <strong>Sesi 2 berlangsung pukul 10:30 – 12:00 WIB</strong>. Orang tua bebas memilih sesi yang paling nyaman.
                     </p>
                 </details>
 
