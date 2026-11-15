@@ -21,3 +21,4 @@ return new class extends Migration
         // No need to restore demo account
     }
 };
+
