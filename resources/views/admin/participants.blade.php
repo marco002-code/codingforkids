@@ -159,14 +159,31 @@
                                 </div>
                             </td>
 
-                            <!-- Parent Info -->
+                            <!-- Parent Info & Direct WhatsApp wa.me -->
                             <td class="py-4 px-4 whitespace-nowrap">
-                                <div class="font-semibold text-slate-800">{{ $p->parent_name }}</div>
-                                <div class="flex items-center gap-1.5 mt-0.5">
-                                    <a href="{{ $p->whatsapp_url }}" target="_blank" class="text-emerald-600 hover:text-emerald-700 font-mono font-bold flex items-center gap-1">
+                                <div class="font-extrabold text-slate-800 flex items-center gap-1.5">
+                                    <span class="text-xs">👤</span>
+                                    <span>{{ $p->parent_name }}</span>
+                                </div>
+                                <div class="flex items-center gap-2 mt-1.5">
+                                    <!-- Direct wa.me link -->
+                                    <a href="{{ $p->whatsapp_url }}" target="_blank" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 font-mono font-bold text-xs transition-colors shadow-2xs" title="Klik langsung untuk chat WhatsApp (wa.me)">
                                         <span>💬 {{ $p->whatsapp }}</span>
+                                        <span class="text-[10px] text-emerald-500 font-sans">&nearr;</span>
+                                    </a>
+
+                                    <!-- Send formatted ticket confirmation -->
+                                    <a href="{{ $p->whatsapp_confirmation_url }}" target="_blank" class="p-1 rounded-lg bg-slate-100 hover:bg-emerald-50 text-slate-500 hover:text-emerald-600 border border-slate-200 transition-colors" title="Kirim Tiket / Konfirmasi Resmi via WhatsApp">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
                                     </a>
                                 </div>
+                                @if($p->student_whatsapp)
+                                    <div class="mt-1">
+                                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $p->student_whatsapp) }}" target="_blank" class="text-[10px] text-slate-500 hover:text-slate-800 font-mono flex items-center gap-1">
+                                            <span>📱 WA Murid: {{ $p->student_whatsapp }}</span>
+                                        </a>
+                                    </div>
+                                @endif
                             </td>
 
                             <!-- Status -->
@@ -219,16 +236,16 @@
                                     @if($p->status === 'CADANGAN')
                                         <form action="{{ route('admin.participants.promote', $p->id) }}" method="POST">
                                             @csrf
-                                            <button type="submit" onclick="return confirm('Promosikan {{ $p->student_name }} menjadi Peserta Utama Sesi {{ $p->session }}?')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors" title="Naikkan ke Peserta Utama Sesi Ini">
-                                                Promosi &uarr;
+                                            <button type="submit" onclick="return confirm('Naikkan grade {{ $p->student_name }} (Antrean #{{ $p->waitlist_order }}) menjadi PESERTA UTAMA Sesi {{ $p->session }}?')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors" title="Naikkan ke Peserta Utama Sesi Ini">
+                                                Naikkan ke Utama &uarr;
                                             </button>
                                         </form>
                                     @endif
 
-                                    <!-- Cancel Participant -->
+                                    <!-- Cancel / Mengundurkan Diri -->
                                     @if($p->status !== 'DIBATALKAN')
-                                        <button type="button" onclick="openCancelModal({{ $p->id }}, '{{ addslashes($p->student_name) }}', '{{ $p->reg_code }}', '{{ $p->session }}')" class="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-lg text-xs font-bold transition-colors" title="Batalkan Pendaftaran">
-                                            Batalkan
+                                        <button type="button" onclick="openCancelModal({{ $p->id }}, '{{ addslashes($p->student_name) }}', '{{ $p->reg_code }}', '{{ $p->session }}', '{{ $p->status }}')" class="px-2.5 py-1.5 {{ $p->status === 'UTAMA' ? 'bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200' : 'bg-slate-100 hover:bg-slate-200 text-slate-600' }} rounded-lg text-xs font-bold transition-colors" title="{{ $p->status === 'UTAMA' ? 'Catat Pengunduran Diri (Otomatis naikkan antrean cadangan #1 ke utama)' : 'Batalkan Pendaftaran' }}">
+                                            {{ $p->status === 'UTAMA' ? 'Mundur / Batal' : 'Batalkan' }}
                                         </button>
                                     @else
                                         <!-- Restore Participant -->
@@ -269,25 +286,54 @@
 
 </div>
 
-<!-- Cancellation Modal -->
+<!-- Cancellation / Pengunduran Diri Modal -->
 <div id="cancelModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-slate-100">
-        <h3 class="text-base font-bold text-slate-900 mb-2">Batalkan Pendaftaran Peserta</h3>
-        <p class="text-xs text-slate-500 mb-4" id="cancelParticipantText">Apakah Anda yakin ingin membatalkan peserta ini?</p>
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-slate-100 space-y-4">
+        <div>
+            <div class="flex items-center gap-2 mb-1">
+                <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm">⚠️</span>
+                <h3 class="text-base font-extrabold text-slate-900">Catat Pengunduran Diri / Pembatalan</h3>
+            </div>
+            <p class="text-xs text-slate-500" id="cancelParticipantText">Apakah Anda yakin ingin membatalkan peserta ini?</p>
+        </div>
+
+        <!-- Automatic Promotion Notice for Peserta Utama -->
+        <div id="cancelUtamaAlert" class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1">
+            <span class="font-extrabold flex items-center gap-1.5 text-amber-800">
+                <span>⚡</span> Promosi Otomatis Peserta Cadangan
+            </span>
+            <p class="text-[11px] text-amber-700 leading-relaxed">
+                Karena peserta ini berstatus <strong>Peserta Utama</strong>, saat dicatat mengundurkan diri sistem akan <strong>SECARA OTOMATIS mempromosikan peserta cadangan antrean #1</strong> pada sesi ini menjadi <strong>Peserta Utama</strong>!
+            </p>
+        </div>
 
         <form id="cancelForm" method="POST" action="">
             @csrf
-            <div class="mb-4">
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">Alasan Pembatalan (Opsional)</label>
-                <textarea name="reason" rows="2" placeholder="Contoh: Konfirmasi orang tua berhalangan hadir..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none"></textarea>
+            <div class="space-y-2 mb-4">
+                <label class="block text-xs font-bold text-slate-700">Pilih Alasan Pengunduran Diri / Pembatalan:</label>
+                
+                <!-- Preset Buttons -->
+                <div class="flex flex-wrap gap-1.5 pb-1">
+                    <button type="button" onclick="setCancelReason('Mengundurkan diri / berhalangan hadir pada hari-H')" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-100 hover:bg-amber-100 hover:text-amber-800 text-slate-600 rounded-lg transition-colors border border-slate-200">
+                        Mengundurkan Diri
+                    </button>
+                    <button type="button" onclick="setCancelReason('Jadwal bentrok dengan kegiatan sekolah / keluarga')" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-100 hover:bg-amber-100 hover:text-amber-800 text-slate-600 rounded-lg transition-colors border border-slate-200">
+                        Jadwal Bentrok
+                    </button>
+                    <button type="button" onclick="setCancelReason('Konfirmasi orang tua via chat WhatsApp')" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-100 hover:bg-amber-100 hover:text-amber-800 text-slate-600 rounded-lg transition-colors border border-slate-200">
+                        Konfirmasi Chat WA
+                    </button>
+                </div>
+
+                <textarea id="cancelReasonInput" name="reason" rows="2" placeholder="Tulis alasan pembatalan..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-amber-500 outline-none font-medium text-slate-800"></textarea>
             </div>
 
-            <div class="flex items-center justify-end gap-2">
-                <button type="button" onclick="closeCancelModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
+            <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                <button type="button" onclick="closeCancelModal()" class="px-4 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
                     Kembali
                 </button>
-                <button type="submit" class="px-4 py-2 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-xl shadow-xs transition-colors">
-                    Ya, Batalkan Pendaftaran
+                <button type="submit" class="px-4 py-2.5 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-xl shadow-xs transition-colors">
+                    Ya, Catat Pengunduran Diri
                 </button>
             </div>
         </form>
@@ -296,25 +342,28 @@
 
 <!-- Permanent Delete Confirmation Modal -->
 <div id="deleteModal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs hidden items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-rose-100">
-        <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-rose-100 space-y-4">
+        <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mb-1">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
         </div>
 
-        <h3 class="text-base font-extrabold text-slate-900 mb-1.5">Hapus Data Peserta Secara Permanen?</h3>
-        <p class="text-xs text-slate-600 mb-2 leading-relaxed" id="deleteParticipantText">
-            Data peserta akan dihapus selamanya dari database dan tiket tidak dapat diakses kembali.
-        </p>
+        <div>
+            <h3 class="text-base font-extrabold text-slate-900 mb-1">Hapus Data Peserta Secara Permanen?</h3>
+            <p class="text-xs text-slate-600 leading-relaxed" id="deleteParticipantText">
+                Data peserta akan dihapus selamanya dari database dan tiket tidak dapat diakses kembali.
+            </p>
+        </div>
 
-        <div class="p-3 rounded-xl bg-rose-50/70 border border-rose-200/80 text-[11px] text-rose-800 mb-5">
-            ⚠️ <strong>Perhatian:</strong> Tindakan ini tidak dapat dibatalkan. Jika peserta yang dihapus berstatus <strong>Peserta Utama</strong>, sistem akan merekomendasikan antrean cadangan #1 untuk dipromosikan.
+        <div class="p-3.5 rounded-2xl bg-rose-50 border border-rose-200/80 text-[11px] text-rose-800 space-y-1">
+            <span class="font-extrabold block">⚠️ Perhatian Khusus:</span>
+            <p class="leading-relaxed">Tindakan ini permanen. Jika peserta yang dihapus berstatus <strong>Peserta Utama</strong>, sistem akan <strong>otomatis mempromosikan cadangan antrean #1</strong> pada sesi ini menjadi Peserta Utama!</p>
         </div>
 
         <form id="deleteForm" method="POST" action="">
             @csrf
             @method('DELETE')
 
-            <div class="flex items-center justify-end gap-2">
+            <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
                 <button type="button" onclick="closeDeleteModal()" class="px-4 py-2.5 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
                     Batal
                 </button>
@@ -328,9 +377,22 @@
 </div>
 
 <script>
-    function openCancelModal(id, name, code, session) {
-        document.getElementById('cancelParticipantText').innerText = `Apakah Anda yakin ingin membatalkan peserta ${name} (${code} - Sesi ${session})?`;
+    function setCancelReason(text) {
+        document.getElementById('cancelReasonInput').value = text;
+    }
+
+    function openCancelModal(id, name, code, session, status) {
+        document.getElementById('cancelParticipantText').innerHTML = `Konfirmasi pengunduran diri siswa <strong>${name}</strong> (Kode: <code class="font-bold text-slate-900">${code}</code>, Sesi ${session}).`;
         document.getElementById('cancelForm').action = `/admin/participants/${id}/cancel`;
+        document.getElementById('cancelReasonInput').value = 'Mengundurkan diri / berhalangan hadir pada hari-H';
+
+        const alertBox = document.getElementById('cancelUtamaAlert');
+        if (status === 'UTAMA') {
+            alertBox.classList.remove('hidden');
+        } else {
+            alertBox.classList.add('hidden');
+        }
+
         document.getElementById('cancelModal').classList.remove('hidden');
         document.getElementById('cancelModal').classList.add('flex');
     }

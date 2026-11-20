@@ -428,11 +428,95 @@ class EventRegistrationTest extends TestCase
         $cadangan2->refresh();
         $this->assertEquals(1, $cadangan2->waitlist_order);
 
-        // 2. Delete utama -> system should suggest promoting remaining waitlist
+        // 2. Delete utama -> system automatically promotes remaining waitlist candidate to UTAMA
         $delUtamaResponse = $this->delete(route('admin.participants.destroy', $utama->id));
         $delUtamaResponse->assertSessionHas('success');
-        $delUtamaResponse->assertSessionHas('suggest_promote_id', $cadangan2->id);
+        $delUtamaResponse->assertSessionHas('promoted_wa_url');
         $this->assertDatabaseMissing('participants', ['id' => $utama->id]);
+
+        $cadangan2->refresh();
+        $this->assertEquals('UTAMA', $cadangan2->status);
+        $this->assertNull($cadangan2->waitlist_order);
+    }
+
+    public function test_cancelling_utama_automatically_promotes_top_waitlist_to_utama_and_provides_wa_link(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin Panitia',
+            'email' => 'admin_cancel_test@test.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $utama = Participant::create([
+            'reg_code' => 'KMPX1',
+            'session' => '2',
+            'student_name' => 'Peserta Utama Mengundurkan Diri',
+            'school_name' => 'SD Teladan',
+            'gender' => 'L',
+            'experience_level' => 'Belum Pernah',
+            'parent_name' => 'Budi Santoso',
+            'whatsapp' => '081234567890',
+            'status' => 'UTAMA',
+        ]);
+
+        $cadangan1 = Participant::create([
+            'reg_code' => 'KMPX2',
+            'session' => '2',
+            'student_name' => 'Siswa Cadangan Pertama',
+            'school_name' => 'SD Karitas',
+            'gender' => 'P',
+            'experience_level' => 'Belum Pernah',
+            'parent_name' => 'Dewi Lestari',
+            'whatsapp' => '085640001111',
+            'status' => 'CADANGAN',
+            'waitlist_order' => 1,
+        ]);
+
+        $cadangan2 = Participant::create([
+            'reg_code' => 'KMPX3',
+            'session' => '2',
+            'student_name' => 'Siswa Cadangan Kedua',
+            'school_name' => 'SD Negeri 1',
+            'gender' => 'L',
+            'experience_level' => 'Pernah Sedikit',
+            'parent_name' => 'Agus Salim',
+            'whatsapp' => '087788990011',
+            'status' => 'CADANGAN',
+            'waitlist_order' => 2,
+        ]);
+
+        $this->actingAs($admin);
+
+        // Cancel the UTAMA participant with reason "Mengundurkan diri"
+        $cancelRes = $this->post(route('admin.participants.cancel', $utama->id), [
+            'reason' => 'Mengundurkan diri karena acara keluarga.',
+        ]);
+
+        $cancelRes->assertRedirect();
+        $cancelRes->assertSessionHas('success');
+        $cancelRes->assertSessionHas('promoted_wa_url');
+
+        // Check utama is now DIBATALKAN
+        $utama->refresh();
+        $this->assertEquals('DIBATALKAN', $utama->status);
+        $this->assertEquals('Mengundurkan diri karena acara keluarga.', $utama->cancellation_reason);
+
+        // Check cadangan1 is AUTOMATICALLY PROMOTED to UTAMA
+        $cadangan1->refresh();
+        $this->assertEquals('UTAMA', $cadangan1->status);
+        $this->assertNull($cadangan1->waitlist_order);
+
+        // Check cadangan2 shifts to waitlist_order 1
+        $cadangan2->refresh();
+        $this->assertEquals('CADANGAN', $cadangan2->status);
+        $this->assertEquals(1, $cadangan2->waitlist_order);
+
+        // Check participants page displays direct wa.me link and reg_code
+        $participantsPage = $this->get(route('admin.participants'));
+        $participantsPage->assertStatus(200);
+        $participantsPage->assertSee('KMPX2');
+        $participantsPage->assertSee('https://wa.me/6285640001111', false);
+        $participantsPage->assertSee('Dewi Lestari');
     }
 
     public function test_admin_settings_tabs_and_rundown_stacks_management(): void

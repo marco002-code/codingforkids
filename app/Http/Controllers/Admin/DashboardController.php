@@ -227,25 +227,40 @@ class DashboardController extends Controller
     }
 
     /**
-     * Cancel a participant.
+     * Cancel a participant (e.g. withdraws/mengundurkan diri).
+     * If an UTAMA participant cancels, automatically promote the top waitlist candidate in that session!
      */
     public function cancel(Request $request, Participant $participant)
     {
-        $reason = $request->input('reason', 'Dibatalkan oleh panitia / konfirmasi orang tua.');
+        $reason = $request->input('reason', 'Mengundurkan diri / berhalangan hadir.');
         $session = $participant->session;
+        $wasUtama = ($participant->status === 'UTAMA');
+        $wasCadangan = ($participant->status === 'CADANGAN');
 
-        DB::transaction(function () use ($participant, $reason, $session) {
-            $wasCadangan = ($participant->status === 'CADANGAN');
+        $promotedCandidate = null;
 
+        DB::transaction(function () use ($participant, $reason, $session, $wasUtama, $wasCadangan, &$promotedCandidate) {
             $participant->update([
                 'status' => 'DIBATALKAN',
                 'waitlist_order' => null,
                 'cancellation_reason' => $reason,
             ]);
 
-            // If a waitlist participant was canceled, re-sequence the remaining waitlist for this session
-            if ($wasCadangan) {
-                $cadanganList = Participant::session($session)->cadangan()->get();
+            // Jika peserta UTAMA mengundurkan diri / dibatalkan, otomatis naikkan antrean cadangan #1 menjadi UTAMA
+            if ($wasUtama) {
+                $nextCandidate = Participant::session($session)->cadangan()->orderBy('waitlist_order', 'asc')->first();
+                if ($nextCandidate) {
+                    $nextCandidate->update([
+                        'status' => 'UTAMA',
+                        'waitlist_order' => null,
+                    ]);
+                    $promotedCandidate = $nextCandidate;
+                }
+            }
+
+            // Urutkan ulang sisa peserta cadangan pada sesi ini (urutan 1, 2, 3...)
+            if ($wasCadangan || $promotedCandidate) {
+                $cadanganList = Participant::session($session)->cadangan()->orderBy('waitlist_order', 'asc')->get();
                 $order = 1;
                 foreach ($cadanganList as $item) {
                     if ($item->waitlist_order !== $order) {
@@ -256,22 +271,15 @@ class DashboardController extends Controller
             }
         });
 
-        // Suggest promote next candidate in THIS session
-        $nextWaitlist = Participant::session($session)->cadangan()->first();
-
-        $message = "Pendaftaran {$participant->student_name} ({$participant->reg_code}) telah berhasil dibatalkan.";
-
-        if ($nextWaitlist) {
+        if ($promotedCandidate) {
             return back()->with([
-                'success' => $message,
-                'suggest_promote_id' => $nextWaitlist->id,
-                'suggest_promote_name' => $nextWaitlist->student_name,
-                'suggest_promote_code' => $nextWaitlist->reg_code,
-                'suggest_promote_session' => $nextWaitlist->session_label,
+                'success' => "Peserta Utama {$participant->student_name} ({$participant->reg_code}) telah berhasil dicatat mengundurkan diri. Sistem OTOMATIS mempromosikan peserta cadangan antrean #1: {$promotedCandidate->student_name} ({$promotedCandidate->reg_code}) menjadi PESERTA UTAMA {$promotedCandidate->session_label}!",
+                'promoted_wa_url' => $promotedCandidate->whatsapp_promoted_url,
+                'promoted_name' => $promotedCandidate->student_name,
             ]);
         }
 
-        return back()->with('success', $message);
+        return back()->with('success', "Pendaftaran {$participant->student_name} ({$participant->reg_code}) berhasil dibatalkan.");
     }
 
     /**
@@ -309,21 +317,37 @@ class DashboardController extends Controller
 
     /**
      * Delete a participant permanently.
+     * If an UTAMA participant was deleted, automatically promote the top waitlist candidate!
      */
     public function destroy(Participant $participant)
     {
         $name = $participant->student_name;
         $regCode = $participant->reg_code;
         $session = $participant->session;
+        $sessionLabel = $participant->session_label;
         $wasUtama = ($participant->status === 'UTAMA');
         $wasCadangan = ($participant->status === 'CADANGAN');
 
-        DB::transaction(function () use ($participant, $session, $wasCadangan) {
+        $promotedCandidate = null;
+
+        DB::transaction(function () use ($participant, $session, $wasUtama, $wasCadangan, &$promotedCandidate) {
             $participant->delete();
 
-            // If a waitlist participant was deleted, re-sequence the remaining waitlist for this session
-            if ($wasCadangan) {
-                $cadanganList = Participant::session($session)->cadangan()->get();
+            // Jika peserta UTAMA dihapus, otomatis promosikan antrean cadangan #1 menjadi UTAMA
+            if ($wasUtama) {
+                $nextCandidate = Participant::session($session)->cadangan()->orderBy('waitlist_order', 'asc')->first();
+                if ($nextCandidate) {
+                    $nextCandidate->update([
+                        'status' => 'UTAMA',
+                        'waitlist_order' => null,
+                    ]);
+                    $promotedCandidate = $nextCandidate;
+                }
+            }
+
+            // Urutkan ulang sisa peserta cadangan pada sesi ini
+            if ($wasCadangan || $promotedCandidate) {
+                $cadanganList = Participant::session($session)->cadangan()->orderBy('waitlist_order', 'asc')->get();
                 $order = 1;
                 foreach ($cadanganList as $item) {
                     if ($item->waitlist_order !== $order) {
@@ -334,23 +358,15 @@ class DashboardController extends Controller
             }
         });
 
-        $message = "Data pendaftaran {$name} ({$regCode}) telah berhasil dihapus secara permanen dari sistem.";
-
-        // If an UTAMA participant was deleted and there's a CADANGAN candidate available, suggest promotion
-        if ($wasUtama) {
-            $nextWaitlist = Participant::session($session)->cadangan()->first();
-            if ($nextWaitlist) {
-                return back()->with([
-                    'success' => $message,
-                    'suggest_promote_id' => $nextWaitlist->id,
-                    'suggest_promote_name' => $nextWaitlist->student_name,
-                    'suggest_promote_code' => $nextWaitlist->reg_code,
-                    'suggest_promote_session' => $nextWaitlist->session_label,
-                ]);
-            }
+        if ($promotedCandidate) {
+            return back()->with([
+                'success' => "Data pendaftaran {$name} ({$regCode}) telah berhasil dihapus. Sistem OTOMATIS mempromosikan cadangan antrean #1: {$promotedCandidate->student_name} ({$promotedCandidate->reg_code}) menjadi PESERTA UTAMA {$sessionLabel}!",
+                'promoted_wa_url' => $promotedCandidate->whatsapp_promoted_url,
+                'promoted_name' => $promotedCandidate->student_name,
+            ]);
         }
 
-        return back()->with('success', $message);
+        return back()->with('success', "Data pendaftaran {$name} ({$regCode}) telah berhasil dihapus secara permanen dari sistem.");
     }
 
     /**
