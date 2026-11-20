@@ -35,6 +35,11 @@
             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
             <span>📚 Stack Materi Sesi (Rundown)</span>
         </a>
+
+        <a href="{{ route('admin.settings', ['tab' => 'whatsapp']) }}" class="px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 {{ $activeTab === 'whatsapp' ? 'bg-emerald-600 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200' }}">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+            <span>💬 Grup &amp; Hotline WhatsApp</span>
+        </a>
     </div>
 
     <!-- ===================================================================== -->
@@ -119,9 +124,14 @@
 
         <!-- WhatsApp & Kontak -->
         <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs space-y-5">
-            <div class="border-b border-slate-100 pb-3">
-                <span class="text-xs font-black text-indigo-600 uppercase tracking-widest">KONTAK KOORDINASI</span>
-                <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Grup WhatsApp Orang Tua &amp; Hotline Panitia</h3>
+            <div class="border-b border-slate-100 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                    <span class="text-xs font-black text-indigo-600 uppercase tracking-widest">KONTAK KOORDINASI</span>
+                    <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Grup WhatsApp Orang Tua &amp; Hotline Panitia</h3>
+                </div>
+                <a href="{{ route('admin.settings', ['tab' => 'whatsapp']) }}" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-xl border border-emerald-200 flex items-center gap-1 transition-colors self-start sm:self-auto">
+                    <span>💬 Menu Khusus WhatsApp &amp; Hotline &rarr;</span>
+                </a>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -478,6 +488,190 @@
             }
         }
     </script>
+    @endif
+
+    <!-- ===================================================================== -->
+    <!-- TAB 4: PENGATURAN GRUP & NOMOR HOTLINE WHATSAPP -->
+    <!-- ===================================================================== -->
+    @if($activeTab === 'whatsapp')
+    @php
+        $rawWa = $settings['contact_whatsapp']->value ?? '081234567890';
+        $cleanWa = preg_replace('/[^0-9]/', '', $rawWa);
+        if (str_starts_with($cleanWa, '0')) {
+            $cleanWa = '62' . substr($cleanWa, 1);
+        }
+        $testWaLink = 'https://wa.me/' . $cleanWa . '?text=' . urlencode('Halo Panitia Coding for Kids Muhijunior, saya ingin konfirmasi pendaftaran...');
+        $currentGroupLink = $settings['whatsapp_group_link']->value ?? '';
+    @endphp
+
+    <form action="{{ route('admin.settings.update') }}" method="POST" class="max-w-4xl space-y-6">
+        @csrf
+        <input type="hidden" name="redirect_tab" value="whatsapp">
+
+        <!-- Hidden Keep Event & Session Values -->
+        <input type="hidden" name="event_name" value="{{ $settings['event_name']->value ?? 'Coding for Kids and A.I. for Learning' }}">
+        <input type="hidden" name="event_tagline" value="{{ $settings['event_tagline']->value ?? '' }}">
+        <input type="hidden" name="event_subtitle" value="{{ $settings['event_subtitle']->value ?? '' }}">
+        <input type="hidden" name="event_date" value="{{ $settings['event_date']->value ?? 'Senin, 21 Desember 2026' }}">
+        <input type="hidden" name="event_location" value="{{ $settings['event_location']->value ?? 'Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta' }}">
+        <input type="hidden" name="registration_status" value="{{ $settings['registration_status']->value ?? 'OPEN' }}">
+        <input type="hidden" name="publish_selected_participants" value="{{ $settings['publish_selected_participants']->value ?? '0' }}">
+        
+        <input type="hidden" name="session_1_name" value="{{ $settings['session_1_name']->value ?? 'Sesi 1 (Pagi)' }}">
+        <input type="hidden" name="session_1_time" value="{{ $settings['session_1_time']->value ?? '07:30 – 10:00 WIB' }}">
+        <input type="hidden" name="session_1_quota" value="{{ $settings['session_1_quota']->value ?? 90 }}">
+        <input type="hidden" name="session_1_waitlist_quota" value="{{ $settings['session_1_waitlist_quota']->value ?? 30 }}">
+        
+        <input type="hidden" name="session_2_name" value="{{ $settings['session_2_name']->value ?? 'Sesi 2 (Siang)' }}">
+        <input type="hidden" name="session_2_time" value="{{ $settings['session_2_time']->value ?? '10:30 – 12:00 WIB' }}">
+        <input type="hidden" name="session_2_quota" value="{{ $settings['session_2_quota']->value ?? 90 }}">
+        <input type="hidden" name="session_2_waitlist_quota" value="{{ $settings['session_2_waitlist_quota']->value ?? 30 }}">
+
+        <!-- Top Banner Info -->
+        <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-3xl p-6 text-white shadow-lg space-y-2">
+            <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-xs flex items-center justify-center text-xl shrink-0">💬</span>
+                <div>
+                    <h2 class="font-extrabold text-lg tracking-tight">Pengaturan WhatsApp &amp; Kontak Hotline Panitia</h2>
+                    <p class="text-xs text-emerald-100">Atur tautan grup WhatsApp resmi koordinasi orang tua peserta dan nomor hotline panitia yang selalu aktif dan siap dihubungi.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Link Undangan Grup WhatsApp Koordinasi -->
+        <div class="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-xs space-y-5">
+            <div class="border-b border-slate-100 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                    <span class="text-xs font-black text-emerald-600 uppercase tracking-widest">GRUP WHATSAPP KOORDINASI</span>
+                    <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Tautan Undangan Grup WhatsApp Peserta</h3>
+                </div>
+                <div>
+                    @if(!empty($currentGroupLink))
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Link Grup Terpasang
+                        </span>
+                    @else
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200">
+                            ⚠️ Belum Dikonfigurasi
+                        </span>
+                    @endif
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">
+                        Link Undangan Grup WhatsApp Resmi
+                    </label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 font-bold text-sm">🔗</span>
+                        <input type="url" name="whatsapp_group_link" value="{{ old('whatsapp_group_link', $currentGroupLink) }}" placeholder="https://chat.whatsapp.com/KodeUndanganGrupAnda" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-medium font-mono text-slate-800">
+                    </div>
+                    @error('whatsapp_group_link') <p class="text-xs text-rose-500 mt-1 font-bold">{{ $message }}</p> @enderror
+                    <span class="text-[11px] text-slate-500 mt-1.5 block">Format standar link undangan grup: <code>https://chat.whatsapp.com/...</code></span>
+                </div>
+
+                <!-- Lokasi Pemakaian -->
+                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-2">
+                    <span class="text-xs font-bold text-slate-700 block">Tautan grup ini otomatis terintegrasi ke:</span>
+                    <ul class="text-xs text-slate-600 space-y-1.5 font-medium">
+                        <li class="flex items-center gap-2">
+                            <span class="text-emerald-600 font-bold">✓</span>
+                            <span><strong>Halaman E-Ticket Siswa (<code>/ticket/{kode}</code>):</strong> Tombol hijau <em>"Gabung Grup WhatsApp Koordinasi Peserta"</em>.</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-emerald-600 font-bold">✓</span>
+                            <span><strong>Pesan Promosi Cadangan:</strong> Otomatis disertakan dalam draf konfirmasi panitia ketika peserta cadangan naik ke kuota utama.</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-emerald-600 font-bold">✓</span>
+                            <span><strong>Konfirmasi Pendaftaran:</strong> Tautan instan bagi wali murid setelah formulir berhasil terkirim.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                @if(!empty($currentGroupLink))
+                <div class="pt-1">
+                    <a href="{{ $currentGroupLink }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 text-xs font-bold rounded-xl transition-colors">
+                        <span>🔗 Buka &amp; Uji Tautan Grup WhatsApp &nearr;</span>
+                    </a>
+                </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Section 2: Nomor WhatsApp Hotline Panitia Siap Dihubungi -->
+        <div class="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-xs space-y-5">
+            <div class="border-b border-slate-100 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                    <span class="text-xs font-black text-emerald-600 uppercase tracking-widest">HOTLINE PANITIA RESMI</span>
+                    <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Nomor WhatsApp Panitia yang Siap Dihubungi</h3>
+                </div>
+                <div>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
+                        📞 Hotline Aktif: {{ $rawWa }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">
+                        Nomor WhatsApp Panitia / Call Center <span class="text-rose-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 font-bold text-sm">📱</span>
+                        <input type="text" name="contact_whatsapp" value="{{ old('contact_whatsapp', $rawWa) }}" required placeholder="Contoh: 081234567890 atau 085640001234" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-bold text-slate-800">
+                    </div>
+                    @error('contact_whatsapp') <p class="text-xs text-rose-500 mt-1 font-bold">{{ $message }}</p> @enderror
+                    <span class="text-[11px] text-slate-400 mt-1 block">Bisa ditulis angka diawali <code>08...</code> atau <code>62...</code>. Sistem otomatis memformat menjadi tautan WhatsApp.</span>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Email Panitia / Sekolah</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 font-bold text-sm">✉️</span>
+                        <input type="email" name="contact_email" value="{{ old('contact_email', $settings['contact_email']->value ?? 'panitia@muhijunior.id') }}" placeholder="panitia@muhijunior.id" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-medium text-slate-800">
+                    </div>
+                    @error('contact_email') <p class="text-xs text-rose-500 mt-1 font-bold">{{ $message }}</p> @enderror
+                    <span class="text-[11px] text-slate-400 mt-1 block">Email resmi korespondensi panitia.</span>
+                </div>
+            </div>
+
+            <!-- Lokasi Pemakaian Nomor WhatsApp Panitia -->
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-2">
+                <span class="text-xs font-bold text-slate-700 block">Nomor WhatsApp panitia ini otomatis terhubung di:</span>
+                <ul class="text-xs text-slate-600 space-y-1.5 font-medium">
+                    <li class="flex items-center gap-2">
+                        <span class="text-emerald-600 font-bold">✓</span>
+                        <span><strong>Pengumuman Peserta Terpilih (<code>/peserta-terpilih</code>):</strong> Tombol hijau <em>"Hubungi Hotline Panitia"</em> bagi orang tua yang ingin konfirmasi atau bertanya.</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-emerald-600 font-bold">✓</span>
+                        <span><strong>E-Ticket Peserta Cadangan (<code>/ticket/{kode}</code>):</strong> Tombol bantuan konfirmasi antrean cadangan langsung ke chat WhatsApp panitia.</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-emerald-600 font-bold">✓</span>
+                        <span><strong>Footer Web Publik:</strong> Tautan WhatsApp hotline resmi sekolah bagi calon pendaftar.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tombol Test Chat -->
+            <div class="pt-1 flex items-center gap-3">
+                <a href="{{ $testWaLink }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold rounded-xl shadow-xs transition-colors">
+                    <span>💬 Uji Chat WhatsApp ke Hotline Panitia &nearr;</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Tombol Simpan -->
+        <div class="flex items-center justify-end gap-3 pt-2">
+            <button type="submit" class="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-emerald-600/25 transition-all">
+                Simpan Pengaturan WhatsApp &amp; Kontak Panitia
+            </button>
+        </div>
+    </form>
     @endif
 
 </div>

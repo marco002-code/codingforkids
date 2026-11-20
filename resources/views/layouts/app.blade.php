@@ -475,6 +475,19 @@
                             <span>▶️</span>
                             <span class="font-mono">SMPMuhammadiyah1Yogyakarta</span>
                         </li>
+                        @php
+                            $footerWa = \App\Models\Setting::get('contact_whatsapp', '081234567890');
+                            $cleanFooterWa = preg_replace('/[^0-9]/', '', $footerWa);
+                            if (str_starts_with($cleanFooterWa, '0')) {
+                                $cleanFooterWa = '62' . substr($cleanFooterWa, 1);
+                            }
+                        @endphp
+                        <li class="flex items-center gap-2 pt-1 border-t border-blue-900/60 mt-1">
+                            <span>💬</span>
+                            <a href="https://wa.me/{{ $cleanFooterWa }}?text={{ urlencode('Halo Panitia Coding for Kids Muhijunior, saya ingin bertanya seputar kegiatan workshop...') }}" target="_blank" class="hover:text-emerald-300 font-mono text-emerald-400 font-bold transition-colors">
+                                WA Hotline: {{ $footerWa }}
+                            </a>
+                        </li>
                     </ul>
 
                     <div class="mt-4 pt-3 border-t border-blue-900">

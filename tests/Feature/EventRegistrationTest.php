@@ -498,6 +498,43 @@ class EventRegistrationTest extends TestCase
 
         $landingResAfterReset = $this->get('/');
         $landingResAfterReset->assertSee('Modul 1: Coding &amp; Praktik Membuat Game 🎮', false);
+
+        // View dedicated WhatsApp settings tab
+        $resWa = $this->get(route('admin.settings', ['tab' => 'whatsapp']));
+        $resWa->assertStatus(200);
+        $resWa->assertSee('Pengaturan WhatsApp &amp; Kontak Hotline Panitia', false);
+        $resWa->assertSee('Tautan Undangan Grup WhatsApp Peserta');
+        $resWa->assertSee('Nomor WhatsApp Panitia yang Siap Dihubungi');
+
+        // Update WhatsApp settings via Tab whatsapp
+        $updateWaRes = $this->post(route('admin.settings.update'), [
+            'redirect_tab' => 'whatsapp',
+            'event_name' => 'Coding for Kids and A.I. for Learning',
+            'event_date' => 'Senin, 21 Desember 2026',
+            'event_location' => 'Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta',
+            'session_1_name' => 'Sesi 1 (Pagi)',
+            'session_1_time' => '07:30 – 10:00 WIB',
+            'session_1_quota' => 90,
+            'session_1_waitlist_quota' => 30,
+            'session_2_name' => 'Sesi 2 (Siang)',
+            'session_2_time' => '10:30 – 12:00 WIB',
+            'session_2_quota' => 90,
+            'session_2_waitlist_quota' => 30,
+            'registration_status' => 'OPEN',
+            'whatsapp_group_link' => 'https://chat.whatsapp.com/GrupKoding2026Official',
+            'contact_whatsapp' => '085640001234',
+            'contact_email' => 'panitia_koding@muhijunior.id',
+        ]);
+        $updateWaRes->assertRedirect(route('admin.settings', ['tab' => 'whatsapp']));
+        $updateWaRes->assertSessionHas('success');
+
+        $this->assertEquals('https://chat.whatsapp.com/GrupKoding2026Official', Setting::get('whatsapp_group_link'));
+        $this->assertEquals('085640001234', Setting::get('contact_whatsapp'));
+        $this->assertEquals('panitia_koding@muhijunior.id', Setting::get('contact_email'));
+
+        // Public page reflects new hotline
+        $resHome = $this->get('/');
+        $resHome->assertSee('WA Hotline: 085640001234');
     }
 
     public function test_admin_attendance_page_and_dedicated_checkin_menu(): void
