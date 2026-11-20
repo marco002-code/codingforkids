@@ -11,9 +11,9 @@
     <meta name="author" content="SMP Muhammadiyah 1 Yogyakarta & Muhijunior ISS">
 
     @php
-        $defaultOgImage = 'https://coding.muhijunior.id/images/og-preview.jpg';
+        $defaultOgImage = 'https://coding.muhijunior.id/images/og-preview.jpg?v=2';
         if (app()->isLocal() && request()->getHost() !== 'coding.muhijunior.id') {
-            $defaultOgImage = asset('images/og-preview.jpg');
+            $defaultOgImage = asset('images/og-preview.jpg?v=2');
         }
     @endphp
 
@@ -26,8 +26,8 @@
     <meta property="og:image" content="@yield('og_image', $defaultOgImage)">
     <meta property="og:image:secure_url" content="@yield('og_image_secure', $defaultOgImage)">
     <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:image:width" content="800">
-    <meta property="og:image:height" content="667">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Coding for Kids & A.I. for Learning - SMP Muhammadiyah 1 Yogyakarta">
     
     <!-- WhatsApp & Schema.org Image Hints -->
