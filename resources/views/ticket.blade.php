@@ -177,11 +177,7 @@
                             <span>📌</span> Panduan Waktu Kehadiran:
                         </div>
                         <p class="text-slate-700 leading-relaxed">
-                            @if($participant->session === '1')
-                                Siswa <strong>Sesi 1</strong> diharapkan tiba di lokasi pada pukul <strong>07:00 – 07:15 WIB</strong> untuk registrasi ulang dan persiapan perangkat sebelum sesi dimulai tepat pukul 07:30 WIB.
-                            @else
-                                Siswa <strong>Sesi 2</strong> diharapkan tiba di lokasi pada pukul <strong>10:00 – 10:15 WIB</strong> untuk registrasi ulang dan persiapan perangkat sebelum sesi dimulai tepat pukul 10:30 WIB.
-                            @endif
+                            Siswa <strong>{{ $participant->session_name }}</strong> diharapkan tiba di lokasi 15–30 menit sebelum sesi dimulai untuk registrasi ulang dan persiapan perangkat komputer (Jadwal Sesi: <strong>{{ $participant->session_time }}</strong>).
                         </p>
                     </div>
 

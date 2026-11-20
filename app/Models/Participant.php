@@ -67,15 +67,22 @@ class Participant extends Model
      */
     public function getSessionLabelAttribute(): string
     {
-        if ($this->session === '2') {
-            return 'Sesi 2: 10:30 – 12:00 WIB';
-        }
-        return 'Sesi 1: 07:30 – 10:00 WIB';
+        $session = $this->session === '2' ? '2' : '1';
+        $name = Setting::get("session_{$session}_name", $session === '2' ? 'Sesi 2 (Siang)' : 'Sesi 1 (Pagi)');
+        $time = Setting::get("session_{$session}_time", $session === '2' ? '10:30 – 12:00 WIB' : '07:30 – 10:00 WIB');
+        return "{$name}: {$time}";
     }
 
     public function getSessionTimeAttribute(): string
     {
-        return $this->session === '2' ? '10:30 – 12:00 WIB' : '07:30 – 10:00 WIB';
+        $session = $this->session === '2' ? '2' : '1';
+        return Setting::get("session_{$session}_time", $session === '2' ? '10:30 – 12:00 WIB' : '07:30 – 10:00 WIB');
+    }
+
+    public function getSessionNameAttribute(): string
+    {
+        $session = $this->session === '2' ? '2' : '1';
+        return Setting::get("session_{$session}_name", $session === '2' ? 'Sesi 2 (Siang)' : 'Sesi 1 (Pagi)');
     }
 
     /**

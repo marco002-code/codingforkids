@@ -16,7 +16,9 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // Session 1 (07:30 - 10:00 WIB)
+        // Session 1
+        $s1Name = Setting::get('session_1_name', 'Sesi 1 (Pagi)');
+        $s1Time = Setting::get('session_1_time', '07:30 – 10:00 WIB');
         $s1Max = (int) Setting::get('session_1_quota', 90);
         $s1WaitlistMax = (int) Setting::get('session_1_waitlist_quota', 30);
         $s1Utama = Participant::session('1')->utama()->count();
@@ -24,7 +26,9 @@ class DashboardController extends Controller
         $s1Attended = Participant::session('1')->utama()->attended()->count();
         $s1Remaining = max(0, $s1Max - $s1Utama);
 
-        // Session 2 (10:30 - 12:00 WIB)
+        // Session 2
+        $s2Name = Setting::get('session_2_name', 'Sesi 2 (Siang)');
+        $s2Time = Setting::get('session_2_time', '10:30 – 12:00 WIB');
         $s2Max = (int) Setting::get('session_2_quota', 90);
         $s2WaitlistMax = (int) Setting::get('session_2_waitlist_quota', 30);
         $s2Utama = Participant::session('2')->utama()->count();
@@ -46,8 +50,8 @@ class DashboardController extends Controller
         $waitlistS2 = Participant::session('2')->cadangan()->take(4)->get();
 
         return view('admin.dashboard', compact(
-            's1Max', 's1WaitlistMax', 's1Utama', 's1Cadangan', 's1Attended', 's1Remaining',
-            's2Max', 's2WaitlistMax', 's2Utama', 's2Cadangan', 's2Attended', 's2Remaining',
+            's1Name', 's1Time', 's1Max', 's1WaitlistMax', 's1Utama', 's1Cadangan', 's1Attended', 's1Remaining',
+            's2Name', 's2Time', 's2Max', 's2WaitlistMax', 's2Utama', 's2Cadangan', 's2Attended', 's2Remaining',
             'totalMax', 'totalAll', 'totalUtama', 'totalCadangan', 'totalDibatalkan', 'totalAttended', 'totalRemaining',
             'recentParticipants', 'waitlistS1', 'waitlistS2'
         ));
@@ -131,7 +135,12 @@ class DashboardController extends Controller
         $search = trim($request->query('search', ''));
 
         // Attendance stats
+        $s1Name = Setting::get('session_1_name', 'Sesi 1 (Pagi)');
+        $s1Time = Setting::get('session_1_time', '07:30 – 10:00 WIB');
         $s1Max = (int) Setting::get('session_1_quota', 90);
+
+        $s2Name = Setting::get('session_2_name', 'Sesi 2 (Siang)');
+        $s2Time = Setting::get('session_2_time', '10:30 – 12:00 WIB');
         $s2Max = (int) Setting::get('session_2_quota', 90);
 
         $s1TotalUtama = Participant::session('1')->utama()->count();
@@ -182,8 +191,8 @@ class DashboardController extends Controller
             'sessionFilter',
             'statusFilter',
             'search',
-            's1Max', 's1TotalUtama', 's1Attended', 's1Percent',
-            's2Max', 's2TotalUtama', 's2Attended', 's2Percent',
+            's1Name', 's1Time', 's1Max', 's1TotalUtama', 's1Attended', 's1Percent',
+            's2Name', 's2Time', 's2Max', 's2TotalUtama', 's2Attended', 's2Percent',
             'totalAttended', 'totalUtama', 'totalPercent',
             'recentCheckIns'
         ));
@@ -564,7 +573,22 @@ class DashboardController extends Controller
         $session1Rundown = Setting::getRundown(1);
         $session2Rundown = Setting::getRundown(2);
 
-        return view('admin.settings', compact('settings', 'activeTab', 'activeSession', 'session1Rundown', 'session2Rundown'));
+        $s1Time = $settings['session_1_time']->value ?? '07:30 – 10:00 WIB';
+        $s2Time = $settings['session_2_time']->value ?? '10:30 – 12:00 WIB';
+
+        $s1TotalMinutes = Setting::calculateRundownTotalMinutes($session1Rundown);
+        $s2TotalMinutes = Setting::calculateRundownTotalMinutes($session2Rundown);
+
+        $s1TargetMinutes = Setting::calculateMinutes($s1Time);
+        $s2TargetMinutes = Setting::calculateMinutes($s2Time);
+
+        return view('admin.settings', compact(
+            'settings', 'activeTab', 'activeSession',
+            'session1Rundown', 'session2Rundown',
+            's1Time', 's2Time',
+            's1TotalMinutes', 's2TotalMinutes',
+            's1TargetMinutes', 's2TargetMinutes'
+        ));
     }
 
     /**
@@ -654,6 +678,10 @@ class DashboardController extends Controller
                 $description = trim($item['description'] ?? '');
                 $duration = trim($item['duration'] ?? '');
                 $type = trim($item['type'] ?? 'default');
+
+                if ($duration === '' && !empty($time)) {
+                    $duration = Setting::calculateDuration($time);
+                }
 
                 if (!empty($time) || !empty($title)) {
                     $cleaned[] = [

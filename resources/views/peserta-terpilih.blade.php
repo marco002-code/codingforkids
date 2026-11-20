@@ -72,7 +72,7 @@
                 </h2>
 
                 <p class="mt-4 text-slate-600 text-sm sm:text-base max-w-xl mx-auto font-medium leading-relaxed">
-                    Saat ini tim Coding Muhijunior (SMP Muhammadiyah 1 Yogyakarta) sedang melakukan proses verifikasi dan validasi serta penetapan pembagian kuota per sesi untuk <strong>Sesi 1 (07:30 – 10:00 WIB)</strong> dan <strong>Sesi 2 (10:30 – 12:00 WIB)</strong>.
+                    Saat ini tim Coding Muhijunior (SMP Muhammadiyah 1 Yogyakarta) sedang melakukan proses verifikasi dan validasi serta penetapan pembagian kuota per sesi untuk <strong>{{ $s1Name }} ({{ $s1Time }})</strong> dan <strong>{{ $s2Name }} ({{ $s2Time }})</strong>.
                 </p>
 
                 <p class="mt-2 text-blue-950 font-bold text-xs sm:text-sm">
@@ -138,9 +138,9 @@
 
                 <div class="cartoon-box p-5 bg-white flex items-center justify-between">
                     <div>
-                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block">☀️ Sesi 1 (Pagi)</span>
-                        <span class="font-display font-black text-3xl text-blue-900 mt-1 block">{{ $s1Total }} / 90</span>
-                        <span class="text-[11px] text-slate-500 font-semibold">Pukul 07:30 – 10:00 WIB</span>
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block">☀️ {{ $s1Name }}</span>
+                        <span class="font-display font-black text-3xl text-blue-900 mt-1 block">{{ $s1Total }} / {{ $s1Max }}</span>
+                        <span class="text-[11px] text-slate-500 font-semibold">{{ $s1Time }}</span>
                     </div>
                     <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-800 flex items-center justify-center text-2xl font-black">
                         ☀️
@@ -149,9 +149,9 @@
 
                 <div class="cartoon-box p-5 bg-white flex items-center justify-between">
                     <div>
-                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block">🌤️ Sesi 2 (Siang)</span>
-                        <span class="font-display font-black text-3xl text-purple-900 mt-1 block">{{ $s2Total }} / 90</span>
-                        <span class="text-[11px] text-slate-500 font-semibold">Pukul 10:30 – 12:00 WIB</span>
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block">🌤️ {{ $s2Name }}</span>
+                        <span class="font-display font-black text-3xl text-purple-900 mt-1 block">{{ $s2Total }} / {{ $s2Max }}</span>
+                        <span class="text-[11px] text-slate-500 font-semibold">{{ $s2Time }}</span>
                     </div>
                     <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-800 flex items-center justify-center text-2xl font-black">
                         🌤️

@@ -306,7 +306,7 @@
         <span class="inline-block bg-amber-400 text-blue-950 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider animate-pulse">
             Workshop Siswa SD
         </span>
-        <span>Senin, 21 Desember 2026 &bull; Lab Komputer SMP Muhammadiyah 1 Yogyakarta</span>
+        <span>{{ \App\Models\Setting::get('event_date', 'Senin, 21 Desember 2026') }} &bull; {{ \App\Models\Setting::get('event_location', 'Lab Komputer SMP Muhammadiyah 1 Yogyakarta') }}</span>
     </div>
 
     <!-- Navigation Bar: Muhijunior ISS & SMP Muh 1 Yogya -->

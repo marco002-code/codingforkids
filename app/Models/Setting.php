@@ -32,6 +32,94 @@ class Setting extends Model
     }
 
     /**
+     * Parse a time range string (e.g. "07:30 – 10:00 WIB" or "07.30 - 08.35")
+     * and calculate the duration in minutes.
+     */
+    public static function calculateMinutes(?string $timeRange): int
+    {
+        if (empty($timeRange)) {
+            return 0;
+        }
+
+        // Match two time formats: HH:MM or HH.MM separated by dash / en-dash / to
+        if (preg_match('/(\d{1,2})[:.](\d{2})\s*(?:[-–—]|s\/d|to)\s*(\d{1,2})[:.](\d{2})/iu', $timeRange, $matches)) {
+            $startMinutes = ((int) $matches[1]) * 60 + ((int) $matches[2]);
+            $endMinutes = ((int) $matches[3]) * 60 + ((int) $matches[4]);
+
+            if ($endMinutes >= $startMinutes) {
+                return $endMinutes - $startMinutes;
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Format a calculated duration into friendly Indonesian text (e.g. "2.5 Jam (150 Menit)" or "65 Menit").
+     */
+    public static function calculateDuration(?string $timeRange): string
+    {
+        $minutes = static::calculateMinutes($timeRange);
+        if ($minutes <= 0) {
+            return '';
+        }
+
+        if ($minutes % 60 === 0) {
+            $hours = $minutes / 60;
+            return "{$hours} Jam ({$minutes} Menit)";
+        }
+
+        $hours = round($minutes / 60, 1);
+        if ($minutes >= 60) {
+            $h = floor($minutes / 60);
+            $m = $minutes % 60;
+            return "{$hours} Jam ({$minutes} Menit)";
+        }
+
+        return "{$minutes} Menit";
+    }
+
+    /**
+     * Format duration into short text (e.g. "2.5 Jam" or "45 Mnt").
+     */
+    public static function calculateDurationShort(?string $timeRange): string
+    {
+        $minutes = static::calculateMinutes($timeRange);
+        if ($minutes <= 0) {
+            return '';
+        }
+
+        if ($minutes % 60 === 0) {
+            $hours = $minutes / 60;
+            return "{$hours} Jam";
+        }
+
+        if ($minutes >= 60) {
+            $hours = round($minutes / 60, 1);
+            return "{$hours} Jam";
+        }
+
+        return "{$minutes} Menit";
+    }
+
+    /**
+     * Sum the total duration in minutes of a rundown array.
+     */
+    public static function calculateRundownTotalMinutes(array $rundown): int
+    {
+        $total = 0;
+        foreach ($rundown as $item) {
+            // Check if duration has explicit minutes (e.g. "65 Menit")
+            if (!empty($item['duration']) && preg_match('/(\d+)\s*menit/i', $item['duration'], $m)) {
+                $total += (int) $m[1];
+            } elseif (!empty($item['time'])) {
+                $total += static::calculateMinutes($item['time']);
+            }
+        }
+        return $total;
+    }
+
+    /**
      * Default 5-stack rundown structure for a session.
      */
     public static function defaultRundown(int $session = 1): array

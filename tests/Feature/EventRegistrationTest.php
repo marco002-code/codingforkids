@@ -773,4 +773,83 @@ class EventRegistrationTest extends TestCase
         $delOtherRes->assertSessionHas('success');
         $this->assertDatabaseMissing('users', ['id' => $panitia3->id]);
     }
+
+    public function test_dynamic_session_settings_and_auto_duration_calculation(): void
+    {
+        // 1. Test Duration helper methods in Setting
+        $this->assertEquals(150, Setting::calculateMinutes('07:30 – 10:00 WIB'));
+        $this->assertEquals('2.5 Jam (150 Menit)', Setting::calculateDuration('07:30 – 10:00 WIB'));
+        $this->assertEquals('2.5 Jam', Setting::calculateDurationShort('07:30 – 10:00 WIB'));
+        $this->assertEquals(65, Setting::calculateMinutes('07.30 - 08.35'));
+        $this->assertEquals('1.1 Jam (65 Menit)', Setting::calculateDuration('07.30 - 08.35'));
+        $this->assertEquals('1.1 Jam', Setting::calculateDurationShort('07.30 - 08.35'));
+        $this->assertEquals(45, Setting::calculateMinutes('07:00 – 07:45'));
+        $this->assertEquals('45 Menit', Setting::calculateDuration('07:00 – 07:45'));
+
+        // 2. Set custom session times and names
+        Setting::set('session_1_name', 'Sesi Pagi Ceria');
+        Setting::set('session_1_time', '08:00 – 10:30 WIB');
+        Setting::set('session_1_quota', 75);
+
+        Setting::set('session_2_name', 'Sesi Siang Juara');
+        Setting::set('session_2_time', '11:00 – 13:00 WIB');
+        Setting::set('session_2_quota', 85);
+
+        // 3. Verify landing page renders custom session names, times, quotas and calculated durations
+        $response = $this->get('/');
+        $response->assertStatus(200);
+        $response->assertSee('Sesi Pagi Ceria');
+        $response->assertSee('08:00 – 10:30 WIB');
+        $response->assertSee('2.5 Jam (150 Menit)');
+        $response->assertSee('Sesi Siang Juara');
+        $response->assertSee('11:00 – 13:00 WIB');
+        $response->assertSee('2 Jam (120 Menit)');
+        $response->assertSee('75 Siswa per Sesi');
+
+        // 4. Verify participant dynamic session attributes
+        $participant = Participant::create([
+            'reg_code' => 'TEST1',
+            'session' => '1',
+            'student_name' => 'Budi Santoso',
+            'nickname' => 'Budi',
+            'school_name' => 'SD Teladan',
+            'gender' => 'L',
+            'experience_level' => 'Pemula',
+            'parent_name' => 'Santoso',
+            'whatsapp' => '081234567899',
+            'status' => 'UTAMA',
+            'terms_agreement' => true,
+            'waitlist_agreement' => true,
+        ]);
+
+        $this->assertEquals('Sesi Pagi Ceria: 08:00 – 10:30 WIB', $participant->session_label);
+        $this->assertEquals('08:00 – 10:30 WIB', $participant->session_time);
+        $this->assertEquals('Sesi Pagi Ceria', $participant->session_name);
+
+        // 5. Test auto-calculation of duration when saving rundown with empty duration
+        $admin = User::first() ?? User::create([
+            'name' => 'Admin Test',
+            'email' => 'admin_test_duration@test.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $this->actingAs($admin);
+
+        $this->post(route('admin.settings.updateRundown'), [
+            'session' => 1,
+            'items' => [
+                [
+                    'time' => '08:00 – 08:50',
+                    'title' => 'Modul Baru Logika',
+                    'description' => 'Belajar logika game.',
+                    'duration' => '', // Left empty to test auto-calculation
+                    'type' => 'blue',
+                ],
+            ],
+        ]);
+
+        $savedRundown = Setting::getRundown(1);
+        $this->assertNotEmpty($savedRundown);
+        $this->assertEquals('50 Menit', $savedRundown[0]['duration']);
+    }
 }

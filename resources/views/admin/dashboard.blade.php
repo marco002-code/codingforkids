@@ -54,8 +54,8 @@
             <div class="bg-white rounded-3xl p-6 border-2 border-indigo-200 shadow-sm relative overflow-hidden">
                 <div class="flex items-center justify-between mb-4">
                     <div>
-                        <span class="text-[11px] font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg">SESI 1 (PAGI)</span>
-                        <h3 class="text-lg font-black text-slate-900 mt-1">07:30 – 10:00 WIB</h3>
+                        <span class="text-[11px] font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg">{{ strtoupper($s1Name) }}</span>
+                        <h3 class="text-lg font-black text-slate-900 mt-1">{{ $s1Time }}</h3>
                     </div>
                     <span class="text-xs font-bold text-slate-400">Target: {{ $s1Max }} Siswa</span>
                 </div>
@@ -105,8 +105,8 @@
             <div class="bg-white rounded-3xl p-6 border-2 border-purple-200 shadow-sm relative overflow-hidden">
                 <div class="flex items-center justify-between mb-4">
                     <div>
-                        <span class="text-[11px] font-black uppercase tracking-wider text-purple-600 bg-purple-50 px-2.5 py-1 rounded-lg">SESI 2 (SIANG)</span>
-                        <h3 class="text-lg font-black text-slate-900 mt-1">10:30 – 12:00 WIB</h3>
+                        <span class="text-[11px] font-black uppercase tracking-wider text-purple-600 bg-purple-50 px-2.5 py-1 rounded-lg">{{ strtoupper($s2Name) }}</span>
+                        <h3 class="text-lg font-black text-slate-900 mt-1">{{ $s2Time }}</h3>
                     </div>
                     <span class="text-xs font-bold text-slate-400">Target: {{ $s2Max }} Siswa</span>
                 </div>

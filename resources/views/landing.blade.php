@@ -174,7 +174,7 @@
                                 🎯 Khusus Siswa SD Kelas 6
                             </span>
                             <h3 class="font-display font-black text-2xl sm:text-3xl text-blue-950 mt-2">
-                                Kuota Terbatas (90 Siswa per Sesi)
+                                Kuota Terbatas ({{ $s1Max }} Siswa per Sesi)
                             </h3>
                         </div>
 
@@ -206,12 +206,12 @@
                                 <div>
                                     <span class="text-white/80 text-[11px] font-black uppercase tracking-wider block">Waktu Pelaksanaan:</span>
                                     <strong class="font-display font-black text-base sm:text-lg">{{ $eventDate }}</strong>
-                                    <span class="block text-white/95 text-xs font-bold mt-0.5">2 Pilihan Sesi: Pagi (07:30) &amp; Siang (10:30)</span>
+                                    <span class="block text-white/95 text-xs font-bold mt-0.5">2 Pilihan Sesi: {{ $s1Name }} &bull; {{ $s2Name }}</span>
                                 </div>
                                 <div class="border-t sm:border-t-0 sm:border-l border-white/30 sm:pl-3 pt-2 sm:pt-0">
                                     <span class="text-white/80 text-[11px] font-black uppercase tracking-wider block">Lokasi Laboratorium:</span>
-                                    <strong class="font-display font-black text-sm sm:text-base">Lab TIK 1 &amp; Lab TIK 3</strong>
-                                    <span class="block text-white/95 text-xs font-medium mt-0.5">Lantai 3 Gedung Selatan, SMP Muhammadiyah 1 Yogyakarta</span>
+                                    <strong class="font-display font-black text-sm sm:text-base">{{ $eventLocation }}</strong>
+                                    <span class="block text-white/95 text-xs font-medium mt-0.5">SMP Muhammadiyah 1 Yogyakarta</span>
                                 </div>
                             </div>
                         </div>
@@ -338,7 +338,7 @@
             <div class="mt-14 max-w-5xl mx-auto">
                 <div class="text-center mb-6">
                     <span class="font-display font-black text-xs uppercase tracking-widest text-blue-950 bg-white/90 px-4 py-1.5 rounded-full border-2 border-blue-950 shadow-xs">
-                        ⚡ MONITORING KUOTA REAL-TIME (90 SISWA PER SESI)
+                        ⚡ MONITORING KUOTA REAL-TIME ({{ $s1Max }} SISWA PER SESI)
                     </span>
                 </div>
 
@@ -349,10 +349,10 @@
                         <div class="flex items-center justify-between gap-2 mb-3">
                             <div>
                                 <span class="text-xs font-black uppercase tracking-wider text-blue-900 bg-blue-100 px-3 py-1 rounded-xl border border-blue-300">
-                                    ☀️ SESI 1 (PAGI)
+                                    ☀️ {{ strtoupper($s1Name) }}
                                 </span>
                                 <h3 class="font-display font-black text-xl text-blue-950 mt-2">{{ $s1Name }}</h3>
-                                <p class="font-mono font-bold text-xs text-slate-600">⏰ {{ $s1Time }}</p>
+                                <p class="font-mono font-bold text-xs text-slate-600">⏰ {{ $s1Time }} &bull; ⏱️ {{ $s1Duration }}</p>
                             </div>
                             <div class="text-right">
                                 @if($s1RemainingMain > 0)
@@ -393,10 +393,10 @@
                         <div class="flex items-center justify-between gap-2 mb-3">
                             <div>
                                 <span class="text-xs font-black uppercase tracking-wider text-purple-900 bg-purple-100 px-3 py-1 rounded-xl border border-purple-300">
-                                    🌤️ SESI 2 (SIANG)
+                                    🌤️ {{ strtoupper($s2Name) }}
                                 </span>
                                 <h3 class="font-display font-black text-xl text-blue-950 mt-2">{{ $s2Name }}</h3>
-                                <p class="font-mono font-bold text-xs text-slate-600">⏰ {{ $s2Time }}</p>
+                                <p class="font-mono font-bold text-xs text-slate-600">⏰ {{ $s2Time }} &bull; ⏱️ {{ $s2Duration }}</p>
                             </div>
                             <div class="text-right">
                                 @if($s2RemainingMain > 0)
@@ -630,27 +630,39 @@
                     Rundown Kegiatan per Sesi
                 </h2>
                 <p class="mt-2 text-slate-700 text-sm sm:text-base font-semibold">
-                    Senin, 21 Desember 2026 &bull; Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta
+                    {{ $eventDate }} &bull; {{ $eventLocation }}
                 </p>
 
                 <!-- Rundown Tab Switcher -->
                 <div class="mt-8 inline-flex p-1.5 rounded-2xl bg-white border-3 border-blue-950 max-w-md w-full shadow-md">
                     <button type="button" onclick="switchRundown('1')" id="tabBtn1" class="w-1/2 py-2.5 rounded-xl font-display font-black text-xs sm:text-sm transition-all bg-blue-950 text-white shadow-xs">
-                        ☀️ Sesi 1 (07:30 – 10:00)
+                        ☀️ {{ $s1Name }} ({{ $s1Time }})
                     </button>
                     <button type="button" onclick="switchRundown('2')" id="tabBtn2" class="w-1/2 py-2.5 rounded-xl font-display font-black text-xs sm:text-sm transition-all text-slate-600 hover:text-blue-950">
-                        🌤️ Sesi 2 (10:30 – 12:00)
+                        🌤️ {{ $s2Name }} ({{ $s2Time }})
                     </button>
                 </div>
             </div>
 
             <!-- RUNDOWN SESI 1 CONTENT -->
             <div id="rundownSesi1" class="space-y-4 transition-all">
+                <!-- Sesi 1 Duration Banner -->
+                <div class="cartoon-box p-4 bg-blue-100/80 border-2 border-blue-300 flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-blue-950">
+                    <span class="flex items-center gap-1.5">
+                        <span>☀️</span>
+                        <strong>{{ $s1Name }}</strong> &bull; Jadwal: <code class="bg-white/80 px-2 py-0.5 rounded-md font-mono">{{ $s1Time }}</code>
+                    </span>
+                    <span class="px-3 py-1 rounded-xl bg-blue-900 text-white font-black text-xs shadow-xs">
+                        ⏱️ Total Durasi: {{ $s1Duration }}
+                    </span>
+                </div>
+
                 @foreach($session1Rundown as $item)
                     @php
                         $type = $item['type'] ?? 'default';
                         $boxClass = 'cartoon-box p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4';
                         $badgeClass = 'px-3 py-1.5 rounded-xl font-mono font-black text-xs shrink-0 w-fit border ';
+                        $itemDur = !empty($item['duration']) ? $item['duration'] : \App\Models\Setting::calculateDuration($item['time'] ?? '');
                         
                         if ($type === 'blue') {
                             $boxClass .= ' border-l-8 border-l-blue-900';
@@ -677,17 +689,17 @@
                                 <p class="text-xs text-slate-600 font-medium">{{ $item['description'] ?? '' }}</p>
                             </div>
                         </div>
-                        @if(!empty($item['duration']))
+                        @if(!empty($itemDur))
                             @if($type === 'amber')
-                                <span class="text-xs font-black text-amber-700 shrink-0 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300 w-fit">{{ $item['duration'] }}</span>
+                                <span class="text-xs font-black text-amber-700 shrink-0 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300 w-fit">{{ $itemDur }}</span>
                             @elseif($type === 'blue')
-                                <span class="text-xs font-bold text-blue-900 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                                <span class="text-xs font-bold text-blue-900 shrink-0 sm:text-right">{{ $itemDur }}</span>
                             @elseif($type === 'purple')
-                                <span class="text-xs font-bold text-purple-900 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                                <span class="text-xs font-bold text-purple-900 shrink-0 sm:text-right">{{ $itemDur }}</span>
                             @elseif($type === 'emerald')
-                                <span class="text-xs font-bold text-emerald-800 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                                <span class="text-xs font-bold text-emerald-800 shrink-0 sm:text-right">{{ $itemDur }}</span>
                             @else
-                                <span class="text-xs font-bold text-slate-500 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                                <span class="text-xs font-bold text-slate-500 shrink-0 sm:text-right">{{ $itemDur }}</span>
                             @endif
                         @endif
                     </div>
@@ -696,11 +708,23 @@
 
             <!-- RUNDOWN SESI 2 CONTENT -->
             <div id="rundownSesi2" class="space-y-4 hidden transition-all">
+                <!-- Sesi 2 Duration Banner -->
+                <div class="cartoon-box p-4 bg-purple-100/80 border-2 border-purple-300 flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-purple-950">
+                    <span class="flex items-center gap-1.5">
+                        <span>🌤️</span>
+                        <strong>{{ $s2Name }}</strong> &bull; Jadwal: <code class="bg-white/80 px-2 py-0.5 rounded-md font-mono">{{ $s2Time }}</code>
+                    </span>
+                    <span class="px-3 py-1 rounded-xl bg-purple-900 text-white font-black text-xs shadow-xs">
+                        ⏱️ Total Durasi: {{ $s2Duration }}
+                    </span>
+                </div>
+
                 @foreach($session2Rundown as $item)
                     @php
                         $type = $item['type'] ?? 'default';
                         $boxClass = 'cartoon-box p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4';
                         $badgeClass = 'px-3 py-1.5 rounded-xl font-mono font-black text-xs shrink-0 w-fit border ';
+                        $itemDur = !empty($item['duration']) ? $item['duration'] : \App\Models\Setting::calculateDuration($item['time'] ?? '');
                         
                         if ($type === 'blue') {
                             $boxClass .= ' border-l-8 border-l-blue-900';
@@ -727,17 +751,17 @@
                                 <p class="text-xs text-slate-600 font-medium">{{ $item['description'] ?? '' }}</p>
                             </div>
                         </div>
-                        @if(!empty($item['duration']))
+                        @if(!empty($itemDur))
                             @if($type === 'amber')
-                                <span class="text-xs font-black text-amber-700 shrink-0 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300 w-fit">{{ $item['duration'] }}</span>
+                                <span class="text-xs font-black text-amber-700 shrink-0 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300 w-fit">{{ $itemDur }}</span>
                             @elseif($type === 'blue')
-                                <span class="text-xs font-bold text-blue-900 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                                <span class="text-xs font-bold text-blue-900 shrink-0 sm:text-right">{{ $itemDur }}</span>
                             @elseif($type === 'purple')
-                                <span class="text-xs font-bold text-purple-900 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                                <span class="text-xs font-bold text-purple-900 shrink-0 sm:text-right">{{ $itemDur }}</span>
                             @elseif($type === 'emerald')
-                                <span class="text-xs font-bold text-emerald-800 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                                <span class="text-xs font-bold text-emerald-800 shrink-0 sm:text-right">{{ $itemDur }}</span>
                             @else
-                                <span class="text-xs font-bold text-slate-500 shrink-0 sm:text-right">{{ $item['duration'] }}</span>
+                                <span class="text-xs font-bold text-slate-500 shrink-0 sm:text-right">{{ $itemDur }}</span>
                             @endif
                         @endif
                     </div>
@@ -1088,7 +1112,7 @@
                             <label class="flex items-start gap-3 cursor-pointer">
                                 <input type="checkbox" name="waitlist_agreement" value="1" {{ old('waitlist_agreement') ? 'checked' : '' }} required class="mt-1 w-4 h-4 text-blue-950 rounded border-slate-300 focus:ring-blue-950">
                                 <span class="text-xs text-slate-700 leading-relaxed font-semibold">
-                                    Saya memahami bahwa setiap sesi dibatasi 90 peserta utama. Jika kuota 90 kursi pada sesi yang saya pilih penuh, pendaftar akan masuk ke antrean cadangan dan dihubungi panitia jika ada pembatalan. <span class="text-rose-500">*</span>
+                                    Saya memahami bahwa setiap sesi dibatasi {{ $s1Max }} peserta utama. Jika kuota {{ $s1Max }} kursi pada sesi yang saya pilih penuh, pendaftar akan masuk ke antrean cadangan dan dihubungi panitia jika ada pembatalan. <span class="text-rose-500">*</span>
                                 </span>
                             </label>
                             @error('waitlist_agreement') <p class="text-xs text-rose-500 font-bold">{{ $message }}</p> @enderror
@@ -1124,11 +1148,11 @@
             <div class="space-y-4">
                 <details class="group cartoon-box p-6 transition-all [&_summary::-webkit-details-marker]:hidden">
                     <summary class="flex items-center justify-between cursor-pointer font-display font-black text-slate-900 text-sm sm:text-base">
-                        <span>Apa perbedaan antara Sesi 1 dan Sesi 2?</span>
+                        <span>Apa perbedaan antara {{ $s1Name }} dan {{ $s2Name }}?</span>
                         <span class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-blue-950 group-open:rotate-180 transition-transform">▾</span>
                     </summary>
                     <p class="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                        Materi pembelajaran inti keduanya sama persis (Block Programming Game, A.I. for Learning, dan Keamanan Digital Google Interland). Perbedaannya terletak pada waktu: <strong>Sesi 1 berlangsung pukul 07:30 – 10:00 WIB</strong>, sedangkan <strong>Sesi 2 berlangsung pukul 10:30 – 12:00 WIB</strong>. Orang tua bebas memilih sesi yang paling nyaman.
+                        Materi pembelajaran inti keduanya sama persis (Block Programming Game, A.I. for Learning, dan Keamanan Digital Google Interland). Perbedaannya terletak pada waktu: <strong>{{ $s1Name }} berlangsung pukul {{ $s1Time }} (durasi {{ $s1Duration }})</strong>, sedangkan <strong>{{ $s2Name }} berlangsung pukul {{ $s2Time }} (durasi {{ $s2Duration }})</strong>. Orang tua bebas memilih sesi yang paling nyaman.
                     </p>
                 </details>
 

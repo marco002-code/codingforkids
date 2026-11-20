@@ -83,8 +83,8 @@
         <!-- Card Sesi 1 -->
         <div class="bg-white rounded-2xl p-5 border-2 border-indigo-100 shadow-xs">
             <div class="flex items-center justify-between">
-                <span class="text-[11px] font-black uppercase text-indigo-600 tracking-wider">SESI 1 (PAGI)</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-indigo-50 font-bold text-indigo-700">07:30 – 10:00</span>
+                <span class="text-[11px] font-black uppercase text-indigo-600 tracking-wider">{{ strtoupper($s1Name) }}</span>
+                <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-indigo-50 font-bold text-indigo-700">{{ $s1Time }}</span>
             </div>
             <div class="flex items-baseline gap-2 mt-1">
                 <span class="text-3xl font-black text-indigo-900">{{ $s1Attended }}</span>
@@ -99,8 +99,8 @@
         <!-- Card Sesi 2 -->
         <div class="bg-white rounded-2xl p-5 border-2 border-purple-100 shadow-xs">
             <div class="flex items-center justify-between">
-                <span class="text-[11px] font-black uppercase text-purple-600 tracking-wider">SESI 2 (SIANG)</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-purple-50 font-bold text-purple-700">10:30 – 12:00</span>
+                <span class="text-[11px] font-black uppercase text-purple-600 tracking-wider">{{ strtoupper($s2Name) }}</span>
+                <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-purple-50 font-bold text-purple-700">{{ $s2Time }}</span>
             </div>
             <div class="flex items-baseline gap-2 mt-1">
                 <span class="text-3xl font-black text-purple-900">{{ $s2Attended }}</span>
@@ -251,11 +251,11 @@
                             <td class="py-3.5 px-4 text-center whitespace-nowrap">
                                 @if($p->session === '1')
                                     <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                                        ☀️ Sesi 1 (07:30)
+                                        ☀️ {{ $p->session_name }}
                                     </span>
                                 @else
                                     <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200">
-                                        🌤️ Sesi 2 (10:30)
+                                        🌤️ {{ $p->session_name }}
                                     </span>
                                 @endif
                             </td>

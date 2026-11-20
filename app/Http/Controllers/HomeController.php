@@ -15,9 +15,11 @@ class HomeController extends Controller
     {
         $registrationStatus = Setting::get('registration_status', 'OPEN');
 
-        // Session 1 (07:30 - 10:00 WIB)
+        // Session 1 (Pagi)
         $s1Name = Setting::get('session_1_name', 'Sesi 1 (Pagi)');
         $s1Time = Setting::get('session_1_time', '07:30 – 10:00 WIB');
+        $s1Duration = Setting::calculateDuration($s1Time);
+        $s1DurationShort = Setting::calculateDurationShort($s1Time);
         $s1Max = (int) Setting::get('session_1_quota', 90);
         $s1WaitlistMax = (int) Setting::get('session_1_waitlist_quota', 30);
         $s1MainCount = Participant::session('1')->utama()->count();
@@ -28,9 +30,11 @@ class HomeController extends Controller
         $s1IsFull = ($s1MainCount >= $s1Max) && ($s1WaitlistCount >= $s1WaitlistMax);
         $s1IsOpen = ($registrationStatus === 'OPEN') && !$s1IsFull;
 
-        // Session 2 (10:30 - 12:00 WIB)
+        // Session 2 (Siang)
         $s2Name = Setting::get('session_2_name', 'Sesi 2 (Siang)');
         $s2Time = Setting::get('session_2_time', '10:30 – 12:00 WIB');
+        $s2Duration = Setting::calculateDuration($s2Time);
+        $s2DurationShort = Setting::calculateDurationShort($s2Time);
         $s2Max = (int) Setting::get('session_2_quota', 90);
         $s2WaitlistMax = (int) Setting::get('session_2_waitlist_quota', 30);
         $s2MainCount = Participant::session('2')->utama()->count();
@@ -59,8 +63,8 @@ class HomeController extends Controller
         return view('landing', compact(
             'registrationStatus',
             'isPublished',
-            's1Name', 's1Time', 's1Max', 's1WaitlistMax', 's1MainCount', 's1WaitlistCount', 's1RemainingMain', 's1RemainingWaitlist', 's1Percent', 's1IsFull', 's1IsOpen',
-            's2Name', 's2Time', 's2Max', 's2WaitlistMax', 's2MainCount', 's2WaitlistCount', 's2RemainingMain', 's2RemainingWaitlist', 's2Percent', 's2IsFull', 's2IsOpen',
+            's1Name', 's1Time', 's1Duration', 's1DurationShort', 's1Max', 's1WaitlistMax', 's1MainCount', 's1WaitlistCount', 's1RemainingMain', 's1RemainingWaitlist', 's1Percent', 's1IsFull', 's1IsOpen',
+            's2Name', 's2Time', 's2Duration', 's2DurationShort', 's2Max', 's2WaitlistMax', 's2MainCount', 's2WaitlistCount', 's2RemainingMain', 's2RemainingWaitlist', 's2Percent', 's2IsFull', 's2IsOpen',
             'totalSeats', 'totalMainFilled', 'totalMainRemaining', 'isGlobalFull', 'isGlobalOpen',
             'eventDate', 'eventLocation', 'contactWhatsapp',
             'session1Rundown', 'session2Rundown'
@@ -95,13 +99,25 @@ class HomeController extends Controller
         $s2Total = Participant::session('2')->utama()->count();
         $totalSelected = $s1Total + $s2Total;
 
+        $s1Name = Setting::get('session_1_name', 'Sesi 1 (Pagi)');
+        $s1Time = Setting::get('session_1_time', '07:30 – 10:00 WIB');
+        $s1Max = (int) Setting::get('session_1_quota', 90);
+
+        $s2Name = Setting::get('session_2_name', 'Sesi 2 (Siang)');
+        $s2Time = Setting::get('session_2_time', '10:30 – 12:00 WIB');
+        $s2Max = (int) Setting::get('session_2_quota', 90);
+
         $eventDate = Setting::get('event_date', 'Senin, 21 Desember 2026');
         $eventLocation = Setting::get('event_location', 'Laboratorium Komputer SMP Muhammadiyah 1 Yogyakarta');
         $contactWhatsapp = Setting::get('contact_whatsapp', '081234567890');
         $isPublished = (bool) Setting::get('publish_selected_participants', '0');
 
         return view('peserta-terpilih', compact(
-            'participants', 'session', 'search', 's1Total', 's2Total', 'totalSelected', 'eventDate', 'eventLocation', 'contactWhatsapp', 'isPublished'
+            'participants', 'session', 'search',
+            's1Total', 's2Total', 'totalSelected',
+            's1Name', 's1Time', 's1Max',
+            's2Name', 's2Time', 's2Max',
+            'eventDate', 'eventLocation', 'contactWhatsapp', 'isPublished'
         ));
     }
 

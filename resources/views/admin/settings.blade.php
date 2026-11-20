@@ -304,7 +304,42 @@
             $currentRundown = ($activeSession === 1) ? $session1Rundown : $session2Rundown;
             $sessionBadgeColor = ($activeSession === 1) ? 'text-indigo-600' : 'text-purple-600';
             $sessionBorderColor = ($activeSession === 1) ? 'border-indigo-200' : 'border-purple-200';
+            $activeSessionTime = ($activeSession === 1) ? ($s1Time ?? '07:30 – 10:00 WIB') : ($s2Time ?? '10:30 – 12:00 WIB');
+            $activeTargetMinutes = ($activeSession === 1) ? ($s1TargetMinutes ?? 150) : ($s2TargetMinutes ?? 90);
+            $activeTotalMinutes = ($activeSession === 1) ? ($s1TotalMinutes ?? 0) : ($s2TotalMinutes ?? 0);
         @endphp
+
+        <!-- LIVE TIMER & AUTO-CALCULATOR SUMMARY CARD -->
+        <div class="bg-gradient-to-r {{ $activeSession === 1 ? 'from-indigo-900 via-blue-900 to-indigo-950' : 'from-purple-900 via-indigo-950 to-purple-950' }} text-white rounded-3xl p-6 shadow-md border-2 {{ $sessionBorderColor }}">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-xs font-black uppercase tracking-wider backdrop-blur-sm mb-2">
+                        <span>⏱️ KALKULATOR TIMER & ESTIMASI TOTAL DURASI OTOMATIS</span>
+                    </div>
+                    <h3 class="font-black text-xl sm:text-2xl tracking-tight text-white">
+                        Sesi {{ $activeSession }} ({{ $activeSession === 1 ? 'Pagi' : 'Siang' }}): <span id="summaryTotalMinutesText">{{ $activeTotalMinutes }} Menit</span>
+                        <span class="text-xs font-bold text-amber-300 ml-1" id="summaryTotalHoursText">({{ round($activeTotalMinutes / 60, 1) }} Jam)</span>
+                    </h3>
+                    <p class="text-xs text-white/80 mt-1">
+                        Jam Sesi Terdaftar di Sistem: <strong>{{ $activeSessionTime }}</strong> (Target: <span id="summaryTargetMinutes">{{ $activeTargetMinutes }}</span> Menit).
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <div id="syncStatusBadge" class="px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 {{ $activeTotalMinutes == $activeTargetMinutes ? 'bg-emerald-500 text-white' : 'bg-amber-400 text-slate-900' }}">
+                        @if($activeTotalMinutes == $activeTargetMinutes)
+                            <span>✅ Pas Sesuai Jadwal Sesi ({{ $activeTargetMinutes }} Mnt)</span>
+                        @else
+                            <span>⚠️ Total Stack: {{ $activeTotalMinutes }} Mnt (Selisih {{ abs($activeTotalMinutes - $activeTargetMinutes) }} Mnt dari Jadwal)</span>
+                        @endif
+                    </div>
+
+                    <button type="button" onclick="autoCalculateAllDurations()" class="px-3.5 py-2 bg-white hover:bg-slate-100 text-indigo-950 rounded-xl text-xs font-black shadow-sm transition-all flex items-center gap-1.5">
+                        <span>⚡ Hitung Otomatis Semua Durasi</span>
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <!-- Rundown Items Form -->
         <form action="{{ route('admin.settings.updateRundown') }}" method="POST" class="space-y-4" id="rundownForm">
@@ -316,7 +351,7 @@
                     <h3 class="font-black text-slate-900 text-lg">
                         Daftar Stack Materi: Sesi {{ $activeSession }} ({{ $activeSession === 1 ? 'Pagi' : 'Siang' }})
                     </h3>
-                    <p class="text-xs text-slate-500">Anda dapat mengubah jam, judul materi, durasi, deskripsi, dan tema warna border setiap stack.</p>
+                    <p class="text-xs text-slate-500">Ketik rentang jam (misal: <strong>07:30 – 08:35</strong>), durasi per stack dan total waktu akan terhitung otomatis secara real-time.</p>
                 </div>
 
                 <button type="button" onclick="addNewStackItem()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5 shrink-0">
@@ -347,19 +382,25 @@
                             <!-- Waktu / Jam -->
                             <div class="sm:col-span-3">
                                 <label class="block text-[11px] font-bold text-slate-700 mb-1">Jam / Rentang Waktu <span class="text-rose-500">*</span></label>
-                                <input type="text" name="items[{{ $index }}][time]" value="{{ $item['time'] ?? '' }}" required placeholder="Contoh: 07:30 – 08:35" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
+                                <input type="text" name="items[{{ $index }}][time]" value="{{ $item['time'] ?? '' }}" oninput="onTimeInputChange(this)" required placeholder="Contoh: 07:30 – 08:35" class="time-input w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
                             </div>
 
                             <!-- Judul Stack -->
-                            <div class="sm:col-span-5">
+                            <div class="sm:col-span-4">
                                 <label class="block text-[11px] font-bold text-slate-700 mb-1">Judul Modul / Kegiatan <span class="text-rose-500">*</span></label>
                                 <input type="text" name="items[{{ $index }}][title]" value="{{ $item['title'] ?? '' }}" required placeholder="Contoh: Modul 1: Coding Game" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
                             </div>
 
-                            <!-- Durasi -->
-                            <div class="sm:col-span-2">
-                                <label class="block text-[11px] font-bold text-slate-700 mb-1">Durasi</label>
-                                <input type="text" name="items[{{ $index }}][duration]" value="{{ $item['duration'] ?? '' }}" placeholder="Contoh: 65 Menit" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
+                            <!-- Durasi (Dihitung Otomatis) -->
+                            <div class="sm:col-span-3">
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="block text-[11px] font-bold text-slate-700">Durasi (Auto-Timer)</label>
+                                    <span class="calc-hint text-[10px] text-indigo-600 font-bold"></span>
+                                </div>
+                                <div class="relative">
+                                    <input type="text" name="items[{{ $index }}][duration]" value="{{ $item['duration'] ?? '' }}" oninput="recalculateSummary()" placeholder="Contoh: 65 Menit" class="duration-input w-full px-3 py-2 pr-8 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
+                                    <button type="button" onclick="calculateSingleItem(this)" class="absolute right-2 top-2 text-slate-400 hover:text-indigo-600" title="Hitung ulang dari jam">⚡</button>
+                                </div>
                             </div>
 
                             <!-- Tema Warna / Type -->
@@ -400,11 +441,120 @@
 
     </div>
 
-    <!-- Script Dynamic Add/Remove Stack Items -->
+    <!-- Script Dynamic Add/Remove Stack Items & Real-time Duration Calculator -->
     <script>
         let stackCount = {{ count($currentRundown) }};
         const activeSessionNum = {{ $activeSession }};
         const borderColor = activeSessionNum === 1 ? 'border-indigo-200' : 'border-purple-200';
+        const targetMinutes = {{ $activeTargetMinutes }};
+
+        // Helper: Parse string like "07:30 – 08:35" or "07.30 - 08.35" to minutes
+        function parseRangeMinutes(timeStr) {
+            if (!timeStr) return 0;
+            const regex = /(\d{1,2})[:.](\d{2})\s*(?:[-–—]|s\/d|to)\s*(\d{1,2})[:.](\d{2})/i;
+            const match = timeStr.match(regex);
+            if (match) {
+                const startM = parseInt(match[1], 10) * 60 + parseInt(match[2], 10);
+                const endM = parseInt(match[3], 10) * 60 + parseInt(match[4], 10);
+                if (endM >= startM) {
+                    return endM - startM;
+                }
+            }
+            return 0;
+        }
+
+        // Format minutes to label e.g. "65 Menit" or "90 Menit"
+        function formatMinutesLabel(mins) {
+            if (mins <= 0) return '';
+            return `${mins} Menit`;
+        }
+
+        // Triggered when user types in any time input
+        function onTimeInputChange(input) {
+            const card = input.closest('.stack-item-card');
+            const durInput = card.querySelector('.duration-input');
+            const hint = card.querySelector('.calc-hint');
+            const mins = parseRangeMinutes(input.value);
+
+            if (mins > 0) {
+                durInput.value = formatMinutesLabel(mins);
+                if (hint) {
+                    const hours = (mins / 60).toFixed(1);
+                    hint.innerText = mins >= 60 ? `(${hours} Jam)` : `(${mins}m)`;
+                }
+            } else {
+                if (hint) hint.innerText = '';
+            }
+
+            recalculateSummary();
+        }
+
+        // Single button calculate
+        function calculateSingleItem(btn) {
+            const card = btn.closest('.stack-item-card');
+            const timeInput = card.querySelector('.time-input');
+            if (timeInput) {
+                onTimeInputChange(timeInput);
+            }
+        }
+
+        // Auto calculate all durations across all stack items
+        function autoCalculateAllDurations() {
+            const cards = document.querySelectorAll('.stack-item-card');
+            cards.forEach(card => {
+                const timeInput = card.querySelector('.time-input');
+                if (timeInput) {
+                    onTimeInputChange(timeInput);
+                }
+            });
+            recalculateSummary();
+        }
+
+        // Recalculate summary card live
+        function recalculateSummary() {
+            const cards = document.querySelectorAll('.stack-item-card');
+            let total = 0;
+
+            cards.forEach(card => {
+                const durInput = card.querySelector('.duration-input');
+                const timeInput = card.querySelector('.time-input');
+                
+                let mins = 0;
+                if (durInput && durInput.value) {
+                    const m = durInput.value.match(/(\d+)\s*menit/i);
+                    if (m) {
+                        mins = parseInt(m[1], 10);
+                    }
+                }
+                
+                if (mins === 0 && timeInput && timeInput.value) {
+                    mins = parseRangeMinutes(timeInput.value);
+                }
+
+                total += mins;
+            });
+
+            const totalText = document.getElementById('summaryTotalMinutesText');
+            const hoursText = document.getElementById('summaryTotalHoursText');
+            const badge = document.getElementById('syncStatusBadge');
+
+            if (totalText) totalText.innerText = `${total} Menit`;
+            if (hoursText) hoursText.innerText = `(${(total / 60).toFixed(1)} Jam)`;
+
+            if (badge) {
+                if (targetMinutes > 0 && total === targetMinutes) {
+                    badge.className = 'px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 bg-emerald-500 text-white';
+                    badge.innerHTML = `<span>✅ Pas Sesuai Jadwal Sesi (${targetMinutes} Mnt)</span>`;
+                } else if (targetMinutes > 0) {
+                    const diff = Math.abs(total - targetMinutes);
+                    badge.className = 'px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 bg-amber-400 text-slate-900';
+                    badge.innerHTML = `<span>⚠️ Total Stack: ${total} Mnt (Selisih ${diff} Mnt dari Jadwal ${targetMinutes} Mnt)</span>`;
+                } else {
+                    badge.className = 'px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 bg-slate-800 text-white';
+                    badge.innerHTML = `<span>Total Durasi: ${total} Menit</span>`;
+                }
+            }
+        }
 
         function updateStackNumbers() {
             const cards = document.querySelectorAll('.stack-item-card');
@@ -415,6 +565,7 @@
                 if (badge) badge.innerText = num;
                 if (label) label.innerText = num;
             });
+            recalculateSummary();
         }
 
         function addNewStackItem() {
@@ -439,17 +590,23 @@
                     <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
                         <div class="sm:col-span-3">
                             <label class="block text-[11px] font-bold text-slate-700 mb-1">Jam / Rentang Waktu <span class="text-rose-500">*</span></label>
-                            <input type="text" name="items[${newIndex}][time]" required placeholder="Contoh: 08:00 – 08:45" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
+                            <input type="text" name="items[${newIndex}][time]" oninput="onTimeInputChange(this)" required placeholder="Contoh: 08:00 – 08:45" class="time-input w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
                         </div>
 
-                        <div class="sm:col-span-5">
+                        <div class="sm:col-span-4">
                             <label class="block text-[11px] font-bold text-slate-700 mb-1">Judul Modul / Kegiatan <span class="text-rose-500">*</span></label>
                             <input type="text" name="items[${newIndex}][title]" required placeholder="Contoh: Modul Baru" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
                         </div>
 
-                        <div class="sm:col-span-2">
-                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Durasi</label>
-                            <input type="text" name="items[${newIndex}][duration]" placeholder="Contoh: 45 Menit" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <div class="sm:col-span-3">
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="block text-[11px] font-bold text-slate-700">Durasi (Auto-Timer)</label>
+                                <span class="calc-hint text-[10px] text-indigo-600 font-bold"></span>
+                            </div>
+                            <div class="relative">
+                                <input type="text" name="items[${newIndex}][duration]" oninput="recalculateSummary()" placeholder="Contoh: 45 Menit" class="duration-input w-full px-3 py-2 pr-8 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
+                                <button type="button" onclick="calculateSingleItem(this)" class="absolute right-2 top-2 text-slate-400 hover:text-indigo-600" title="Hitung ulang dari jam">⚡</button>
+                            </div>
                         </div>
 
                         <div class="sm:col-span-2">
@@ -487,6 +644,11 @@
                 updateStackNumbers();
             }
         }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            recalculateSummary();
+        });
     </script>
     @endif
 
