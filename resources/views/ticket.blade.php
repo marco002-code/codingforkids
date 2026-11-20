@@ -15,6 +15,23 @@
 
 @push('styles')
 <style>
+    /* Styling to ensure html2canvas & Print never shift texts or borders */
+    #ticketCard {
+        box-sizing: border-box;
+    }
+    .ticket-session-pill {
+        display: inline-block;
+        line-height: 1.4;
+        text-align: center;
+        vertical-align: middle;
+    }
+    .ticket-code-pill {
+        display: inline-block;
+        line-height: 1.1;
+        text-align: center;
+        vertical-align: middle;
+    }
+
     @media print {
         @page {
             size: A4 portrait;
@@ -59,8 +76,8 @@
             margin-bottom: 8px !important;
         }
         .ticket-qr-code svg {
-            width: 110px !important;
-            height: 110px !important;
+            width: 105px !important;
+            height: 105px !important;
         }
         .ticket-grid {
             gap: 6px !important;
@@ -139,9 +156,11 @@
                     </span>
                     <h1 class="text-lg sm:text-xl font-black tracking-tight leading-tight">{{ $eventName }}</h1>
                     
-                    <!-- Session Banner -->
-                    <div class="mt-2.5 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white text-slate-900 font-black text-xs sm:text-sm shadow-sm">
-                        <span>⏰ {{ $participant->session_label }}</span>
+                    <!-- Session Banner (Fixed inline-block to prevent shift) -->
+                    <div class="mt-3 text-center">
+                        <span class="ticket-session-pill px-4 py-1.5 rounded-full bg-white text-slate-900 font-black text-xs sm:text-sm shadow-sm border border-slate-200/80">
+                            ⏰ {{ $participant->session_label }}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -169,33 +188,41 @@
             <!-- Body Details (Compact layout to guarantee 1-page A4) -->
             <div class="ticket-body p-5 sm:p-6 space-y-4">
 
-                <!-- Reg Code & QR Code (Side-by-side compact) -->
-                <div class="ticket-qr-section bg-gradient-to-r from-slate-50 via-amber-50/30 to-indigo-50/30 p-4 rounded-2xl border-2 border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    
-                    <!-- Left: QR Code -->
-                    <div class="ticket-qr-code flex flex-col items-center justify-center shrink-0">
-                        <div class="p-2 bg-white rounded-xl shadow-xs border border-slate-300">
-                            {!! $qrSvg ?? \App\Services\QrCodeService::svg($participant->reg_code, 125) !!}
-                        </div>
-                        <span class="text-[10px] font-black text-blue-900 mt-1 flex items-center gap-1">
-                            <span>⚡</span> QR Code Presensi Hari-H
-                        </span>
-                    </div>
-
-                    <!-- Right: Reg Code & Instructions -->
-                    <div class="flex-1 text-center sm:text-left space-y-1">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Kode Registrasi (5 Huruf)</span>
-                        <div class="inline-flex items-center gap-2">
-                            <span class="text-3xl sm:text-4xl font-black text-blue-950 tracking-widest font-mono bg-white px-3.5 py-1.5 rounded-xl border-2 border-blue-950 shadow-xs select-all">
-                                {{ $participant->reg_code }}
+                <!-- Reg Code & QR Code (Structured columns to prevent shifting) -->
+                <div class="ticket-qr-section bg-gradient-to-r from-slate-50 via-amber-50/20 to-indigo-50/20 p-4 rounded-2xl border-2 border-slate-200">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                        
+                        <!-- Left Column: QR Code -->
+                        <div class="ticket-qr-code flex flex-col items-center justify-center shrink-0 text-center" style="min-width: 130px;">
+                            <div class="p-2 bg-white rounded-xl shadow-xs border border-slate-300 inline-block">
+                                {!! $qrSvg ?? \App\Services\QrCodeService::svg($participant->reg_code, 115) !!}
+                            </div>
+                            <span class="text-[10px] font-black text-blue-900 mt-1 block whitespace-nowrap">
+                                ⚡ QR Code Presensi Hari-H
                             </span>
-                            <button type="button" onclick="navigator.clipboard.writeText('{{ $participant->reg_code }}'); alert('Kode {{ $participant->reg_code }} disalin!')" title="Salin Kode" class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-300 no-print">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-                            </button>
                         </div>
-                        <p class="text-[11px] text-slate-500 leading-tight pt-1">
-                            Tunjukkan QR code ini ke panitia di meja registrasi, atau sebutkan 5 huruf kode registrasi di atas.
-                        </p>
+
+                        <!-- Right Column: Reg Code & Instructions -->
+                        <div class="flex-1 text-center sm:text-left min-w-0">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Kode Registrasi (5 Huruf)</span>
+                            
+                            <div class="inline-flex items-center justify-center sm:justify-start gap-2.5 my-1">
+                                <div class="bg-white px-4 py-1.5 rounded-xl border-2 border-blue-950 shadow-xs inline-block text-center">
+                                    <span class="ticket-code-pill font-mono font-black text-3xl sm:text-4xl text-blue-950 tracking-wider select-all">
+                                        {{ $participant->reg_code }}
+                                    </span>
+                                </div>
+
+                                <button type="button" onclick="navigator.clipboard.writeText('{{ $participant->reg_code }}'); alert('Kode {{ $participant->reg_code }} disalin!')" title="Salin Kode" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-300 no-print transition-colors shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                                </button>
+                            </div>
+
+                            <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
+                                Tunjukkan QR code ini ke panitia di meja registrasi, atau sebutkan 5 huruf kode registrasi di atas.
+                            </p>
+                        </div>
+
                     </div>
                 </div>
 
@@ -325,13 +352,25 @@
             <span>Membuat JPG...</span>
         `;
 
-        // Render at 2x resolution for crystal clear quality on mobile and desktop
+        // Render at 2x resolution with cloned fixed width so it renders perfectly on mobile & desktop
         html2canvas(card, {
             scale: 2,
             useCORS: true,
             allowTaint: true,
             backgroundColor: '#ffffff',
             logging: false,
+            ignoreElements: function(el) {
+                return el.classList && el.classList.contains('no-print');
+            },
+            onclone: function(clonedDoc) {
+                const clonedCard = clonedDoc.getElementById('ticketCard');
+                if (clonedCard) {
+                    clonedCard.style.width = '640px';
+                    clonedCard.style.maxWidth = '640px';
+                    clonedCard.style.margin = '0 auto';
+                    clonedCard.style.boxSizing = 'border-box';
+                }
+            }
         }).then(canvas => {
             const link = document.createElement('a');
             link.download = 'E-Ticket-{{ $participant->reg_code }}-{{ \Illuminate\Support\Str::slug($participant->student_name) }}.jpg';
