@@ -326,6 +326,10 @@ class EventRegistrationTest extends TestCase
         $response->assertSee($code);
         $response->assertSee('QR Code Presensi Hari-H');
         $response->assertSee('<svg', false); // SVG QR code rendered
+        $response->assertSee('Simpan Gambar (JPG)');
+        $response->assertSee('Cetak PDF (1 Halaman A4)');
+        $response->assertSee('html2canvas.min.js');
+        $response->assertSee('A4 portrait');
     }
 
     public function test_admin_quick_checkin_with_5_letter_code_and_json(): void
