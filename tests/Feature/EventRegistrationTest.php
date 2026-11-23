@@ -916,11 +916,13 @@ class EventRegistrationTest extends TestCase
         $checkInRes->assertStatus(302);
         $this->assertTrue($participant->fresh()->is_attended);
 
-        // 2. Panitia CAN view Settings in Read-Only Mode (R)
+        // 2. Panitia CAN view Settings in Read-Only Mode (R) with locked disabled fields
         $settingsRes = $this->get(route('admin.settings'));
         $settingsRes->assertStatus(200);
         $settingsRes->assertSee('Mode Baca Saja');
         $settingsRes->assertSee('Simpan Dinonaktifkan (Mode Baca Saja Panitia)');
+        $settingsRes->assertSee('disabled', false);
+        $settingsRes->assertSee('Terkunci', false);
 
         // 3. Panitia CANNOT POST to Settings (Blocked by 403)
         $updateSettingsRes = $this->post(route('admin.settings.update'), [

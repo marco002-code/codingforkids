@@ -44,12 +44,40 @@
 
     <!-- Read-Only Notice for Panitia Role -->
     @if(Auth::user()->isPanitia())
+        <style>
+            /* Kunci tampilan seluruh field read-only untuk panitia dengan latar abu-abu tegas & kursor tidak bisa diklik */
+            input:disabled,
+            select:disabled,
+            textarea:disabled,
+            fieldset:disabled input,
+            fieldset:disabled select,
+            fieldset:disabled textarea {
+                background-color: #f1f5f9 !important; /* bg-slate-100 */
+                color: #475569 !important;            /* text-slate-600 */
+                border-color: #cbd5e1 !important;     /* border-slate-300 */
+                cursor: not-allowed !important;
+                pointer-events: none !important;
+                user-select: none !important;
+                box-shadow: none !important;
+                -webkit-text-fill-color: #475569 !important;
+            }
+
+            fieldset:disabled {
+                cursor: not-allowed !important;
+            }
+
+            fieldset:disabled label,
+            fieldset:disabled .relative {
+                cursor: not-allowed !important;
+            }
+        </style>
+
         <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs shadow-xs flex items-center gap-3">
             <span class="text-2xl shrink-0">🔒</span>
             <div>
                 <strong class="font-extrabold text-amber-950 block text-sm">Mode Baca Saja (Read-Only) — Tingkat Akses Panitia</strong>
                 <p class="text-amber-800 mt-0.5 leading-relaxed">
-                    Anda masuk ke sistem dengan tingkat peran <strong>Panitia</strong>. Anda memiliki hak akses penuh untuk meninjau seluruh data konfigurasi acara, jam &amp; kuota sesi, susunan stack materi rundown, dan pengaturan grup WhatsApp. Namun, hak akses simpan dan modifikasi konfigurasi hanya dimiliki oleh <strong>Administrator</strong>.
+                    Anda masuk ke sistem dengan tingkat peran <strong>Panitia</strong>. Anda memiliki hak akses penuh untuk meninjau seluruh data konfigurasi acara, jam &amp; kuota sesi, susunan stack materi rundown, dan pengaturan grup WhatsApp. Seluruh isian form telah <strong>dikunci abu-abu (disabled)</strong> dan tidak dapat diklik atau diubah. Hak akses simpan konfigurasi hanya dimiliki oleh <strong>Administrator</strong>.
                 </p>
             </div>
         </div>
@@ -73,23 +101,31 @@
         <input type="hidden" name="session_2_quota" value="{{ $settings['session_2_quota']->value ?? 90 }}">
         <input type="hidden" name="session_2_waitlist_quota" value="{{ $settings['session_2_waitlist_quota']->value ?? 30 }}">
 
+        <fieldset @disabled(Auth::user()->isPanitia()) class="space-y-6">
         <!-- Tanggal Pelaksanaan & Status Sistem -->
         <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs space-y-5">
-            <div class="border-b border-slate-100 pb-3">
-                <span class="text-xs font-black text-indigo-600 uppercase tracking-widest">WAKTU &amp; STATUS SISTEM</span>
-                <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Tanggal Pelaksanaan &amp; Kontrol Pendaftaran</h3>
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-black text-indigo-600 uppercase tracking-widest">WAKTU &amp; STATUS SISTEM</span>
+                    <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Tanggal Pelaksanaan &amp; Kontrol Pendaftaran</h3>
+                </div>
+                @if(Auth::user()->isPanitia())
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-slate-100 text-slate-500 border border-slate-200">
+                        🔒 Terkunci (Read Only)
+                    </span>
+                @endif
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="sm:col-span-2">
                     <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal Pelaksanaan Kegiatan <span class="text-rose-500">*</span></label>
-                    <input type="text" name="event_date" value="{{ old('event_date', $settings['event_date']->value ?? 'Senin, 21 Desember 2026') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="text" name="event_date" value="{{ old('event_date', $settings['event_date']->value ?? 'Senin, 21 Desember 2026') }}" @disabled(Auth::user()->isPanitia()) required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none">
                     <span class="text-[11px] text-slate-400 mt-1 block">Teks tanggal ini akan tampil di seluruh banner, e-ticket, dan halaman pengumuman (Contoh: <strong>Senin, 21 Desember 2026</strong>).</span>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Status Pendaftaran Global <span class="text-rose-500">*</span></label>
-                    <select name="registration_status" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
+                    <select name="registration_status" @disabled(Auth::user()->isPanitia()) required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
                         <option value="OPEN" {{ ($settings['registration_status']->value ?? 'OPEN') === 'OPEN' ? 'selected' : '' }}>🟢 DIBUKA (OPEN)</option>
                         <option value="CLOSED" {{ ($settings['registration_status']->value ?? 'OPEN') === 'CLOSED' ? 'selected' : '' }}>🔴 DITUTUP (CLOSED)</option>
                     </select>
@@ -97,7 +133,7 @@
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Publikasi Daftar Peserta Terpilih <span class="text-rose-500">*</span></label>
-                    <select name="publish_selected_participants" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
+                    <select name="publish_selected_participants" @disabled(Auth::user()->isPanitia()) required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
                         <option value="0" {{ ($settings['publish_selected_participants']->value ?? '0') == '0' ? 'selected' : '' }}>⏳ Draf / Proses Validasi (Tampil pemberitahuan verifikasi)</option>
                         <option value="1" {{ ($settings['publish_selected_participants']->value ?? '0') == '1' ? 'selected' : '' }}>🟢 Sudah Rilis (Tampilkan tabel resmi peserta terpilih)</option>
                     </select>
@@ -107,30 +143,37 @@
 
         <!-- Detail Informasi Acara -->
         <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs space-y-5">
-            <div class="border-b border-slate-100 pb-3">
-                <span class="text-xs font-black text-indigo-600 uppercase tracking-widest">INFORMASI ACARA</span>
-                <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Nama Kegiatan &amp; Lokasi Laboratorium</h3>
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-black text-indigo-600 uppercase tracking-widest">INFORMASI ACARA</span>
+                    <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Nama Kegiatan &amp; Lokasi Laboratorium</h3>
+                </div>
+                @if(Auth::user()->isPanitia())
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-slate-100 text-slate-500 border border-slate-200">
+                        🔒 Terkunci (Read Only)
+                    </span>
+                @endif
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="sm:col-span-2">
                     <label class="block text-xs font-bold text-slate-700 mb-1">Nama Kegiatan <span class="text-rose-500">*</span></label>
-                    <input type="text" name="event_name" value="{{ old('event_name', $settings['event_name']->value ?? 'Coding for Kids and A.I. for Learning') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="text" name="event_name" value="{{ old('event_name', $settings['event_name']->value ?? 'Coding for Kids and A.I. for Learning') }}" @disabled(Auth::user()->isPanitia()) required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Tagline / Headline</label>
-                    <input type="text" name="event_tagline" value="{{ old('event_tagline', $settings['event_tagline']->value ?? 'Belajar Block Programming, Pemanfaatan A.I. & Keamanan Digital') }}" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="text" name="event_tagline" value="{{ old('event_tagline', $settings['event_tagline']->value ?? 'Belajar Block Programming, Pemanfaatan A.I. & Keamanan Digital') }}" @disabled(Auth::user()->isPanitia()) class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Sub Headline</label>
-                    <input type="text" name="event_subtitle" value="{{ old('event_subtitle', $settings['event_subtitle']->value ?? 'Khusus Siswa SD Kelas 6 &bull; 100% Gratis') }}" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="text" name="event_subtitle" value="{{ old('event_subtitle', $settings['event_subtitle']->value ?? 'Khusus Siswa SD Kelas 6 &bull; 100% Gratis') }}" @disabled(Auth::user()->isPanitia()) class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
 
                 <div class="sm:col-span-2">
                     <label class="block text-xs font-bold text-slate-700 mb-1">Lokasi Kegiatan <span class="text-rose-500">*</span></label>
-                    <input type="text" name="event_location" value="{{ old('event_location', $settings['event_location']->value ?? 'Lab TIK 1 & Lab TIK 3 Lantai 3 Gedung Selatan, SMP Muhammadiyah 1 Yogyakarta') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="text" name="event_location" value="{{ old('event_location', $settings['event_location']->value ?? 'Lab TIK 1 & Lab TIK 3 Lantai 3 Gedung Selatan, SMP Muhammadiyah 1 Yogyakarta') }}" @disabled(Auth::user()->isPanitia()) required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
             </div>
         </div>
@@ -142,29 +185,37 @@
                     <span class="text-xs font-black text-indigo-600 uppercase tracking-widest">KONTAK KOORDINASI</span>
                     <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Grup WhatsApp Orang Tua &amp; Hotline Panitia</h3>
                 </div>
-                <a href="{{ route('admin.settings', ['tab' => 'whatsapp']) }}" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-xl border border-emerald-200 flex items-center gap-1 transition-colors self-start sm:self-auto">
-                    <span>💬 Menu Khusus WhatsApp &amp; Hotline &rarr;</span>
-                </a>
+                <div class="flex items-center gap-2">
+                    @if(Auth::user()->isPanitia())
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-slate-100 text-slate-500 border border-slate-200">
+                            🔒 Terkunci (Read Only)
+                        </span>
+                    @endif
+                    <a href="{{ route('admin.settings', ['tab' => 'whatsapp']) }}" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-xl border border-emerald-200 flex items-center gap-1 transition-colors self-start sm:self-auto">
+                        <span>💬 Menu Khusus WhatsApp &amp; Hotline &rarr;</span>
+                    </a>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="sm:col-span-2">
                     <label class="block text-xs font-bold text-slate-700 mb-1">Link Undangan Grup WhatsApp Koordinasi</label>
-                    <input type="url" name="whatsapp_group_link" value="{{ old('whatsapp_group_link', $settings['whatsapp_group_link']->value ?? '') }}" placeholder="https://chat.whatsapp.com/..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="url" name="whatsapp_group_link" value="{{ old('whatsapp_group_link', $settings['whatsapp_group_link']->value ?? '') }}" @disabled(Auth::user()->isPanitia()) placeholder="https://chat.whatsapp.com/..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                     <span class="text-[11px] text-slate-400 mt-1 block">Tautan ini otomatis disertakan pada konfirmasi pendaftaran dan E-Ticket siswa.</span>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp Hotline Panitia</label>
-                    <input type="text" name="contact_whatsapp" value="{{ old('contact_whatsapp', $settings['contact_whatsapp']->value ?? '081234567890') }}" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="text" name="contact_whatsapp" value="{{ old('contact_whatsapp', $settings['contact_whatsapp']->value ?? '081234567890') }}" @disabled(Auth::user()->isPanitia()) class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Email Panitia</label>
-                    <input type="email" name="contact_email" value="{{ old('contact_email', $settings['contact_email']->value ?? 'panitia@muhijunior.id') }}" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="email" name="contact_email" value="{{ old('contact_email', $settings['contact_email']->value ?? 'panitia@muhijunior.id') }}" @disabled(Auth::user()->isPanitia()) class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
             </div>
         </div>
+        </fieldset>
 
         <div class="flex items-center justify-end gap-3 pt-2">
             @if(Auth::user()->isPanitia())
@@ -201,6 +252,7 @@
         <input type="hidden" name="contact_whatsapp" value="{{ $settings['contact_whatsapp']->value ?? '081234567890' }}">
         <input type="hidden" name="contact_email" value="{{ $settings['contact_email']->value ?? 'panitia@muhijunior.id' }}">
 
+        <fieldset @disabled(Auth::user()->isPanitia()) class="space-y-6">
         <!-- Sesi 1 Settings -->
         <div class="bg-white rounded-3xl p-6 border-2 border-indigo-200 shadow-xs space-y-4">
             <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
@@ -208,32 +260,39 @@
                     <span class="text-xs font-black text-indigo-600 uppercase tracking-widest">PENGATURAN SESI 1</span>
                     <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Sesi 1 (Pagi)</h3>
                 </div>
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                    {{ $settings['session_1_time']->value ?? '07:30 – 10:00 WIB' }}
-                </span>
+                <div class="flex items-center gap-2">
+                    @if(Auth::user()->isPanitia())
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-slate-100 text-slate-500 border border-slate-200">
+                            🔒 Terkunci
+                        </span>
+                    @endif
+                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                        {{ $settings['session_1_time']->value ?? '07:30 – 10:00 WIB' }}
+                    </span>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Nama Label Sesi 1 <span class="text-rose-500">*</span></label>
-                    <input type="text" name="session_1_name" value="{{ old('session_1_name', $settings['session_1_name']->value ?? 'Sesi 1 (Pagi)') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="text" name="session_1_name" value="{{ old('session_1_name', $settings['session_1_name']->value ?? 'Sesi 1 (Pagi)') }}" @disabled(Auth::user()->isPanitia()) required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Jam / Waktu Pelaksanaan <span class="text-rose-500">*</span></label>
-                    <input type="text" name="session_1_time" value="{{ old('session_1_time', $settings['session_1_time']->value ?? '07:30 – 10:00 WIB') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold text-indigo-900 focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="text" name="session_1_time" value="{{ old('session_1_time', $settings['session_1_time']->value ?? '07:30 – 10:00 WIB') }}" @disabled(Auth::user()->isPanitia()) required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold text-indigo-900 focus:ring-2 focus:ring-indigo-500 outline-none">
                     <span class="text-[11px] text-slate-400 mt-1 block">Contoh: <strong>07:30 – 10:00 WIB</strong></span>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Batas Kuota Utama Sesi 1 <span class="text-rose-500">*</span></label>
-                    <input type="number" name="session_1_quota" value="{{ old('session_1_quota', $settings['session_1_quota']->value ?? 90) }}" required min="1" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-black text-indigo-700 focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="number" name="session_1_quota" value="{{ old('session_1_quota', $settings['session_1_quota']->value ?? 90) }}" @disabled(Auth::user()->isPanitia()) required min="1" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-black text-indigo-700 focus:ring-2 focus:ring-indigo-500 outline-none">
                     <span class="text-[11px] text-slate-400 mt-1 block">Standar: 90 kursi</span>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Batas Kuota Cadangan Sesi 1 <span class="text-rose-500">*</span></label>
-                    <input type="number" name="session_1_waitlist_quota" value="{{ old('session_1_waitlist_quota', $settings['session_1_waitlist_quota']->value ?? 30) }}" required min="0" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-black text-amber-600 focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="number" name="session_1_waitlist_quota" value="{{ old('session_1_waitlist_quota', $settings['session_1_waitlist_quota']->value ?? 30) }}" @disabled(Auth::user()->isPanitia()) required min="0" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-black text-amber-600 focus:ring-2 focus:ring-indigo-500 outline-none">
                     <span class="text-[11px] text-slate-400 mt-1 block">Standar: 30 antrean</span>
                 </div>
             </div>
@@ -246,36 +305,44 @@
                     <span class="text-xs font-black text-purple-600 uppercase tracking-widest">PENGATURAN SESI 2</span>
                     <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Sesi 2 (Siang)</h3>
                 </div>
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200">
-                    {{ $settings['session_2_time']->value ?? '10:30 – 12:00 WIB' }}
-                </span>
+                <div class="flex items-center gap-2">
+                    @if(Auth::user()->isPanitia())
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-slate-100 text-slate-500 border border-slate-200">
+                            🔒 Terkunci
+                        </span>
+                    @endif
+                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200">
+                        {{ $settings['session_2_time']->value ?? '10:30 – 12:00 WIB' }}
+                    </span>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Nama Label Sesi 2 <span class="text-rose-500">*</span></label>
-                    <input type="text" name="session_2_name" value="{{ old('session_2_name', $settings['session_2_name']->value ?? 'Sesi 2 (Siang)') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
+                    <input type="text" name="session_2_name" value="{{ old('session_2_name', $settings['session_2_name']->value ?? 'Sesi 2 (Siang)') }}" @disabled(Auth::user()->isPanitia()) required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-purple-500 outline-none">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Jam / Waktu Pelaksanaan <span class="text-rose-500">*</span></label>
-                    <input type="text" name="session_2_time" value="{{ old('session_2_time', $settings['session_2_time']->value ?? '10:30 – 12:00 WIB') }}" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold text-purple-900 focus:ring-2 focus:ring-purple-500 outline-none">
+                    <input type="text" name="session_2_time" value="{{ old('session_2_time', $settings['session_2_time']->value ?? '10:30 – 12:00 WIB') }}" @disabled(Auth::user()->isPanitia()) required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold text-purple-900 focus:ring-2 focus:ring-purple-500 outline-none">
                     <span class="text-[11px] text-slate-400 mt-1 block">Contoh: <strong>10:30 – 12:00 WIB</strong></span>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Batas Kuota Utama Sesi 2 <span class="text-rose-500">*</span></label>
-                    <input type="number" name="session_2_quota" value="{{ old('session_2_quota', $settings['session_2_quota']->value ?? 90) }}" required min="1" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-black text-purple-700 focus:ring-2 focus:ring-purple-500 outline-none">
+                    <input type="number" name="session_2_quota" value="{{ old('session_2_quota', $settings['session_2_quota']->value ?? 90) }}" @disabled(Auth::user()->isPanitia()) required min="1" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-black text-purple-700 focus:ring-2 focus:ring-purple-500 outline-none">
                     <span class="text-[11px] text-slate-400 mt-1 block">Standar: 90 kursi</span>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Batas Kuota Cadangan Sesi 2 <span class="text-rose-500">*</span></label>
-                    <input type="number" name="session_2_waitlist_quota" value="{{ old('session_2_waitlist_quota', $settings['session_2_waitlist_quota']->value ?? 30) }}" required min="0" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-black text-amber-600 focus:ring-2 focus:ring-purple-500 outline-none">
+                    <input type="number" name="session_2_waitlist_quota" value="{{ old('session_2_waitlist_quota', $settings['session_2_waitlist_quota']->value ?? 30) }}" @disabled(Auth::user()->isPanitia()) required min="0" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-black text-amber-600 focus:ring-2 focus:ring-purple-500 outline-none">
                     <span class="text-[11px] text-slate-400 mt-1 block">Standar: 30 antrean</span>
                 </div>
             </div>
         </div>
+        </fieldset>
 
         <div class="flex items-center justify-end gap-3 pt-2">
             @if(Auth::user()->isPanitia())
@@ -363,9 +430,11 @@
                         @endif
                     </div>
 
+                    @if(Auth::user()->isAdmin())
                     <button type="button" onclick="autoCalculateAllDurations()" class="px-3.5 py-2 bg-white hover:bg-slate-100 text-indigo-950 rounded-xl text-xs font-black shadow-sm transition-all flex items-center gap-1.5">
                         <span>⚡ Hitung Otomatis Semua Durasi</span>
                     </button>
+                    @endif
                 </div>
             </div>
         </div>
@@ -383,12 +452,19 @@
                     <p class="text-xs text-slate-500">Ketik rentang jam (misal: <strong>07:30 – 08:35</strong>), durasi per stack dan total waktu akan terhitung otomatis secara real-time.</p>
                 </div>
 
+                @if(Auth::user()->isAdmin())
                 <button type="button" onclick="addNewStackItem()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5 shrink-0">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     <span>Tambah Stack Baru</span>
                 </button>
+                @else
+                <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-black bg-slate-100 text-slate-500 border border-slate-200">
+                    🔒 Susunan Stack Terkunci (Read Only)
+                </span>
+                @endif
             </div>
 
+            <fieldset @disabled(Auth::user()->isPanitia()) class="space-y-4">
             <!-- Items Container -->
             <div id="stackItemsContainer" class="space-y-4">
                 @foreach($currentRundown as $index => $item)
@@ -402,22 +478,24 @@
                                 <span class="text-xs font-black text-slate-800 uppercase tracking-wide">Stack Materi #<span class="stack-label-num">{{ $index + 1 }}</span></span>
                             </div>
 
+                            @if(Auth::user()->isAdmin())
                             <button type="button" onclick="removeStackItem(this)" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors" title="Hapus stack ini">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                             </button>
+                            @endif
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
                             <!-- Waktu / Jam -->
                             <div class="sm:col-span-3">
                                 <label class="block text-[11px] font-bold text-slate-700 mb-1">Jam / Rentang Waktu <span class="text-rose-500">*</span></label>
-                                <input type="text" name="items[{{ $index }}][time]" value="{{ $item['time'] ?? '' }}" oninput="onTimeInputChange(this)" required placeholder="Contoh: 07:30 – 08:35" class="time-input w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
+                                <input type="text" name="items[{{ $index }}][time]" value="{{ $item['time'] ?? '' }}" oninput="onTimeInputChange(this)" @disabled(Auth::user()->isPanitia()) required placeholder="Contoh: 07:30 – 08:35" class="time-input w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
                             </div>
 
                             <!-- Judul Stack -->
                             <div class="sm:col-span-4">
                                 <label class="block text-[11px] font-bold text-slate-700 mb-1">Judul Modul / Kegiatan <span class="text-rose-500">*</span></label>
-                                <input type="text" name="items[{{ $index }}][title]" value="{{ $item['title'] ?? '' }}" required placeholder="Contoh: Modul 1: Coding Game" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
+                                <input type="text" name="items[{{ $index }}][title]" value="{{ $item['title'] ?? '' }}" @disabled(Auth::user()->isPanitia()) required placeholder="Contoh: Modul 1: Coding Game" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
                             </div>
 
                             <!-- Durasi (Dihitung Otomatis) -->
@@ -427,15 +505,17 @@
                                     <span class="calc-hint text-[10px] text-indigo-600 font-bold"></span>
                                 </div>
                                 <div class="relative">
-                                    <input type="text" name="items[{{ $index }}][duration]" value="{{ $item['duration'] ?? '' }}" oninput="recalculateSummary()" placeholder="Contoh: 65 Menit" class="duration-input w-full px-3 py-2 pr-8 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
+                                    <input type="text" name="items[{{ $index }}][duration]" value="{{ $item['duration'] ?? '' }}" oninput="recalculateSummary()" @disabled(Auth::user()->isPanitia()) placeholder="Contoh: 65 Menit" class="duration-input w-full px-3 py-2 pr-8 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
+                                    @if(Auth::user()->isAdmin())
                                     <button type="button" onclick="calculateSingleItem(this)" class="absolute right-2 top-2 text-slate-400 hover:text-indigo-600" title="Hitung ulang dari jam">⚡</button>
+                                    @endif
                                 </div>
                             </div>
 
                             <!-- Tema Warna / Type -->
                             <div class="sm:col-span-2">
                                 <label class="block text-[11px] font-bold text-slate-700 mb-1">Tema Kartu</label>
-                                <select name="items[{{ $index }}][type]" class="w-full px-2.5 py-2 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
+                                <select name="items[{{ $index }}][type]" @disabled(Auth::user()->isPanitia()) class="w-full px-2.5 py-2 rounded-xl border border-slate-300 text-xs font-bold focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
                                     <option value="blue" {{ ($item['type'] ?? '') === 'blue' ? 'selected' : '' }}>🔵 Biru (Coding)</option>
                                     <option value="purple" {{ ($item['type'] ?? '') === 'purple' ? 'selected' : '' }}>🟣 Ungu (A.I.)</option>
                                     <option value="emerald" {{ ($item['type'] ?? '') === 'emerald' ? 'selected' : '' }}>🟢 Hijau (Cyber Safety)</option>
@@ -447,13 +527,14 @@
                             <!-- Deskripsi Singkat -->
                             <div class="sm:col-span-12">
                                 <label class="block text-[11px] font-bold text-slate-700 mb-1">Deskripsi Stack Materi / Kegiatan</label>
-                                <textarea name="items[{{ $index }}][description]" rows="2" placeholder="Ringkasan materi atau kegiatan..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">{{ $item['description'] ?? '' }}</textarea>
+                                <textarea name="items[{{ $index }}][description]" rows="2" @disabled(Auth::user()->isPanitia()) placeholder="Ringkasan materi atau kegiatan..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">{{ $item['description'] ?? '' }}</textarea>
                             </div>
                         </div>
 
                     </div>
                 @endforeach
             </div>
+            </fieldset>
 
             <!-- Bottom Actions -->
             <div class="flex items-center justify-between gap-4 pt-4 border-t border-slate-200">
@@ -728,6 +809,7 @@
         <input type="hidden" name="session_2_quota" value="{{ $settings['session_2_quota']->value ?? 90 }}">
         <input type="hidden" name="session_2_waitlist_quota" value="{{ $settings['session_2_waitlist_quota']->value ?? 30 }}">
 
+        <fieldset @disabled(Auth::user()->isPanitia()) class="space-y-6">
         <!-- Top Banner Info -->
         <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-3xl p-6 text-white shadow-lg space-y-2">
             <div class="flex items-center gap-3">
@@ -746,7 +828,12 @@
                     <span class="text-xs font-black text-emerald-600 uppercase tracking-widest">GRUP WHATSAPP KOORDINASI</span>
                     <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Tautan Undangan Grup WhatsApp Peserta</h3>
                 </div>
-                <div>
+                <div class="flex items-center gap-2">
+                    @if(Auth::user()->isPanitia())
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-slate-100 text-slate-500 border border-slate-200">
+                            🔒 Terkunci
+                        </span>
+                    @endif
                     @if(!empty($currentGroupLink))
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Link Grup Terpasang
@@ -766,7 +853,7 @@
                     </label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 font-bold text-sm">🔗</span>
-                        <input type="url" name="whatsapp_group_link" value="{{ old('whatsapp_group_link', $currentGroupLink) }}" placeholder="https://chat.whatsapp.com/KodeUndanganGrupAnda" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-medium font-mono text-slate-800">
+                        <input type="url" name="whatsapp_group_link" value="{{ old('whatsapp_group_link', $currentGroupLink) }}" @disabled(Auth::user()->isPanitia()) placeholder="https://chat.whatsapp.com/KodeUndanganGrupAnda" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-medium font-mono text-slate-800">
                     </div>
                     @error('whatsapp_group_link') <p class="text-xs text-rose-500 mt-1 font-bold">{{ $message }}</p> @enderror
                     <span class="text-[11px] text-slate-500 mt-1.5 block">Format standar link undangan grup: <code>https://chat.whatsapp.com/...</code></span>
@@ -808,7 +895,12 @@
                     <span class="text-xs font-black text-emerald-600 uppercase tracking-widest">HOTLINE PANITIA RESMI</span>
                     <h3 class="font-extrabold text-slate-900 text-base mt-0.5">Nomor WhatsApp Panitia yang Siap Dihubungi</h3>
                 </div>
-                <div>
+                <div class="flex items-center gap-2">
+                    @if(Auth::user()->isPanitia())
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-slate-100 text-slate-500 border border-slate-200">
+                            🔒 Terkunci
+                        </span>
+                    @endif
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
                         📞 Hotline Aktif: {{ $rawWa }}
                     </span>
@@ -822,7 +914,7 @@
                     </label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 font-bold text-sm">📱</span>
-                        <input type="text" name="contact_whatsapp" value="{{ old('contact_whatsapp', $rawWa) }}" required placeholder="Contoh: 081234567890 atau 085640001234" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-bold text-slate-800">
+                        <input type="text" name="contact_whatsapp" value="{{ old('contact_whatsapp', $rawWa) }}" @disabled(Auth::user()->isPanitia()) required placeholder="Contoh: 081234567890 atau 085640001234" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-bold text-slate-800">
                     </div>
                     @error('contact_whatsapp') <p class="text-xs text-rose-500 mt-1 font-bold">{{ $message }}</p> @enderror
                     <span class="text-[11px] text-slate-400 mt-1 block">Bisa ditulis angka diawali <code>08...</code> atau <code>62...</code>. Sistem otomatis memformat menjadi tautan WhatsApp.</span>
@@ -832,7 +924,7 @@
                     <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Email Panitia / Sekolah</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 font-bold text-sm">✉️</span>
-                        <input type="email" name="contact_email" value="{{ old('contact_email', $settings['contact_email']->value ?? 'panitia@muhijunior.id') }}" placeholder="panitia@muhijunior.id" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-medium text-slate-800">
+                        <input type="email" name="contact_email" value="{{ old('contact_email', $settings['contact_email']->value ?? 'panitia@muhijunior.id') }}" @disabled(Auth::user()->isPanitia()) placeholder="panitia@muhijunior.id" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-medium text-slate-800">
                     </div>
                     @error('contact_email') <p class="text-xs text-rose-500 mt-1 font-bold">{{ $message }}</p> @enderror
                     <span class="text-[11px] text-slate-400 mt-1 block">Email resmi korespondensi panitia.</span>
@@ -865,6 +957,7 @@
                 </a>
             </div>
         </div>
+        </fieldset>
 
         <!-- Tombol Simpan -->
         <div class="flex items-center justify-end gap-3 pt-2">
