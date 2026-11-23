@@ -42,6 +42,19 @@
         </a>
     </div>
 
+    <!-- Read-Only Notice for Panitia Role -->
+    @if(Auth::user()->isPanitia())
+        <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs shadow-xs flex items-center gap-3">
+            <span class="text-2xl shrink-0">🔒</span>
+            <div>
+                <strong class="font-extrabold text-amber-950 block text-sm">Mode Baca Saja (Read-Only) — Tingkat Akses Panitia</strong>
+                <p class="text-amber-800 mt-0.5 leading-relaxed">
+                    Anda masuk ke sistem dengan tingkat peran <strong>Panitia</strong>. Anda memiliki hak akses penuh untuk meninjau seluruh data konfigurasi acara, jam &amp; kuota sesi, susunan stack materi rundown, dan pengaturan grup WhatsApp. Namun, hak akses simpan dan modifikasi konfigurasi hanya dimiliki oleh <strong>Administrator</strong>.
+                </p>
+            </div>
+        </div>
+    @endif
+
     <!-- ===================================================================== -->
     <!-- TAB 1: PENGATURAN TANGGAL & ACARA -->
     <!-- ===================================================================== -->
@@ -154,9 +167,16 @@
         </div>
 
         <div class="flex items-center justify-end gap-3 pt-2">
-            <button type="submit" class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-indigo-600/25 transition-all">
-                Simpan Perubahan Tanggal &amp; Acara
-            </button>
+            @if(Auth::user()->isPanitia())
+                <div class="inline-flex items-center gap-2 px-6 py-3.5 bg-slate-100 text-slate-400 font-extrabold text-sm rounded-2xl border border-slate-200 cursor-not-allowed">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    <span>Simpan Dinonaktifkan (Mode Baca Saja Panitia)</span>
+                </div>
+            @else
+                <button type="submit" class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-indigo-600/25 transition-all">
+                    Simpan Perubahan Tanggal &amp; Acara
+                </button>
+            @endif
         </div>
     </form>
     @endif
@@ -258,9 +278,16 @@
         </div>
 
         <div class="flex items-center justify-end gap-3 pt-2">
-            <button type="submit" class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-indigo-600/25 transition-all">
-                Simpan Perubahan Jam &amp; Kuota Sesi
-            </button>
+            @if(Auth::user()->isPanitia())
+                <div class="inline-flex items-center gap-2 px-6 py-3.5 bg-slate-100 text-slate-400 font-extrabold text-sm rounded-2xl border border-slate-200 cursor-not-allowed">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    <span>Simpan Dinonaktifkan (Mode Baca Saja Panitia)</span>
+                </div>
+            @else
+                <button type="submit" class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-indigo-600/25 transition-all">
+                    Simpan Perubahan Jam &amp; Kuota Sesi
+                </button>
+            @endif
         </div>
     </form>
     @endif
@@ -288,7 +315,8 @@
                 </div>
             </div>
 
-            <!-- Reset to Default Button -->
+            <!-- Reset to Default Button (Admin Only) -->
+            @if(Auth::user()->isAdmin())
             <form action="{{ route('admin.settings.updateRundown') }}" method="POST" onsubmit="return confirm('Kembalikan susunan stack materi Sesi {{ $activeSession }} ke format default (5 stack standar)?')">
                 @csrf
                 <input type="hidden" name="session" value="{{ $activeSession }}">
@@ -298,6 +326,7 @@
                     <span>Reset ke 5 Stack Standar</span>
                 </button>
             </form>
+            @endif
         </div>
 
         @php
@@ -428,14 +457,24 @@
 
             <!-- Bottom Actions -->
             <div class="flex items-center justify-between gap-4 pt-4 border-t border-slate-200">
-                <button type="button" onclick="addNewStackItem()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    <span>Tambah Stack Baru</span>
-                </button>
+                @if(Auth::user()->isPanitia())
+                    <div class="text-xs text-slate-500 italic">
+                        Mode Baca Saja: Hanya Administrator yang dapat menambah, menghapus, atau menyimpan susunan materi rundown.
+                    </div>
+                    <div class="inline-flex items-center gap-2 px-6 py-3.5 bg-slate-100 text-slate-400 font-extrabold text-sm rounded-2xl border border-slate-200 cursor-not-allowed">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        <span>Simpan Dinonaktifkan (Mode Baca Saja Panitia)</span>
+                    </div>
+                @else
+                    <button type="button" onclick="addNewStackItem()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        <span>Tambah Stack Baru</span>
+                    </button>
 
-                <button type="submit" class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-indigo-600/25 transition-all">
-                    Simpan Susunan Stack Materi Sesi {{ $activeSession }}
-                </button>
+                    <button type="submit" class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-indigo-600/25 transition-all">
+                        Simpan Susunan Stack Materi Sesi {{ $activeSession }}
+                    </button>
+                @endif
             </div>
         </form>
 
@@ -829,9 +868,16 @@
 
         <!-- Tombol Simpan -->
         <div class="flex items-center justify-end gap-3 pt-2">
-            <button type="submit" class="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-emerald-600/25 transition-all">
-                Simpan Pengaturan WhatsApp &amp; Kontak Panitia
-            </button>
+            @if(Auth::user()->isPanitia())
+                <div class="inline-flex items-center gap-2 px-6 py-3.5 bg-slate-100 text-slate-400 font-extrabold text-sm rounded-2xl border border-slate-200 cursor-not-allowed">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    <span>Simpan Dinonaktifkan (Mode Baca Saja Panitia)</span>
+                </div>
+            @else
+                <button type="submit" class="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-emerald-600/25 transition-all">
+                    Simpan Pengaturan WhatsApp &amp; Kontak Panitia
+                </button>
+            @endif
         </div>
     </form>
     @endif

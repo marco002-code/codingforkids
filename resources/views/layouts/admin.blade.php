@@ -120,7 +120,12 @@
             </div>
 
             <div>
-                <span class="px-3 text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">PENGATURAN ACARA &amp; SESI</span>
+                <div class="px-3 flex items-center justify-between mb-2">
+                    <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">PENGATURAN ACARA &amp; SESI</span>
+                    @if(Auth::user()->isPanitia())
+                        <span class="text-[9px] font-bold text-amber-400 bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-500/30">Read Only</span>
+                    @endif
+                </div>
                 <nav class="space-y-1">
                     <a href="{{ route('admin.settings', ['tab' => 'event']) }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-colors {{ request()->routeIs('admin.settings*') && (request()->query('tab') === 'event' || !request()->has('tab')) ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800' }}">
                         <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -147,9 +152,11 @@
                     <a href="{{ route('admin.users.index') }}" class="flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-colors {{ request()->routeIs('admin.users*') ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800' }}">
                         <div class="flex items-center gap-3">
                             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                            <span>Akun &amp; Password Panitia</span>
+                            <span>{{ Auth::user()->isPanitia() ? 'Profil & Ganti Password' : 'Akun & Password Panitia' }}</span>
                         </div>
-                        <span class="px-2 py-0.5 rounded-md bg-white/20 text-[10px] font-black">{{ \App\Models\User::count() }}</span>
+                        @if(Auth::user()->isAdmin())
+                            <span class="px-2 py-0.5 rounded-md bg-white/20 text-[10px] font-black">{{ \App\Models\User::count() }}</span>
+                        @endif
                     </a>
                 </nav>
             </div>
@@ -184,7 +191,11 @@
                     </div>
                     <div class="min-w-0">
                         <span class="block text-xs font-bold text-white truncate">{{ Auth::user()->name ?? 'Administrator' }}</span>
-                        <span class="block text-[10px] text-slate-400 truncate">Panitia Acara</span>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                            <span class="px-1.5 py-0.2 rounded text-[9px] font-black {{ Auth::user()->isAdmin() ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' }}">
+                                {{ Auth::user()->role_label }}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -251,7 +262,12 @@
 
                 <!-- Group 2: Pengaturan Acara, Jam & Stack Materi -->
                 <div>
-                    <span class="px-3 text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">PENGATURAN ACARA &amp; SESI</span>
+                    <div class="px-3.5 flex items-center justify-between mb-2">
+                        <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">PENGATURAN ACARA &amp; SESI</span>
+                        @if(Auth::user()->isPanitia())
+                            <span class="text-[9px] font-bold text-amber-400 bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-500/30">Read Only</span>
+                        @endif
+                    </div>
                     <nav class="space-y-1">
                         <a href="{{ route('admin.settings', ['tab' => 'event']) }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.settings*') && (request()->query('tab') === 'event' || !request()->has('tab')) ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
                             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -282,9 +298,11 @@
                         <a href="{{ route('admin.users.index') }}" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.users*') ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
                             <div class="flex items-center gap-3">
                                 <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                                <span>Akun &amp; Password Panitia</span>
+                                <span>{{ Auth::user()->isPanitia() ? 'Profil & Ganti Password' : 'Akun & Password Panitia' }}</span>
                             </div>
-                            <span class="px-2 py-0.5 rounded-md bg-white/20 text-[10px] font-black text-white">{{ \App\Models\User::count() }}</span>
+                            @if(Auth::user()->isAdmin())
+                                <span class="px-2 py-0.5 rounded-md bg-white/20 text-[10px] font-black text-white">{{ \App\Models\User::count() }}</span>
+                            @endif
                         </a>
                     </nav>
                 </div>
@@ -321,7 +339,12 @@
                         {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
                     </div>
                     <div class="min-w-0">
-                        <span class="block text-xs font-bold text-white truncate">{{ Auth::user()->name ?? 'Administrator' }}</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="block text-xs font-bold text-white truncate">{{ Auth::user()->name ?? 'Administrator' }}</span>
+                            <span class="px-1.5 py-0.2 rounded text-[9px] font-black {{ Auth::user()->isAdmin() ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' }}">
+                                {{ Auth::user()->role_label }}
+                            </span>
+                        </div>
                         <span class="block text-[10px] text-slate-400 truncate">{{ Auth::user()->email ?? 'admin@muhijunior.id' }}</span>
                     </div>
                 </div>
@@ -346,6 +369,10 @@
         <header class="hidden lg:flex bg-white border-b border-slate-200/90 h-16 px-8 items-center justify-between sticky top-0 z-20 shadow-xs">
             <div class="flex items-center gap-3">
                 <span class="text-xs font-bold text-slate-400">Panel Administrasi</span>
+                <span class="text-slate-300">&bull;</span>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black {{ Auth::user()->isAdmin() ? 'bg-indigo-100 text-indigo-800' : 'bg-emerald-100 text-emerald-800' }}">
+                    {{ Auth::user()->role_label }}
+                </span>
                 <span class="text-slate-300">&bull;</span>
                 <h2 class="text-sm font-extrabold text-slate-800">
                     @yield('title', 'Coding for Kids & A.I. 2026')

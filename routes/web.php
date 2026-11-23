@@ -49,14 +49,22 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/quick-check-in', [AdminDashboardController::class, 'quickCheckIn'])->name('quickCheckIn');
     Route::get('/export', [AdminDashboardController::class, 'export'])->name('export');
     Route::post('/participants/toggle-publish', [AdminDashboardController::class, 'togglePublishSelected'])->name('participants.togglePublish');
+    // Grup Pengaturan Acara (Read-Only untuk Panitia, Simpan/Ubah khusus Administrator)
     Route::get('/settings', [AdminDashboardController::class, 'settings'])->name('settings');
-    Route::post('/settings', [AdminDashboardController::class, 'updateSettings'])->name('settings.update');
-    Route::post('/settings/rundown', [AdminDashboardController::class, 'updateRundown'])->name('settings.updateRundown');
+    Route::middleware(['admin'])->group(function () {
+        Route::post('/settings', [AdminDashboardController::class, 'updateSettings'])->name('settings.update');
+        Route::post('/settings/rundown', [AdminDashboardController::class, 'updateRundown'])->name('settings.updateRundown');
+    });
 
-    // Manajemen Akun & Password Panitia
+    // Pengelolaan Akun
+    // Panitia: hanya melihat akun sendiri & hanya dapat mengubah password sendiri
+    // Administrator: CRUD penuh seluruh akun pengguna
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
-    Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
-    Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
     Route::post('/users/{user}/change-password', [AdminUserController::class, 'changePassword'])->name('users.changePassword');
-    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+
+    Route::middleware(['admin'])->group(function () {
+        Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+        Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+    });
 });

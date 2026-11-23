@@ -529,6 +529,7 @@ class EventRegistrationTest extends TestCase
             'name' => 'Admin Panitia',
             'email' => 'admin_settings@test.com',
             'password' => bcrypt('password123'),
+            'role' => 'admin',
         ]);
 
         $this->actingAs($admin);
@@ -705,12 +706,14 @@ class EventRegistrationTest extends TestCase
             'name' => 'Super Panitia',
             'email' => 'super@muhijunior.id',
             'password' => bcrypt('password123'),
+            'role' => 'admin',
         ]);
 
         $panitia2 = User::create([
             'name' => 'Panitia Dua',
             'email' => 'panitia2@muhijunior.id',
             'password' => bcrypt('password123'),
+            'role' => 'panitia',
         ]);
 
         $this->actingAs($superAdmin);
@@ -831,10 +834,11 @@ class EventRegistrationTest extends TestCase
         $this->assertEquals('Sesi Pagi Ceria', $participant->session_name);
 
         // 5. Test auto-calculation of duration when saving rundown with empty duration
-        $admin = User::first() ?? User::create([
+        $admin = User::where('role', 'admin')->first() ?? User::create([
             'name' => 'Admin Test',
             'email' => 'admin_test_duration@test.com',
             'password' => bcrypt('password123'),
+            'role' => 'admin',
         ]);
 
         $this->actingAs($admin);
@@ -855,5 +859,123 @@ class EventRegistrationTest extends TestCase
         $savedRundown = Setting::getRundown(1);
         $this->assertNotEmpty($savedRundown);
         $this->assertEquals('50 Menit', $savedRundown[0]['duration']);
+    }
+
+    public function test_panitia_role_permissions_and_restrictions(): void
+    {
+        // Setup Administrator & Panitia users
+        $admin = User::where('role', 'admin')->first() ?? User::create([
+            'name' => 'Admin Master',
+            'email' => 'admin_master@test.com',
+            'password' => bcrypt('password123'),
+            'role' => 'admin',
+        ]);
+
+        $panitia = User::create([
+            'name' => 'Ahmad Panitia',
+            'email' => 'panitia_ahmad@test.com',
+            'password' => bcrypt('password123'),
+            'role' => 'panitia',
+        ]);
+
+        $otherPanitia = User::create([
+            'name' => 'Siti Panitia',
+            'email' => 'panitia_siti@test.com',
+            'password' => bcrypt('password123'),
+            'role' => 'panitia',
+        ]);
+
+        // Login as Panitia
+        $this->actingAs($panitia);
+
+        // 1. Panitia CAN access Dashboard, Participants, Attendance, and Check-in (R & W)
+        $dashRes = $this->get(route('admin.dashboard'));
+        $dashRes->assertStatus(200);
+
+        $partRes = $this->get(route('admin.participants'));
+        $partRes->assertStatus(200);
+
+        $attRes = $this->get(route('admin.attendance'));
+        $attRes->assertStatus(200);
+
+        $participant = Participant::create([
+            'reg_code' => 'PNT01',
+            'session' => '1',
+            'student_name' => 'Peserta Uji Panitia',
+            'school_name' => 'SD Negeri 1',
+            'gender' => 'L',
+            'parent_name' => 'Wali Murid',
+            'whatsapp' => '081234567888',
+            'status' => 'UTAMA',
+            'terms_agreement' => true,
+            'waitlist_agreement' => true,
+        ]);
+
+        // Panitia check-in write action
+        $checkInRes = $this->post(route('admin.participants.checkin', $participant));
+        $checkInRes->assertStatus(302);
+        $this->assertTrue($participant->fresh()->is_attended);
+
+        // 2. Panitia CAN view Settings in Read-Only Mode (R)
+        $settingsRes = $this->get(route('admin.settings'));
+        $settingsRes->assertStatus(200);
+        $settingsRes->assertSee('Mode Baca Saja');
+        $settingsRes->assertSee('Simpan Dinonaktifkan (Mode Baca Saja Panitia)');
+
+        // 3. Panitia CANNOT POST to Settings (Blocked by 403)
+        $updateSettingsRes = $this->post(route('admin.settings.update'), [
+            'event_date' => 'Minggu, 1 Januari 2027',
+        ]);
+        $updateSettingsRes->assertStatus(403);
+
+        $updateRundownRes = $this->post(route('admin.settings.updateRundown'), [
+            'session' => 1,
+            'items' => [],
+        ]);
+        $updateRundownRes->assertStatus(403);
+
+        // 4. Pengelolaan Akun: Panitia can view index, but only sees self
+        $usersIndexRes = $this->get(route('admin.users.index'));
+        $usersIndexRes->assertStatus(200);
+        $usersIndexRes->assertSee('Profil Akun & Ganti Password');
+        $usersIndexRes->assertSee('panitia_ahmad@test.com');
+        $usersIndexRes->assertDontSee('panitia_siti@test.com'); // Other user is hidden from panitia
+        $usersIndexRes->assertDontSee('Tambah Akun Pengguna'); // Create button is hidden
+
+        // 5. Panitia CAN change OWN password
+        $selfPwdRes = $this->post(route('admin.users.changePassword', $panitia), [
+            'password' => 'newpassword123',
+            'password_confirmation' => 'newpassword123',
+        ]);
+        $selfPwdRes->assertRedirect(route('admin.users.index'));
+        $selfPwdRes->assertSessionHas('success');
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('newpassword123', $panitia->fresh()->password));
+
+        // 6. Panitia CANNOT change ANOTHER user's password (403 Forbidden)
+        $otherPwdRes = $this->post(route('admin.users.changePassword', $otherPanitia), [
+            'password' => 'hackedpassword123',
+            'password_confirmation' => 'hackedpassword123',
+        ]);
+        $otherPwdRes->assertStatus(403);
+
+        // 7. Panitia CANNOT create new users (403 Forbidden)
+        $createRes = $this->post(route('admin.users.store'), [
+            'name' => 'Hacker Panitia',
+            'email' => 'hacker@test.com',
+            'password' => 'secret123',
+            'password_confirmation' => 'secret123',
+        ]);
+        $createRes->assertStatus(403);
+
+        // 8. Panitia CANNOT update other user (403 Forbidden)
+        $updateUserRes = $this->put(route('admin.users.update', $otherPanitia), [
+            'name' => 'Modified Name',
+            'email' => 'modified@test.com',
+        ]);
+        $updateUserRes->assertStatus(403);
+
+        // 9. Panitia CANNOT delete other user (403 Forbidden)
+        $deleteUserRes = $this->delete(route('admin.users.destroy', $otherPanitia));
+        $deleteUserRes->assertStatus(403);
     }
 }
